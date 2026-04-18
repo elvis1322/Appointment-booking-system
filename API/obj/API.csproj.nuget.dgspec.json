@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\API\\API.csproj": {}
+    "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\API\\API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\API\\API.csproj": {
+    "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\API\\API.csproj",
+        "projectUniqueName": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\API\\API.csproj",
+        "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\API\\API.csproj",
         "packagesPath": "C:\\Users\\Elvis\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\API\\obj\\",
+        "outputPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Application\\Application.csproj": {
-                "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Application\\Application.csproj"
+              "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Application\\Application.csproj"
               }
             }
           }
@@ -512,14 +512,14 @@
         }
       }
     },
-    "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Application\\Application.csproj": {
+    "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Application\\Application.csproj",
+        "projectUniqueName": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Application\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Application\\Application.csproj",
+        "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Application\\Application.csproj",
         "packagesPath": "C:\\Users\\Elvis\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Application\\obj\\",
+        "outputPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -540,11 +540,11 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Domain\\Domain.csproj"
+              "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Domain\\Domain.csproj"
               },
-              "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Persistence\\Persistence.csproj": {
-                "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Persistence\\Persistence.csproj"
+              "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Persistence\\Persistence.csproj": {
+                "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Persistence\\Persistence.csproj"
               }
             }
           }
@@ -864,14 +864,14 @@
         }
       }
     },
-    "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Domain\\Domain.csproj": {
+    "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Domain\\Domain.csproj",
+        "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\Elvis\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Domain\\obj\\",
+        "outputPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -1203,14 +1203,14 @@
         }
       }
     },
-    "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Persistence\\Persistence.csproj": {
+    "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Persistence\\Persistence.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Persistence\\Persistence.csproj",
+        "projectUniqueName": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Persistence\\Persistence.csproj",
         "projectName": "Persistence",
-        "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Persistence\\Persistence.csproj",
+        "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Persistence\\Persistence.csproj",
         "packagesPath": "C:\\Users\\Elvis\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Persistence\\obj\\",
+        "outputPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Persistence\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -1231,8 +1231,8 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\Folderi\\Appointment-booking-system\\Domain\\Domain.csproj"
+              "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Domain\\Domain.csproj"
               }
             }
           }
