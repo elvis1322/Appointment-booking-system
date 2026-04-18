@@ -62,7 +62,8 @@ public class UserRepository : IUserRepository
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
         if (user == null) return false;
-
+   var tokens = _context.RefreshTokens.Where(t => t.UserId == id);
+    _context.RefreshTokens.RemoveRange(tokens);
         _context.Users.Remove(user);
         return await _context.SaveChangesAsync() > 0;
     }
