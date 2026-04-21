@@ -84,7 +84,6 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 
 
-
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
