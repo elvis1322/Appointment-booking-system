@@ -8,23 +8,23 @@
     "net10.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Elvis\\.nuget\\packages\\": {},
+    "C:\\Users\\genti\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Domain\\Domain.csproj",
+      "projectUniqueName": "C:\\Users\\genti\\OneDrive\\Desktop\\ProjektiOrigjinal\\Appointment-booking-system\\Domain\\Domain.csproj",
       "projectName": "Domain",
-      "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Domain\\Domain.csproj",
-      "packagesPath": "C:\\Users\\Elvis\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Domain\\obj\\",
+      "projectPath": "C:\\Users\\genti\\OneDrive\\Desktop\\ProjektiOrigjinal\\Appointment-booking-system\\Domain\\Domain.csproj",
+      "packagesPath": "C:\\Users\\genti\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\genti\\OneDrive\\Desktop\\ProjektiOrigjinal\\Appointment-booking-system\\Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Elvis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\genti\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -72,7 +72,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.202/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

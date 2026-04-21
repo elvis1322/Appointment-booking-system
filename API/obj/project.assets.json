@@ -4366,23 +4366,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Elvis\\.nuget\\packages\\": {},
+    "C:\\Users\\genti\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\API\\API.csproj",
+      "projectUniqueName": "C:\\Users\\genti\\OneDrive\\Desktop\\ProjektiOrigjinal\\Appointment-booking-system\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\API\\API.csproj",
-      "packagesPath": "C:\\Users\\Elvis\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\API\\obj\\",
+      "projectPath": "C:\\Users\\genti\\OneDrive\\Desktop\\ProjektiOrigjinal\\Appointment-booking-system\\API\\API.csproj",
+      "packagesPath": "C:\\Users\\genti\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\genti\\OneDrive\\Desktop\\ProjektiOrigjinal\\Appointment-booking-system\\API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Elvis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\genti\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4397,8 +4397,8 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Application\\Application.csproj": {
-              "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Application\\Application.csproj"
+            "C:\\Users\\genti\\OneDrive\\Desktop\\ProjektiOrigjinal\\Appointment-booking-system\\Application\\Application.csproj": {
+              "projectPath": "C:\\Users\\genti\\OneDrive\\Desktop\\ProjektiOrigjinal\\Appointment-booking-system\\Application\\Application.csproj"
             }
           }
         }
@@ -4459,7 +4459,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.202/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
