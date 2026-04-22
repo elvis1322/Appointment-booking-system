@@ -6,9 +6,8 @@ using Persistence.Data;
 using Application.Helpers;
 using Application.Interfaces;
 using Application.Services;
-
-
-
+using Domain.Interfaces;
+using Persistence.Repositories;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -83,8 +82,14 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-
+//Member1
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+
+
+//Member2
+
 
 
 
