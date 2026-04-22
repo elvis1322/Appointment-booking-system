@@ -4,6 +4,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Persistence.Data;
 using Application.Helpers;
+using Application.Interfaces;
+using Application.Services;
+
+
 
 
 
@@ -80,7 +84,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 
 
-
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 
