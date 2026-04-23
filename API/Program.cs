@@ -4,6 +4,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Persistence.Data;
 using Application.Helpers;
+using Application.Interfaces;
+using Persistence.Repositories;
+using Domain.Interfaces;
+using Application.Services.Staff;
+
+
 
 
 
@@ -78,6 +84,12 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+//module 2 builders
+
+;
+builder.Services.AddScoped<IStaffScheduleRepository, StaffScheduleRepository>();
+builder.Services.AddScoped<IStaffScheduleService, StaffScheduleService>();
 
 
 
