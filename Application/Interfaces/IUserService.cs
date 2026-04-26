@@ -7,4 +7,7 @@ public interface IUserService
 Task<UserDTO?> GetUserForUpdateAsync(string userId);
 
 Task<bool> ChangePasswordAsync(Guid userId, string oldPassword, string newPassword);
+
+Task<UserProfileDTO> GetUserProfileAsync(Guid userId);
+
 }
