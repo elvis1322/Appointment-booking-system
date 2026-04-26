@@ -87,9 +87,10 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 //module 2 builders
 
-;
 builder.Services.AddScoped<IStaffScheduleRepository, StaffScheduleRepository>();
 builder.Services.AddScoped<IStaffScheduleService, StaffScheduleService>();
+builder.Services.AddScoped<IStaffDirectoryRepository, StaffDirectoryRepository>();
+builder.Services.AddScoped<IStaffDirectoryService, StaffDirectoryService>();
 
 
 

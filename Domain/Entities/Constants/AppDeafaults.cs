@@ -24,5 +24,19 @@ public static class AppDefaults
     }
 
     // KËTU DO TË SHTOJË KOLEGU YT
+    //Member 2
+    public static class StaffPermissions
+    {
+        public static readonly Guid StaffRead = Guid.Parse("22222222-1111-1111-1111-222222222221");
+        public static readonly Guid StaffCreate = Guid.Parse("22222222-1111-1111-1111-222222222222");
+        public static readonly Guid StaffUpdate = Guid.Parse("22222222-1111-1111-1111-222222222223");
+        public static readonly Guid StaffDelete = Guid.Parse("22222222-1111-1111-1111-222222222224");
+    }
+
+    public static class SchedulePermissions
+    {
+        public static readonly Guid SchedulesRead = Guid.Parse("44444444-1111-1111-1111-444444444441");
+        public static readonly Guid SchedulesUpdate = Guid.Parse("44444444-1111-1111-1111-444444444442");
+    }
    
 }
