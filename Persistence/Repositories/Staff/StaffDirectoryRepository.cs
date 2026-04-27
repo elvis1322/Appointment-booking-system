@@ -14,6 +14,86 @@ public class StaffDirectoryRepository : IStaffDirectoryRepository
         _db = db;
     }
 
+    public async Task<IReadOnlyList<Employee>> GetEmployeesAsync(bool includeInactive, CancellationToken ct = default)
+{
+    // Marrim të gjithë përdoruesit që kanë rolin 'Employee'
+    var usersWithEmployeeRole = await _db.Users
+        .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
+        .Include(u => u.Employee).ThenInclude(e => e.ServiceLinks)
+        .Where(u => u.UserRoles.Any(ur => ur.Role != null && ur.Role.Name == "Employee")) // [Member 2] - Null safety check
+        .ToListAsync(ct);
+
+    // I kthejmë si objekte Employee (edhe nëse nuk kanë ende rresht te tabela Employees)
+    var result = usersWithEmployeeRole.Select(u => u.Employee ?? new Employee 
+    { 
+        Id = u.Id, // Vendosim Id e Userit si ID të përkohshme të Employee-t
+        UserId = u.Id, 
+        User = u, 
+        IsActive = true,
+        JobTitle = "I paplotësuar", // Vlerë default derisa t'i bësh Edit
+        Phone = "-"
+    }).ToList();
+
+    if (!includeInactive)
+    {
+        result = result.Where(e => e.IsActive).ToList();
+    }
+
+    return result.OrderBy(e => e.User?.LastName ?? "").ThenBy(e => e.User?.FirstName ?? "").ToList(); // [Member 2] - Null safety sort
+}
+
+
+    public Task<Employee?> GetEmployeeByIdAsync(Guid id, CancellationToken ct = default)
+    {
+        return _db.Employees
+            .AsNoTracking()
+            .Include(e => e.User)
+            .Include(e => e.ServiceLinks)
+            .FirstOrDefaultAsync(e => e.Id == id, ct);
+    }
+
+    public Task<Employee?> GetEmployeeByUserIdAsync(Guid userId, CancellationToken ct = default)
+    {
+        return _db.Employees.FirstOrDefaultAsync(e => e.UserId == userId, ct);
+    }
+
+    public Task<Employee?> GetEmployeeForUpdateAsync(Guid id, CancellationToken ct = default)
+    {
+        return _db.Employees.FirstOrDefaultAsync(e => e.Id == id, ct);
+    }
+
+    public Task<Employee?> GetEmployeeWithServicesForUpdateAsync(Guid id, CancellationToken ct = default)
+    {
+        return _db.Employees
+            .Include(e => e.ServiceLinks)
+            .FirstOrDefaultAsync(e => e.Id == id, ct);
+    }
+
+    public Task<bool> UserExistsAsync(Guid userId, CancellationToken ct = default)
+    {
+        return _db.Users.AnyAsync(u => u.Id == userId, ct);
+    }
+
+    public Task<bool> ServiceExistsAsync(Guid serviceId, CancellationToken ct = default)
+    {
+        return _db.Services.AnyAsync(s => s.Id == serviceId, ct);
+    }
+
+    public Task AddEmployeeAsync(Employee employee, CancellationToken ct = default)
+    {
+        return _db.Employees.AddAsync(employee, ct).AsTask();
+    }
+
+    public async Task LoadEmployeeRelationsAsync(Employee employee, CancellationToken ct = default)
+    {
+        await _db.Entry(employee).Reference(e => e.User).LoadAsync(ct);
+        await _db.Entry(employee).Collection(e => e.ServiceLinks).LoadAsync(ct);
+    }
+
+    public void RemoveEmployee(Employee employee)
+    {
+        _db.Employees.Remove(employee);
+    }
 
     public async Task<IReadOnlyList<Location>> GetLocationsAsync(bool includeInactive, CancellationToken ct = default)
     {

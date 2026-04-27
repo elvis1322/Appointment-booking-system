@@ -23,7 +23,7 @@ public static class AppDefaults
         public static readonly Guid UsersDelete = Guid.Parse("11111111-2222-3333-4444-555555555554");
     }
 
-    // KËTU DO TË SHTOJË KOLEGU YT
+    
     //Member 2
     public static class StaffPermissions
     {

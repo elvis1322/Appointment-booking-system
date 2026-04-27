@@ -18,4 +18,7 @@ public class User : BaseEntity
    
     // Lidhja me tabelën ndërmjetëse
     public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+
+    // [Member 2] - 1:1 Link with Employee Profile
+    public Employee? Employee { get; set; }
 }

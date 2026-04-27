@@ -10,7 +10,7 @@ namespace API.Controllers.Staff;
 [Route("api/staff-schedule")]
 public class StaffScheduleController : ControllerBase
 {
-    // --- Working hours ---
+    
     [HttpGet("employees/{employeeId:guid}/working-hours")]
     [AllowAnonymous]
     public async Task<ActionResult<IReadOnlyList<WorkingHourResponseDto>>> GetWorkingHours(
@@ -40,7 +40,7 @@ public class StaffScheduleController : ControllerBase
     }
 
     [HttpPost("employees/{employeeId:guid}/working-hours")]
-    // [Authorize(Roles = "Admin")] // Komentuar për testim ngase s'kemi login
+    [Authorize(Roles = "Admin")] 
     public async Task<ActionResult<WorkingHourResponseDto>> AddWorkingHour(
         [FromServices] IStaffScheduleService svc,
         Guid employeeId,
@@ -63,7 +63,7 @@ public class StaffScheduleController : ControllerBase
     }
 
     [HttpPut("working-hours/{id:guid}")]
-    // [Authorize(Roles = "Admin")] // Komentuar për testim
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<WorkingHourResponseDto>> UpdateWorkingHour(
         [FromServices] IStaffScheduleService svc,
         Guid id,
@@ -86,7 +86,7 @@ public class StaffScheduleController : ControllerBase
     }
 
     [HttpDelete("working-hours/{id:guid}")]
-    // [Authorize(Roles = "Admin")] // Komentuar për testim
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteWorkingHour(
         [FromServices] IStaffScheduleService svc,
         Guid id,
@@ -96,7 +96,7 @@ public class StaffScheduleController : ControllerBase
         return ok ? NoContent() : NotFound();
     }
 
-    // --- Days off ---
+  
     [HttpGet("employees/{employeeId:guid}/days-off")]
     [AllowAnonymous]
     public async Task<ActionResult<IReadOnlyList<DayOffResponseDto>>> GetDaysOff(
@@ -128,7 +128,7 @@ public class StaffScheduleController : ControllerBase
     }
 
     [HttpPost("employees/{employeeId:guid}/days-off")]
-    // [Authorize(Roles = "Admin")] // Komentuar për testim ngase s'kemi login
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<DayOffResponseDto>> AddDayOff(
         [FromServices] IStaffScheduleService svc,
         Guid employeeId,
@@ -149,7 +149,7 @@ public class StaffScheduleController : ControllerBase
     }
 
     [HttpPut("days-off/{id:guid}")]
-    // [Authorize(Roles = "Admin")] // Komentuar për testim
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<DayOffResponseDto>> UpdateDayOff(
         [FromServices] IStaffScheduleService svc,
         Guid id,
@@ -170,7 +170,7 @@ public class StaffScheduleController : ControllerBase
     }
 
     [HttpDelete("days-off/remove/{id:guid}")]
-    // [Authorize(Roles = "Admin")] // Komentuar për testim
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteDayOff(
         [FromServices] IStaffScheduleService svc,
         Guid id,
@@ -182,7 +182,7 @@ public class StaffScheduleController : ControllerBase
         return ok ? NoContent() : BadRequest($"Dita e pushimit me ID {id} nuk u gjet në databazë.");
     }
 
-    // --- Schedules ---
+    
     [HttpGet("employees/{employeeId:guid}/schedules")]
     [AllowAnonymous]
     public async Task<ActionResult<IReadOnlyList<ScheduleResponseDto>>> GetSchedules(
@@ -216,7 +216,7 @@ public class StaffScheduleController : ControllerBase
     }
 
     [HttpPost("employees/{employeeId:guid}/schedules")]
-    // [Authorize(Roles = "Admin")] // Komentuar për testim ngase s'kemi login
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ScheduleResponseDto>> AddSchedule(
         [FromServices] IStaffScheduleService svc,
         Guid employeeId,
@@ -239,7 +239,7 @@ public class StaffScheduleController : ControllerBase
     }
 
     [HttpPut("schedules/{id:guid}")]
-    // [Authorize(Roles = "Admin")] // Komentuar për testim
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ScheduleResponseDto>> UpdateSchedule(
         [FromServices] IStaffScheduleService svc,
         Guid id,
@@ -262,7 +262,7 @@ public class StaffScheduleController : ControllerBase
     }
 
     [HttpDelete("schedules/{id:guid}")]
-    // [Authorize(Roles = "Admin")] // Komentuar për testim
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteSchedule(
         [FromServices] IStaffScheduleService svc,
         Guid id,
