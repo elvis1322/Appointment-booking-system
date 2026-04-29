@@ -91,6 +91,8 @@ builder.Services.AddScoped<IStaffScheduleRepository, StaffScheduleRepository>();
 builder.Services.AddScoped<IStaffScheduleService, StaffScheduleService>();
 builder.Services.AddScoped<IStaffDirectoryRepository, StaffDirectoryRepository>();
 builder.Services.AddScoped<IStaffDirectoryService, StaffDirectoryService>();
+builder.Services.AddScoped<IStaffCatalogRepository, StaffCatalogRepository>();
+builder.Services.AddScoped<IStaffCatalogService, StaffCatalogService>();
 
 
 
