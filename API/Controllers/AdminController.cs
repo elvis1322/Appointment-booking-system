@@ -2,6 +2,7 @@ using Domain.Entities.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Application.Services;
+using Application.Interfaces;
 namespace API.Controllers;
 
 [ApiController]
@@ -9,14 +10,18 @@ namespace API.Controllers;
 [Authorize(Roles = "Admin")] 
 public class AdminController : ControllerBase
 {
+    private readonly IUADServices _uadServices;
+    public AdminController(IUADServices uadServices)
+    {
+        _uadServices = uadServices;
+    }
 
 
 
 
     [HttpGet("GetAllUsers")]
 public async Task<ActionResult<IEnumerable<UserAdminDTO>>> GetAllUsers(
-    [FromServices] UADServices uadServices, 
-    [FromQuery] string? term) // Vetëm një parametër 'term'
+    [FromQuery] string? term) 
 {
 
 if (!User.Claims.Any(c => c.Type == "permission" && c.Value == "Users:Read"))
@@ -24,7 +29,7 @@ if (!User.Claims.Any(c => c.Type == "permission" && c.Value == "Users:Read"))
 
     try
     {
-        var users = await uadServices.GetUsersSearch(term);
+        var users = await _uadServices.GetUsersSearch(term);
         
         if (users == null || !users.Any())
         {
@@ -40,14 +45,14 @@ if (!User.Claims.Any(c => c.Type == "permission" && c.Value == "Users:Read"))
 }
 
     [HttpGet("GetUserById/{id}")]
-public async Task<ActionResult<UserAdminDTO>> GetUsersbyId(Guid id,[FromServices] UADServices uadServices)
+public async Task<ActionResult<UserAdminDTO>> GetUsersbyId(Guid id)
     { 
   if(!User.Claims.Any(c => c.Type == "permission" && c.Value == "Users:Read"))
     {
         return Forbid("You do not have permission to view user details.");
     }
 
-        var user=await uadServices.GetUserById(id);
+        var user=await _uadServices.GetUserById(id);
         if (user==null)
         {
             return NotFound("User not found.");
@@ -59,18 +64,18 @@ public async Task<ActionResult<UserAdminDTO>> GetUsersbyId(Guid id,[FromServices
 
 
     [HttpDelete("DeleteUserById/{id}")]
-public async Task<ActionResult<UserAdminDTO>> DeleteUserById(Guid id,[FromServices] UADServices uadServices)
+public async Task<ActionResult<UserAdminDTO>> DeleteUserById(Guid id)
     {
           var kaLeje = User.Claims.Any(c => c.Type == "permission" && c.Value == "Users:Delete");
 
        if (!kaLeje)
       {
-        // Nëse nuk e ka lejen, kthyejmë 403 Forbidden
+       
      return Forbid("You do not have permission to delete users.");
     }
 
 
-        var user=await uadServices.DeleteUser(id);
+        var user=await _uadServices.DeleteUser(id);
         if (!user)
         {
             return NotFound("User not found.");
@@ -82,7 +87,7 @@ public async Task<ActionResult<UserAdminDTO>> DeleteUserById(Guid id,[FromServic
 
   
     [HttpPut("UpdateUserById/{id}")]
-public async Task<ActionResult<UserAdminDTO>> UpdateUserById(Guid id,[FromBody] UserAdminDTO userDto,[FromServices] UADServices uadServices)
+public async Task<ActionResult<UserAdminDTO>> UpdateUserById(Guid id,[FromBody] UserAdminDTO userDto)
     {  
         if(!User.Claims.Any(c => c.Type == "permission" && c.Value == "Users:Update"))
     {
@@ -92,7 +97,7 @@ public async Task<ActionResult<UserAdminDTO>> UpdateUserById(Guid id,[FromBody] 
         try 
     {
           userDto.Id = id;
-        var user = await uadServices.UpdateUser(userDto); 
+        var user = await _uadServices.UpdateUser(userDto); 
         return Ok(user);
     }
     catch (Exception ex)
@@ -103,7 +108,7 @@ public async Task<ActionResult<UserAdminDTO>> UpdateUserById(Guid id,[FromBody] 
     }
 
   [HttpPost("CreateClient")]
-public async Task<ActionResult<UserAdminDTO>> CreateClient([FromBody] UserAdminDTO userDto,[FromServices] UADServices uadServices)
+public async Task<ActionResult<UserAdminDTO>> CreateClient([FromBody] UserAdminDTO userDto)
     {
         if(!User.Claims.Any(c => c.Type == "permission" && c.Value == "Users:Create"))
     {
@@ -112,7 +117,7 @@ public async Task<ActionResult<UserAdminDTO>> CreateClient([FromBody] UserAdminD
         try 
     {
           
-        var user = await uadServices.AddClient(userDto); 
+        var user = await _uadServices.AddClient(userDto); 
         return Ok(user);
     }
     catch (Exception ex)
@@ -122,7 +127,7 @@ public async Task<ActionResult<UserAdminDTO>> CreateClient([FromBody] UserAdminD
 }
 
   [HttpPost("CreateEmployee")]
-public async Task<ActionResult<UserAdminDTO>> CreateEmployee([FromBody] UserAdminDTO userDto,[FromServices] UADServices uadServices)
+public async Task<ActionResult<UserAdminDTO>> CreateEmployee([FromBody] UserAdminDTO userDto)
     {
          if(!User.Claims.Any(c => c.Type == "permission" && c.Value == "Users:Create"))
     {
@@ -131,7 +136,7 @@ public async Task<ActionResult<UserAdminDTO>> CreateEmployee([FromBody] UserAdmi
         try 
     {
           
-        var user = await uadServices.AddEmployee(userDto); 
+        var user = await _uadServices.AddEmployee(userDto); 
         return Ok(user);
     }
     catch (Exception ex)

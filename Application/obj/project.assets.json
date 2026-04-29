@@ -4494,11 +4494,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (6)\\Appointment-booking-system\\Application\\Application.csproj",
+      "projectUniqueName": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Application\\Application.csproj",
       "projectName": "Application",
-      "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (6)\\Appointment-booking-system\\Application\\Application.csproj",
+      "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Application\\Application.csproj",
       "packagesPath": "C:\\Users\\Elvis\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (6)\\Appointment-booking-system\\Application\\obj\\",
+      "outputPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Application\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4519,11 +4519,11 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (6)\\Appointment-booking-system\\Domain\\Domain.csproj": {
-              "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (6)\\Appointment-booking-system\\Domain\\Domain.csproj"
+            "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Domain\\Domain.csproj": {
+              "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Domain\\Domain.csproj"
             },
-            "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (6)\\Appointment-booking-system\\Persistence\\Persistence.csproj": {
-              "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (6)\\Appointment-booking-system\\Persistence\\Persistence.csproj"
+            "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Persistence\\Persistence.csproj": {
+              "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Persistence\\Persistence.csproj"
             }
           }
         }

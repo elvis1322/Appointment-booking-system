@@ -20,6 +20,26 @@ public class UserService : IUserService
         _refreshTokenRepository = refreshTokenRepository;
     }
 
+
+public async Task<UserProfileDTO> GetUserProfileAsync(Guid userId)
+{
+    var user = await _userRepository.GetByIdAsync(userId);
+
+    if (user == null)
+        throw new KeyNotFoundException("Përdoruesi nuk u gjet.");
+
+    return new UserProfileDTO
+    {
+        Id = user.Id,
+        FirstName = user.FirstName,
+        LastName = user.LastName,
+        Email = user.Email,
+        Gjinia = user.Gjinia,
+        // Kthejmë listën e roleve ashtu siç e pret Frontendi
+        Roles = user.UserRoles?.Select(ur => ur.Role.Name).ToList() ?? new List<string>()
+    };
+}
+
     public async Task<bool> UpdateProfile(string userId, UserDTO model)
     {
         // 1. Konvertojmë ID-në nga string në Guid
@@ -64,6 +84,8 @@ public async Task<bool> PatchProfile(string userId, UserDTO model)
 
     if (!string.IsNullOrEmpty(model.Email))
         user.Email = model.Email;
+          if (!string.IsNullOrEmpty(model.Gjinia))
+        user.Gjinia = model.Gjinia;
 
     _userRepository.Update(user);
     return await _userRepository.SaveChangesAsync();

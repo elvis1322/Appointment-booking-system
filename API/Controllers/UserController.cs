@@ -13,14 +13,13 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class UserController :ControllerBase
 {
-    private readonly IUserRepository _userRepository;
+  
     private readonly IUserService _userService;
 
     public UserController(IUserService userService,IUserRepository userRepository)
     {
         _userService = userService;
-        _userRepository = userRepository;
-        
+       
     }
     
 [HttpGet("GetMe")]

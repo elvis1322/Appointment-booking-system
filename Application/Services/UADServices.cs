@@ -2,16 +2,18 @@ using Domain.Entities;
 using Domain.Interfaces;
 using Domain.Entities.Constants;
 using Application.DTOs;
+using Application.Interfaces;
 
 
 namespace Application.Services;
     
-    public class UADServices 
+    public class UADServices :IUADServices
     {
         private readonly IUserRepository _userRepository;
 
           public UADServices(IUserRepository userRepository)
              {
+              
                _userRepository = userRepository;
                 }
 
@@ -52,31 +54,30 @@ public async Task<IEnumerable<UserAdminDTO>> GetUsers(string? searchTerm)
 
 public async Task<IEnumerable<UserAdminDTO>> GetUsersSearch(string? searchTerm)
 {
-    // 1. Marrim të gjithë përdoruesit me rolet e tyre
+ 
     var users = await _userRepository.GetAllAsync();
     var query = users.AsQueryable();
 
-    // 2. Nëse përdoruesi ka shkruar diçka, apliko kërkimin "Universal"
+ 
     if (!string.IsNullOrWhiteSpace(searchTerm))
     {
         string term = searchTerm.Trim().ToLower();
 
         query = query.Where(u => 
-            // Kërko në ID
+            
             u.Id.ToString().ToLower().StartsWith(term) || 
-            // Kërko në Emër
+            
             (u.FirstName != null && u.FirstName.ToLower().StartsWith(term)) || 
             (u.LastName != null && u.LastName.ToLower().StartsWith(term)) ||
-            // Kërko në Email
+        
             (u.Email != null && u.Email.ToLower().Contains(term)) || 
-            // Kërko në Gjini
+            
             (u.Gjinia != null && u.Gjinia.ToLower() == term) ||
-            // Kërko në Emrin e Rolit
+            
             u.UserRoles.Any(ur => ur.Role != null && ur.Role.Name.ToLower().StartsWith(term))
         );
     }
 
-    // 3. Mapimi në DTO
     return query.Select(u => new UserAdminDTO
     {
         Id = u.Id,
@@ -122,7 +123,7 @@ public async Task<UserAdminDTO> GetUserById(Guid id)
 
 public async Task<UserAdminDTO> UpdateUser(UserAdminDTO userDto)
 {
-    // 1. Gjejmë përdoruesin ekzistues nga databaza (përmes Repository)
+
     var existingUser = await _userRepository.GetByIdAsync(userDto.Id);
 
     if (existingUser == null)
@@ -133,7 +134,7 @@ public async Task<UserAdminDTO> UpdateUser(UserAdminDTO userDto)
 //{
  //   throw new Exception("Nuk lejohet caktimi i rolit Admin përmes këtij paneli.");
 //}
-    // 2. Përditësojmë vetëm fushat që lejohen
+    
    
     existingUser.FirstName = userDto.FirstName;
     existingUser.LastName = userDto.LastName;
@@ -159,7 +160,7 @@ public async Task<UserAdminDTO> UpdateUser(UserAdminDTO userDto)
         }
     _userRepository.Update(existingUser);
 
-    // 4. Ruajmë ndryshimet
+    
     await _userRepository.SaveChangesAsync();
     var updatedUser = await _userRepository.GetByIdAsync(existingUser.Id);
     var currentRole = updatedUser.UserRoles.FirstOrDefault()?.Role;
