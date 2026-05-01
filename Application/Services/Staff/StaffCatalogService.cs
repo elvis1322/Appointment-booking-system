@@ -11,7 +11,64 @@ public class StaffCatalogService : IStaffCatalogService
 
     public StaffCatalogService(IStaffCatalogRepository repo) => _repo = repo;
 
-   
+    public async Task<IReadOnlyList<ServiceCategoryResponseDto>> GetCategoriesAsync(bool includeInactive, CancellationToken ct = default)
+    {
+        var items = await _repo.GetCategoriesAsync(includeInactive, ct);
+        return items.Select(MapCategory).ToList();
+    }
+
+    public async Task<ServiceCategoryResponseDto?> GetCategoryByIdAsync(Guid id, CancellationToken ct = default)
+    {
+        var e = await _repo.GetCategoryByIdAsync(id, ct);
+        return e == null ? null : MapCategory(e);
+    }
+
+    public async Task<ServiceCategoryResponseDto> CreateCategoryAsync(CreateUpdateServiceCategoryDto dto, string? actor, CancellationToken ct = default)
+    {
+        if (string.IsNullOrWhiteSpace(dto.Name)) throw new ArgumentException("Name is required.");
+        var now = DateTime.UtcNow;
+        var e = new ServiceCategory
+        {
+            Id = Guid.NewGuid(),
+            Name = dto.Name.Trim(),
+            Description = dto.Description,
+            SortOrder = dto.SortOrder,
+            IsActive = dto.IsActive,
+            CreatedAt = now,
+            CreatedBy = actor,
+            UpdatedAt = now,
+            UpdatedBy = actor
+        };
+        await _repo.AddCategoryAsync(e, ct);
+        await _repo.SaveChangesAsync(ct);
+        return MapCategory(e);
+    }
+
+    public async Task<ServiceCategoryResponseDto?> UpdateCategoryAsync(Guid id, CreateUpdateServiceCategoryDto dto, string? actor, CancellationToken ct = default)
+    {
+        var e = await _repo.GetCategoryForUpdateAsync(id, ct);
+        if (e == null) return null;
+        if (string.IsNullOrWhiteSpace(dto.Name)) throw new ArgumentException("Name is required.");
+        e.Name = dto.Name.Trim();
+        e.Description = dto.Description;
+        e.SortOrder = dto.SortOrder;
+        e.IsActive = dto.IsActive;
+        e.UpdatedAt = DateTime.UtcNow;
+        e.UpdatedBy = actor;
+        await _repo.SaveChangesAsync(ct);
+        return MapCategory(e);
+    }
+
+    public async Task<bool> DeleteCategoryAsync(Guid id, CancellationToken ct = default)
+    {
+        var e = await _repo.GetCategoryWithServicesAsync(id, ct);
+        if (e == null) return false;
+        if (e.Services.Any()) throw new InvalidOperationException("Cannot delete category that has services. Remove or reassign services first.");
+        _repo.RemoveCategory(e);
+        await _repo.SaveChangesAsync(ct);
+        return true;
+    }
+
     public async Task<IReadOnlyList<ServiceResponseDto>> GetServicesAsync(Guid? categoryId, bool includeInactive, CancellationToken ct = default)
     {
         var list = await _repo.GetServicesAsync(categoryId, includeInactive, ct);
@@ -81,7 +138,14 @@ public class StaffCatalogService : IStaffCatalogService
         return true;
     }
 
-    
+    private static ServiceCategoryResponseDto MapCategory(ServiceCategory c) => new()
+    {
+        Id = c.Id,
+        Name = c.Name,
+        Description = c.Description,
+        SortOrder = c.SortOrder,
+        IsActive = c.IsActive
+    };
 
     private static ServiceResponseDto MapService(Service s) => new()
     {
