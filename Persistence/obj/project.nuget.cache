@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "JWrd7NZCNTc=",
+  "dgSpecHash": "fzJPzmw3788=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Persistence\\Persistence.csproj",
+  "projectFilePath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (6)\\Appointment-booking-system\\Persistence\\Persistence.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Elvis\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
@@ -31,16 +31,7 @@
     "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.entityframeworkcore.sqlite\\10.0.0\\microsoft.entityframeworkcore.sqlite.10.0.0.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.entityframeworkcore.sqlite.core\\10.0.0\\microsoft.entityframeworkcore.sqlite.core.10.0.0.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\10.0.0\\microsoft.entityframeworkcore.sqlserver.10.0.0.nupkg.sha512",
-    "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\10.0.0\\microsoft.extensions.caching.abstractions.10.0.0.nupkg.sha512",
-    "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.extensions.caching.memory\\10.0.0\\microsoft.extensions.caching.memory.10.0.0.nupkg.sha512",
-    "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\10.0.0\\microsoft.extensions.configuration.abstractions.10.0.0.nupkg.sha512",
-    "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\10.0.0\\microsoft.extensions.dependencyinjection.10.0.0.nupkg.sha512",
-    "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.0\\microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.extensions.dependencymodel\\10.0.0\\microsoft.extensions.dependencymodel.10.0.0.nupkg.sha512",
-    "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.extensions.logging\\10.0.0\\microsoft.extensions.logging.10.0.0.nupkg.sha512",
-    "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\10.0.0\\microsoft.extensions.logging.abstractions.10.0.0.nupkg.sha512",
-    "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.extensions.options\\10.0.0\\microsoft.extensions.options.10.0.0.nupkg.sha512",
-    "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.extensions.primitives\\10.0.0\\microsoft.extensions.primitives.10.0.0.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.identity.client\\4.73.1\\microsoft.identity.client.4.73.1.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.identity.client.extensions.msal\\4.73.1\\microsoft.identity.client.extensions.msal.4.73.1.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\microsoft.identitymodel.abstractions\\7.7.1\\microsoft.identitymodel.abstractions.7.7.1.nupkg.sha512",
@@ -66,7 +57,6 @@
     "C:\\Users\\Elvis\\.nuget\\packages\\system.composition.runtime\\9.0.0\\system.composition.runtime.9.0.0.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\system.composition.typedparts\\9.0.0\\system.composition.typedparts.9.0.0.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\system.configuration.configurationmanager\\9.0.4\\system.configuration.configurationmanager.9.0.4.nupkg.sha512",
-    "C:\\Users\\Elvis\\.nuget\\packages\\system.diagnostics.eventlog\\9.0.4\\system.diagnostics.eventlog.9.0.4.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\system.formats.nrbf\\9.0.0\\system.formats.nrbf.9.0.0.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\system.identitymodel.tokens.jwt\\7.7.1\\system.identitymodel.tokens.jwt.7.7.1.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\system.memory.data\\8.0.1\\system.memory.data.8.0.1.nupkg.sha512",
@@ -74,34 +64,8 @@
     "C:\\Users\\Elvis\\.nuget\\packages\\system.resources.extensions\\9.0.0\\system.resources.extensions.9.0.0.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\system.security.cryptography.pkcs\\9.0.4\\system.security.cryptography.pkcs.9.0.4.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\system.security.cryptography.protecteddata\\9.0.4\\system.security.cryptography.protecteddata.9.0.4.nupkg.sha512",
-    "C:\\Users\\Elvis\\.nuget\\packages\\system.security.cryptography.xml\\9.0.0\\system.security.cryptography.xml.9.0.0.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\system.security.permissions\\9.0.0\\system.security.permissions.9.0.0.nupkg.sha512",
     "C:\\Users\\Elvis\\.nuget\\packages\\system.windows.extensions\\9.0.0\\system.windows.extensions.9.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "message": "Package 'System.Security.Cryptography.Xml' 9.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-37gx-xxp4-5rgx",
-      "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Persistence\\Persistence.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Persistence\\Persistence.csproj",
-      "libraryId": "System.Security.Cryptography.Xml",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    },
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "message": "Package 'System.Security.Cryptography.Xml' 9.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-w3x6-4m5h-cxqf",
-      "projectPath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Persistence\\Persistence.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\Elvis\\OneDrive\\Desktop\\New folder (4)\\Appointment-booking-system\\Persistence\\Persistence.csproj",
-      "libraryId": "System.Security.Cryptography.Xml",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  "logs": []
 }

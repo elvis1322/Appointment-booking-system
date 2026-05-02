@@ -11,9 +11,9 @@ public interface IUserRepository
     Task<bool>DeleteAsync(Guid id);
     
   Task<bool>UpdateAsync(User user);
-  
-
         Task AddAsync(User user);
     Task<bool> SaveChangesAsync();
-    void Update(User user); // EF Core e ndjek gjendjen, por është mirë ta kemi si metodë
+    Task<IEnumerable<User>> GetFilteredUsersAsync(string? term);
+    void Update(User user); 
 }
+   

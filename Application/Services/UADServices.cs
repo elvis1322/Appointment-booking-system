@@ -18,28 +18,16 @@ namespace Application.Services;
                 }
 
 
-// Në UADServices
-public async Task<IEnumerable<UserAdminDTO>> GetUsers(string? searchTerm)
+
+
+
+public async Task<IEnumerable<UserAdminDTO>> GetUsersSearch(string? searchTerm)
 {
-    // 1. Merri të gjithë (Kujdes: Kjo i shkarkon të gjithë në RAM)
-    var allUsers = await _userRepository.GetAllAsync();
-    var query = allUsers.AsQueryable();
 
-    // 2. Filtro listën në memorie
-    if (!string.IsNullOrWhiteSpace(searchTerm))
-    {
-        string term = searchTerm.Trim().ToLower();
+    var users = await _userRepository.GetFilteredUsersAsync(searchTerm);
 
-        query = query.Where(u =>  
-         u.Id.ToString().ToLower().StartsWith(term)||
-            (u.FirstName != null && u.FirstName.ToLower().StartsWith(term)) || 
-            (u.LastName != null && u.LastName.ToLower().StartsWith(term)) 
-          //  (u.Email != null && u.Email.ToLower().Contains(term))
-           );
-    }
-
-    // 3. Mapimi në DTO
-    return query.Select(u => new UserAdminDTO
+    
+    return users.Select(u => new UserAdminDTO
     {
         Id = u.Id,
         FirstName = u.FirstName,
@@ -47,49 +35,9 @@ public async Task<IEnumerable<UserAdminDTO>> GetUsers(string? searchTerm)
         Email = u.Email,
         Gjinia = u.Gjinia,
         RoleId = u.UserRoles.Select(ur => ur.RoleId).FirstOrDefault(),
-    RoleName = u.UserRoles.Select(ur => ur.Role.Name).FirstOrDefault() ?? "Pa Rol"
-     }).ToList();
+        RoleName = u.UserRoles.Select(ur => ur.Role.Name).FirstOrDefault() ?? "No Role"
+    }).ToList();
 }
-
-
-public async Task<IEnumerable<UserAdminDTO>> GetUsersSearch(string? searchTerm)
-{
- 
-    var users = await _userRepository.GetAllAsync();
-    var query = users.AsQueryable();
-
- 
-    if (!string.IsNullOrWhiteSpace(searchTerm))
-    {
-        string term = searchTerm.Trim().ToLower();
-
-        query = query.Where(u => 
-            
-            u.Id.ToString().ToLower().StartsWith(term) || 
-            
-            (u.FirstName != null && u.FirstName.ToLower().StartsWith(term)) || 
-            (u.LastName != null && u.LastName.ToLower().StartsWith(term)) ||
-        
-            (u.Email != null && u.Email.ToLower().Contains(term)) || 
-            
-            (u.Gjinia != null && u.Gjinia.ToLower() == term) ||
-            
-            u.UserRoles.Any(ur => ur.Role != null && ur.Role.Name.ToLower().StartsWith(term))
-        );
-    }
-
-    return query.Select(u => new UserAdminDTO
-    {
-        Id = u.Id,
-        FirstName = u.FirstName,
-        LastName = u.LastName,
-        Email = u.Email,
-        Gjinia = u.Gjinia,
-       RoleId = u.UserRoles.Select(ur => ur.RoleId).FirstOrDefault(),
-    RoleName = u.UserRoles.Select(ur => ur.Role.Name).FirstOrDefault() ?? "No Role"
-     }).ToList();
-}
-    
 
 
 
@@ -123,7 +71,7 @@ public async Task<UserAdminDTO> GetUserById(Guid id)
 
 public async Task<UserAdminDTO> UpdateUser(UserAdminDTO userDto)
 {
-
+   
     var existingUser = await _userRepository.GetByIdAsync(userDto.Id);
 
     if (existingUser == null)
@@ -134,7 +82,7 @@ public async Task<UserAdminDTO> UpdateUser(UserAdminDTO userDto)
 //{
  //   throw new Exception("Nuk lejohet caktimi i rolit Admin përmes këtij paneli.");
 //}
-    
+    // 2. Përditësojmë vetëm fushat që lejohen
    
     existingUser.FirstName = userDto.FirstName;
     existingUser.LastName = userDto.LastName;
@@ -146,7 +94,7 @@ public async Task<UserAdminDTO> UpdateUser(UserAdminDTO userDto)
     if ( userDto.RoleId != Guid.Empty)
         {
             existingUser.UserRoles.Clear();
-        // Shtojmë rolin e ri
+       
         existingUser.UserRoles.Add(new UserRole 
         { 
             UserId = existingUser.Id, 
@@ -160,7 +108,7 @@ public async Task<UserAdminDTO> UpdateUser(UserAdminDTO userDto)
         }
     _userRepository.Update(existingUser);
 
-    
+  
     await _userRepository.SaveChangesAsync();
     var updatedUser = await _userRepository.GetByIdAsync(existingUser.Id);
     var currentRole = updatedUser.UserRoles.FirstOrDefault()?.Role;
