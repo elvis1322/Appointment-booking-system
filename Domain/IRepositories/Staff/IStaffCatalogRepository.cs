@@ -4,6 +4,13 @@ namespace Domain.Interfaces;
 
 public interface IStaffCatalogRepository
 {
+    Task<IReadOnlyList<ServiceCategory>> GetCategoriesAsync(bool includeInactive, CancellationToken ct = default);
+    Task<ServiceCategory?> GetCategoryByIdAsync(Guid id, CancellationToken ct = default);
+    Task<ServiceCategory?> GetCategoryForUpdateAsync(Guid id, CancellationToken ct = default);
+    Task<ServiceCategory?> GetCategoryWithServicesAsync(Guid id, CancellationToken ct = default);
+    Task AddCategoryAsync(ServiceCategory category, CancellationToken ct = default);
+    void RemoveCategory(ServiceCategory category);
+
     Task<IReadOnlyList<Service>> GetServicesAsync(Guid? categoryId, bool includeInactive, CancellationToken ct = default);
     Task<Service?> GetServiceByIdAsync(Guid id, CancellationToken ct = default);
     Task<Service?> GetServiceForUpdateAsync(Guid id, CancellationToken ct = default);

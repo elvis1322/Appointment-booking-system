@@ -14,6 +14,51 @@ public class StaffCatalogRepository : IStaffCatalogRepository
         _db = db;
     }
 
+    public async Task<IReadOnlyList<ServiceCategory>> GetCategoriesAsync(bool includeInactive, CancellationToken ct = default)
+    {
+        var query = _db.ServiceCategories.AsNoTracking();
+
+        if (!includeInactive)
+        {
+            query = query.Where(c => c.IsActive);
+        }
+
+        return await query
+            .OrderBy(c => c.SortOrder)
+            .ThenBy(c => c.Name)
+            .ToListAsync(ct);
+    }
+
+    public Task<ServiceCategory?> GetCategoryByIdAsync(Guid id, CancellationToken ct = default)
+    {
+        return _db.ServiceCategories
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id, ct);
+    }
+
+    public Task<ServiceCategory?> GetCategoryForUpdateAsync(Guid id, CancellationToken ct = default)
+    {
+        return _db.ServiceCategories
+            .FirstOrDefaultAsync(c => c.Id == id, ct);
+    }
+
+    public Task<ServiceCategory?> GetCategoryWithServicesAsync(Guid id, CancellationToken ct = default)
+    {
+        return _db.ServiceCategories
+            .Include(c => c.Services)
+            .FirstOrDefaultAsync(c => c.Id == id, ct);
+    }
+
+    public Task AddCategoryAsync(ServiceCategory category, CancellationToken ct = default)
+    {
+        return _db.ServiceCategories.AddAsync(category, ct).AsTask();
+    }
+
+    public void RemoveCategory(ServiceCategory category)
+    {
+        _db.ServiceCategories.Remove(category);
+    }
+
     public async Task<IReadOnlyList<Service>> GetServicesAsync(Guid? categoryId, bool includeInactive, CancellationToken ct = default)
     {
         var query = _db.Services
