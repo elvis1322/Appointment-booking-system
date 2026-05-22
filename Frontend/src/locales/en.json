@@ -1,0 +1,117 @@
+{
+  "nav": {
+    "profile": "Profile",
+    "users": "User Management",
+    "logout": "Logout",
+    "SystemName": "Appointment System"
+  },
+  "auth": {
+    "login": "Login",
+    "welcome": "Welcome back"
+  },
+  "profilePage": {
+    "title": "User Profile",
+    "edit": "Edit Profile",
+    "email": "Email Address"
+  },
+  "userManagement": {
+    "title": "User Management",
+    "addBtn": "Add New User",
+    "table": {
+      "name": "Name",
+      "role": "Role",
+      "actions": "Actions"
+    }
+  },
+  "users": {
+    "updateError": "Error during profile update",
+    "title": "User Management",
+    "subtitle": "Here you can view, create and manage all system users.",
+    "searchPlaceholder": "Search...",
+    "addClient": "Add Client",
+    "addEmployee": "Add Employee",
+    "noData": "No users found.",
+    "createSuccess": "User created successfully!",
+    "updateSuccess": "Changes saved successfully!",
+    "deleteSuccess": "User deleted.",
+    "table": {
+      "name": "Full Name",
+      "email": "Email",
+      "role": "Role",
+      "actions": "Actions",
+      "firstNamex": "First Name is required",
+      "lastNamex": "Last Name is required",
+      "emailx": "Email is required and must be valid",
+      "genderx": "Gender selection is required"
+    },
+    "dialog": {
+      "deleteTitle": "Confirm Deletion",
+      "deleteConfirm": "Are you sure you want to delete {{name}}?",
+      "deleteConfirmButton": "Delete",
+      "deleteCancelButton": "Cancel"
+    },
+    "form": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "Cancel": "Cancel",
+      "Save": "Save"
+    }
+  },
+  "profile": {
+    "title": "My Profile",
+    "welcome": "Welcome",
+    "personalInfo": "Personal Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email Address",
+    "updateSuccess": "Profile updated successfully!",
+    "changePassword": "Change Password",
+    "oldPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "passwordSuccess": "Password changed successfully!",
+    "editPassword": "Edit",
+    "logout": "Logout",
+    "defaultUser": "User",
+    "passwordMismatch": "New passwords do not match!",
+    "unexpectedError": "An unexpected error occurred",
+    "serverError": "Server error",
+    "oldPasswordIncorrect": "Old password is incorrect.",
+    "edit": "Edit Profile",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "login": {
+    "title": "Log in to the platform",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Login",
+    "noAccount": "Don't have an account? Register",
+    "errorInvalid": "Invalid email or password."
+  },
+  "register": {
+    "title": "Register",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "gender": "Gender",
+    "genderM": "Male",
+    "genderF": "Female",
+    "password": "Password",
+    "passwordHelper": "At least 6 characters, including uppercase, lowercase letters and a number.",
+    "submit": "Create account",
+    "haveAccount": "Already have an account? Login",
+    "errorFailed": "Registration failed.",
+    "errorGenderRequired": "Gender selection is required!",
+    "selectGenderPlaceholder": "Select gender...",
+    "errors": {
+      "firstName": "First Name is required",
+      "lastName": "Last Name is required",
+      "email": "Email is required and must be valid",
+      "gender": "Gender selection is required",
+      "requiredPrefix": "The following fields are required",
+      "passwordTooShort": "Password must be at least 6 characters!"
+    }
+  }
+}

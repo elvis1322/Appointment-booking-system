@@ -1,122 +1,173 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { lazy, Suspense, useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
+import GuestRoute from './components/GuestRoute';
+import Sidebar from './components/Layout/Sidebar';
+import { Box, LinearProgress, IconButton, Button } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 
-function App() {
-  const [count, setCount] = useState(0)
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useTranslation } from 'react-i18next';
+import { t } from 'i18next';
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+// Lazy imports
+const Login = lazy(() => import('./pages/auth/Login'));
+const Register = lazy(() => import('./pages/auth/Register'));
+const Profile = lazy(() => import('./pages/auth/Profile'));
+const UserManagement = lazy(() => import('./pages/Admin/UserManagement'));
+const Unauthorized = lazy(() => import('./pages/Unauthorized'));
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+function RouteFallback() {
+    return <LinearProgress sx={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999 }} />;
 }
 
-export default App
+function AppLayout() {
+    const { user, logout } = useAuth();
+    const { i18n } = useTranslation();
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    
+    // State për gjuhën - mund ta lidhësh me i18n më vonë
+
+    
+
+    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  const handleLangChange = (lang: string) => {
+        i18n.changeLanguage(lang.toLowerCase());
+        // Këtu mund të shtosh login për ndërrim gjuhe reale: i18n.changeLanguage(lang.toLowerCase())
+       
+    };
+
+    return (
+        <Box sx={{ display: 'flex', minHeight: '100vh', width: '100vw', overflowX: 'hidden' }}>
+            
+            {/* Sidebar - Merr vlerën 'open' për t'u fshehur/shfaqur */}
+            {user && <Sidebar open={isSidebarOpen} />}
+
+            <Box 
+                component="main" 
+                sx={{ 
+                    flexGrow: 1, 
+                    width: '100%',
+                    minHeight: '100vh',
+                    backgroundColor: '#121212',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    transition: 'all 0.3s ease' // Tranzicion i lëmuar për çdo ndryshim
+                }}
+            >
+                {/* NAVBAR I SIPËRM (Vetëm kur user është logged in) */}
+                {user && (
+                    <Box sx={{ 
+                        p: 2, 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'space-between',
+                        borderBottom: '1px solid rgba(255,255,255,0.05)',
+                        bgcolor: '#121212'
+                    }}>
+                        {/* Butoni Hamburger majtas */}
+                        <IconButton 
+                            onClick={toggleSidebar} 
+                            sx={{ 
+                                color: 'white', 
+                                bgcolor: 'rgba(255,255,255,0.05)',
+                                '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                            }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+
+                        {/* Grupi djathtas: Gjuhët dhe Logout */}
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                            
+                            {/* Kutia e Gjuhëve */}
+                            <Box sx={{ 
+                                display: 'flex', 
+                                gap: 0.5, 
+                                bgcolor: 'rgba(255,255,255,0.05)', 
+                                p: 0.5, 
+                                borderRadius: 1.5 
+                            }}>
+                                {['SQ', 'EN', 'DE'].map((lang) => (
+                                    <Button 
+                                        key={lang} 
+                                        size="small" 
+                                        onClick={() => handleLangChange(lang)}
+                                        sx={{ 
+                                           color: i18n.language.toUpperCase().includes(lang) ? '#1976d2' : '#9ca3af', 
+                                  bgcolor: i18n.language.toUpperCase().includes(lang) ? 'rgba(25, 118, 210, 0.1)' : 'transparent',
+                                fontWeight: 'bold',
+                                  fontSize: '12px' }}
+                                    >
+                                        {lang}
+                                    </Button>
+                                ))}
+                            </Box>
+
+                            {/* Butoni Abmelden */}
+                            <Button 
+                                variant="contained" 
+                                color="error" 
+                                size="small"
+                                startIcon={<LogoutIcon />}
+                                onClick={() => logout()} // Thirrja e funksionit nga AuthContext
+                                sx={{ 
+                                    borderRadius: 1.5, 
+                                    textTransform: 'none',
+                                    fontWeight: 'bold',
+                                    px: 2,
+                                    boxShadow: 'none',
+                                    '&:hover': { boxShadow: 'none', bgcolor: '#d32f2f' }
+                                }}
+                            >
+                              {t('nav.logout')}
+                            </Button>
+                        </Box>
+                    </Box>
+                )}
+
+                {/* Zona ku ngarkohen faqet (Përmbajtja Dinamike) */}
+                <Suspense fallback={<RouteFallback />}>
+                    <Box sx={{ p: 3, flexGrow: 1 }}>
+                        <Routes>
+                            {/* Rrugët Publike */}
+                            <Route element={<GuestRoute />}>
+                                <Route path="/login" element={<Login />} />
+                                <Route path="/register" element={<Register />} />
+                            </Route>
+
+                            {/* Rrugët e Mbrojtura */}
+                            <Route element={<ProtectedRoute />}>
+                                <Route path="/profile" element={<Profile />} />
+                            </Route>
+
+                            {/* Rrugët Admin */}
+                            <Route element={<ProtectedRoute allowedRoles={['Admin']} />}>
+                                <Route path="/admin/users" element={<UserManagement />} />
+                            </Route>
+
+                            {/* Redirects */}
+                            <Route path="/unauthorized" element={<Unauthorized />} />
+                            <Route path="/" element={<Navigate to="/login" replace />} />
+                            <Route path="*" element={<Navigate to="/login" replace />} />
+                        </Routes>
+                    </Box>
+                </Suspense>
+            </Box>
+        </Box>
+    );
+}
+
+function App() {
+    return (
+        <AuthProvider>
+            <BrowserRouter>
+                <AppLayout />
+            </BrowserRouter>
+        </AuthProvider>
+    );
+}
+
+export default App;

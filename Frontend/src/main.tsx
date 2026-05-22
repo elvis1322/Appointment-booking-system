@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
 import './index.css';
- // Importimi i konfigurimit të i18n
+import './locales/i18n';
 import App from './App.tsx';
 
 const theme = createTheme({

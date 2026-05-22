@@ -14,7 +14,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        // Module 1: Auth & User
+      
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUADServices, UADServices>();
         services.AddScoped<IUserRepository, UserRepository>();

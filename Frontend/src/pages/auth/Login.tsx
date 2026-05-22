@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../api/axiosConfig';
 import { mapUserResponseToAuth } from '../../utils/mapAuthPayload';
 import { useTranslation } from 'react-i18next';
+import { LanguagePopover } from '../../components/Layout/LanguagePopover';
 
 const Login = () => {
     const { t } = useTranslation();
@@ -59,6 +60,7 @@ const Login = () => {
         }}>
             {/* Butoni i gjuhëve i pozicionuar fiks lart-djathtas */}
             <Box sx={{ position: 'absolute', top: 24, right: 24 }}>
+                <LanguagePopover />
             </Box>
 
             <Container maxWidth="xs">

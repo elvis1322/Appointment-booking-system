@@ -1,0 +1,119 @@
+{
+  "nav": {
+    "profile": "Profili",
+    "users": "Menaxhimi i Përdoruesve",
+    "logout": "Shkyçu",
+    "SystemName": "Sistemi i Takimeve"
+  },
+  "auth": {
+    "login": "Identifikohu",
+    "welcome": "Mirëseerdhët përsëri"
+  },
+  "profilePage": {
+    "title": "Profili i Përdoruesit",
+    "edit": "Edito Profilin",
+    "email": "Adresa e Email-it"
+  },
+  "userManagement": {
+    "title": "Menaxhimi i Përdoruesve",
+    "addBtn": "Shto Përdorues të Ri",
+    "table": {
+      "name": "Emri",
+      "role": "Roli",
+      "actions": "Veprimet"
+    }
+  },
+  "users": {
+    "title": "Menaxhimi i Përdoruesve",
+    "subtitle": "Këtu mund të shikoni, krijoni dhe menaxhoni të gjithë përdoruesit e sistemit.",
+    "searchPlaceholder": "Kërko...",
+    "addClient": "Shto Klient",
+    "addEmployee": "Shto Punonjës",
+    "noData": "Nuk u gjet asnjë përdorues.",
+    "createSuccess": "Përdoruesi u krijua me sukses!",
+    "updateSuccess": "Ndryshimet u ruajtën me sukses!",
+    "deleteSuccess": "Përdoruesi u fshi.",
+    "table": {
+      "name": "Emri i Plotë",
+      "email": "Email",
+      "role": "Roli",
+      "actions": "Veprimet",
+      "firstNamex":"Emri është i detyrueshëm",
+        "lastNamex": "Mbiemri është i detyrueshëm",
+        "emailx": "Email-i është i detyrueshëm dhe duhet të jetë i vlefshëm",
+        "genderx": "Zgjedhja e gjinisë është e detyrueshme"
+
+    },
+     
+    
+    "dialog": {
+      "deleteTitle": "Konfirmo Fshirjen",
+      "deleteConfirm": "A jeni i sigurt që dëshironi të fshini {{name}}?",
+      "deleteConfirmButton": "Fshij",
+      "deleteCancelButton": "Anulo"
+    },
+    "form": {
+      "firstName": "Emri",
+      "lastName": "Mbiemri",
+      "email": "Adresa e Email-it",
+      "Cancel": "Anulo",
+      "Save": "Ruaj"
+    }
+  },
+  "profile": {
+"updateError": "Gabim gjatë përditësimit të profilit",
+    "title": "Profili Im",
+    "welcome": "Mirësevini",
+    "personalInfo": "Informacioni Personal",
+    "firstName": "Emri",
+    "lastName": "Mbiemri",
+    "email": "Adresa e Email-it",
+    "updateSuccess": "Profili u përditësua me sukses!",
+    "changePassword": "Ndrysho Fjalëkalimin",
+    "oldPassword": "Fjalëkalimi Aktual",
+    "newPassword": "Fjalëkalimi i Ri",
+    "confirmPassword": "Konfirmo Fjalëkalimin",
+    "passwordSuccess": "Fjalëkalimi u ndryshua me sukses!",
+    "editPassword": "Ndrysho",
+    "logout": "Shkyçu",
+    "defaultUser": "Përdorues",
+    "passwordMismatch": "Fjalëkalimet e reja nuk përputhen!",
+    "unexpectedError": "Ndodhi një gabim i papritur",
+    "serverError": "Gabim nga serveri",
+    "oldPasswordIncorrect": "Fjalëkalimi i vjetër është i pasaktë.",
+    "edit": "Edito Profilin",
+    "save": "Ruaj",
+    "cancel": "Anulo"
+  },
+  "login": {
+    "title": "Identifikohuni në platformë",
+    "email": "Email",
+    "password": "Fjalëkalimi",
+    "submit": "Identifikohu",
+    "noAccount": "Nuk keni llogari? Regjistrohuni",
+    "errorInvalid": "Email-i ose fjalëkalimi i pasaktë."
+  },
+  "register": {
+    "title": "Regjistrohu",
+    "firstName": "Emri",
+    "lastName": "Mbiemri",
+    "email": "Email",
+    "gender": "Gjinia",
+    "genderM": "Mashkull",
+    "genderF": "Femër",
+    "password": "Fjalëkalimi",
+    "passwordHelper": "Të paktën 6 karaktere, duke përfshirë shkronja të mëdha, të vogla dhe një numër.",
+    "submit": "Krijo llogarinë",
+    "haveAccount": "Keni një llogari? Identifikohuni",
+    "errorFailed": "Regjistrimi dështoi.",
+    "errorGenderRequired": "Zgjedhja e gjinisë është e detyrueshme!",
+    "selectGenderPlaceholder": "Zgjidhni gjininë...",
+    "errors": {
+      "firstName": "Emri është i detyrueshëm",
+      "lastName": "Mbiemri është i detyrueshëm",
+      "email": "Email-i është i detyrueshëm dhe duhet të jetë i vlefshëm",
+      "gender": "Zgjedhja e gjinisë është e detyrueshme",
+      "requiredPrefix": "Fushat vijuese janë të detyrueshme",
+      "passwordTooShort": "Fjalëkalimi duhet të jetë të paktën 6 karaktere!"
+    } }
+}

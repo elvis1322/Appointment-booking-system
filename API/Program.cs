@@ -81,7 +81,17 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 
 
-//Configurimi i Dependency Injection për shërbimet e aplikacionit
+builder.Services.AddCors(options => {
+    options.AddPolicy("AllowReact", policy => {
+        policy.WithOrigins("http://localhost:5173") // Vetëm adresa e React
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
+
+
 builder.Services.AddApplicationServices();
 
 

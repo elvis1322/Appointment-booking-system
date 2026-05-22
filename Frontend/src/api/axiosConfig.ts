@@ -46,7 +46,7 @@ api.interceptors.response.use(
             url.includes('/Auth/login') ||
             url.includes('/Auth/register');
 
-        if ((status === 401 || status === 403) && originalRequest && !originalRequest._retry401 && !isAuthPublic) {
+        if (status === 401 && originalRequest && !originalRequest._retry401 && !isAuthPublic) {
             originalRequest._retry401 = true;
             clearSessionAndRedirectLogin();
         }
