@@ -83,7 +83,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowReact", policy => {
-        policy.WithOrigins("http://localhost:5173") // Vetëm adresa e React
+        policy.WithOrigins("http://localhost:5173") 
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -112,7 +112,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+    app.UseHttpsRedirection();
+app.UseCors("AllowReact");
 
 app.UseAuthorization();
 
