@@ -38,6 +38,14 @@ public class DataContext : DbContext
     public DbSet<WorkingHour> WorkingHours { get; set; }
     public DbSet<DayOff> DaysOff { get; set; }
     public DbSet<Schedule> Schedules { get; set; }
+     //Member 3 - Appointments & Payments
+    public DbSet<Appointment> Appointments { get; set; }
+    public DbSet<AppointmentStatus> AppointmentStatuses { get; set; }
+    public DbSet<Payment> Payments { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<Invoice> Invoices { get; set; }
+    public DbSet<Review> Reviews { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
