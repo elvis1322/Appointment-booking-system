@@ -1,7 +1,7 @@
 
 # 📅 Appointment Booking System
 
-A comprehensive Full-Stack E-Learning and Service Management platform built using the **Microsoft Stack** (.NET 10) and **React**. This system allows users to book appointments, employees to manage schedules, and administrators to oversee the entire ecosystem.
+A comprehensive Full-Stack service management platform built using the Microsoft Stack (.NET 10) and React. This system allows clients to book appointments, employees to manage schedules, and administrators to oversee the entire ecosystem.
 
 ## 🚀 Features
 
@@ -16,7 +16,7 @@ A comprehensive Full-Stack E-Learning and Service Management platform built usin
 * **Architecture:** Layered architecture (Controllers, Services, Repositories).
 * **Database:** Hybrid approach using **SQL Server** for relational data and **MongoDB** for specific NoSQL needs.
 * **Database Design:** 24+ tables optimized in **Third Normal Form (3NF)**.
-* **API Documentation:** Fully documented endpoints using **Swagger**.
+* **API Documentation:** Fully documented endpoints using **Postman**.
 
 ## 🛠️ Tech Stack
 

@@ -27,7 +27,7 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetByIdAsync(Guid id)
     {
         return await _context.Users
-        .Include(u => u.UserRoles)        // 1. Shkon te tabela ndërmjetëse (UserRoles)
+        .Include(u => u.UserRoles)      
             .ThenInclude(ur => ur.Role)  
             .FirstOrDefaultAsync(u=> u.Id==id);
     }
@@ -35,11 +35,11 @@ public class UserRepository : IUserRepository
    public async Task<IEnumerable<User>> GetAllAsync()
     {
         return await _context.Users
-        .Include(u => u.UserRoles)        // 1. Shkon te tabela ndërmjetëse (UserRoles)
+        .Include(u => u.UserRoles)        
             .ThenInclude(ur => ur.Role)
              .ThenInclude(r => r.RolePermissions)
                     .ThenInclude(rp => rp.Permission)  
-                    .AsNoTracking() // 2. Nga tabela ndërmjetëse, shkon te tabela Role
+                    .AsNoTracking()
         .ToListAsync();
     }
 
@@ -62,7 +62,7 @@ public class UserRepository : IUserRepository
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
         if (user == null) return false;
-   var tokens = _context.RefreshTokens.Where(t => t.UserId == id);
+    var tokens = _context.RefreshTokens.Where(t => t.UserId == id);
     _context.RefreshTokens.RemoveRange(tokens);
         _context.Users.Remove(user);
         return await _context.SaveChangesAsync() > 0;
@@ -71,6 +71,29 @@ public class UserRepository : IUserRepository
     {
         return await _context.SaveChangesAsync() > 0;
     }
+
+    public async Task<IEnumerable<User>> GetFilteredUsersAsync(string? term)
+{
+    var query = _context.Users
+        .Include(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role)
+        .AsQueryable();
+
+    if (!string.IsNullOrWhiteSpace(term))
+    {
+        string lowerTerm = term.ToLower();
+
+        query = query.Where(u =>
+            u.Id.ToString().ToLower().Contains(lowerTerm) ||
+            u.FirstName.ToLower().Contains(lowerTerm) ||
+            u.LastName.ToLower().Contains(lowerTerm) ||
+            u.Email.ToLower().Contains(lowerTerm) ||
+            u.UserRoles.Any(ur => ur.Role.Name.ToLower().Contains(lowerTerm))
+        );
+    }
+
+    return await query.ToListAsync();
+}
 
 
 

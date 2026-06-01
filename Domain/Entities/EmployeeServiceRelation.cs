@@ -1,5 +1,12 @@
 namespace Domain.Entities;
 
+<<<<<<< HEAD
+=======
+/// <summary>
+/// Rreshti i lidhjes many-to-many: cili punonjës ofron cilin shërbim.
+/// Çelësi primar zakonisht është kompozit (EmployeeId, ServiceId) – konfigurohet në EF, jo këtu.
+/// </summary>
+>>>>>>> origin/main
 public class EmployeeServiceRelation : BaseEntity
 {
     public Guid EmployeeId { get; set; }

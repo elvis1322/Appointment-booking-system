@@ -1,0 +1,117 @@
+{
+  "nav": {
+    "profile": "Profil",
+    "users": "Benutzerverwaltung",
+    "logout": "Abmelden",
+    "SystemName": "Terminsystem"
+  },
+  "auth": {
+    "login": "Anmelden",
+    "welcome": "Willkommen zurück"
+  },
+  "profilePage": {
+    "title": "Benutzerprofil",
+    "edit": "Profil bearbeiten",
+    "email": "E-Mail-Adresse"
+  },
+  "userManagement": {
+    "title": "Benutzerverwaltung",
+    "addBtn": "Neuen Benutzer hinzufügen",
+    "table": {
+      "name": "Name",
+      "role": "Rolle",
+      "actions": "Aktionen"
+    }
+  },
+  "users": {
+    "title": "Benutzerverwaltung",
+    "subtitle": "Hier können Sie alle Systembenutzer einsehen, erstellen und verwalten.",
+    "searchPlaceholder": "Suchen...",
+    "addClient": "Klient hinzufügen",
+    "addEmployee": "Mitarbeiter hinzufügen",
+    "noData": "Keine Benutzer gefunden.",
+    "createSuccess": "Benutzer erfolgreich erstellt!",
+    "updateSuccess": "Änderungen erfolgreich gespeichert!",
+    "deleteSuccess": "Benutzer gelöscht.",
+    "table": {
+      "name": "Vollständiger Name",
+      "email": "E-Mail",
+      "role": "Rolle",
+      "actions": "Aktionen",
+      "firstNamex": "Vorname ist erforderlich",
+      "lastNamex": "Nachname ist erforderlich",
+      "emailx": "E-Mail ist erforderlich und muss gültig sein",
+      "genderx": "Geschlechtsauswahl ist erforderlich"
+    },
+    "dialog": {
+      "deleteTitle": "Löschen bestätigen",
+      "deleteConfirm": "Sind Sie sicher, dass Sie {{name}} löschen möchten?",
+      "deleteConfirmButton": "Löschen",
+      "deleteCancelButton": "Abbrechen"
+    },
+    "form": {
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "email": "E-Mail-Adresse",
+      "Cancel": "Abbrechen",
+      "Save": "Speichern"
+    }
+  },
+  "profile": {
+    "updateError": "Fehler beim Aktualisieren des Profils",
+    "title": "Mein Profil",
+    "welcome": "Willkommen",
+    "personalInfo": "Persönliche Informationen",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "email": "E-Mail-Adresse",
+    "updateSuccess": "Profil erfolgreich aktualisiert!",
+    "changePassword": "Passwort ändern",
+    "oldPassword": "Aktuelles Passwort",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "passwordSuccess": "Passwort erfolgreich geändert!",
+    "editPassword": "Bearbeiten",
+    "logout": "Abmelden",
+    "defaultUser": "Benutzer",
+    "passwordMismatch": "Die neuen Passwörter stimmen nicht überein!",
+    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten",
+    "serverError": "Serverfehler",
+    "oldPasswordIncorrect": "Das alte Passwort ist falsch.",
+    "edit": "Profil bearbeiten",
+    "save": "Speichern",
+    "cancel": "Abbrechen"
+  },
+  "login": {
+    "title": "Anmeldung an der Plattform",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "submit": "Anmelden",
+    "noAccount": "Noch kein Konto? Registrieren",
+    "errorInvalid": "Ungültige E-Mail oder Passwort."
+  },
+  "register": {
+    "title": "Registrieren",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "email": "E-Mail",
+    "gender": "Geschlecht",
+    "genderM": "Männlich",
+    "genderF": "Weiblich",
+    "password": "Passwort",
+    "passwordHelper": "Mindestens 6 Zeichen, einschließlich Groß- und Kleibuchstaben und einer Zahl.",
+    "submit": "Konto erstellen",
+    "haveAccount": "Haben Sie bereits ein Konto? Anmelden",
+    "errorFailed": "Registrierung fehlgeschlagen.",
+    "errorGenderRequired": "Geschlechtsauswahl ist erforderlich!",
+    "selectGenderPlaceholder": "Geschlecht auswählen...",
+    "errors": {
+      "firstName": "Vorname ist erforderlich",
+      "lastName": "Nachname ist erforderlich",
+      "email": "E-Mail ist erforderlich und muss gültig sein",
+      "gender": "Geschlechtsauswahl ist erforderlich",
+      "requiredPrefix": "Die folgenden Felder sind erforderlich",
+      "passwordTooShort": "Das Passwort muss mindestens 6 Zeichen lang sein!"
+    }
+  }
+}

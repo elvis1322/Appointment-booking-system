@@ -1,3 +1,4 @@
+using Application;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -96,6 +97,20 @@ builder.Services.AddScoped<IStaffCatalogService, StaffCatalogService>();
 
 
 
+builder.Services.AddCors(options => {
+    options.AddPolicy("AllowReact", policy => {
+        policy.WithOrigins("http://localhost:5173") 
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
+
+
+builder.Services.AddApplicationServices();
+
+
 
 
 
@@ -113,7 +128,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+    app.UseHttpsRedirection();
+app.UseCors("AllowReact");
 
 app.UseAuthorization();
 
