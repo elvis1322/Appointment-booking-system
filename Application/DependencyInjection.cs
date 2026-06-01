@@ -21,6 +21,10 @@ public static class DependencyInjection
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
+        // Module 3: Appointments
+        services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+        services.AddScoped<IAppointmentUserService, AppointmentUserService>();
+        services.AddScoped<IAppointmentAdminService, AppointmentAdminService>();
 
       return services;
     }
