@@ -1,11 +1,27 @@
 namespace Domain.Entities;
 
+<<<<<<< HEAD
+=======
 /// <summary>Orari i rregullt javor (p.sh. e hënë 09:00–17:00) për një punonjës.</summary>
+>>>>>>> origin/main
 public class WorkingHour : BaseEntity
 {
     public Guid Id { get; set; }
 
     public Guid EmployeeId { get; set; }
+<<<<<<< HEAD
+
+    public Employee Employee { get; set; } = null!;
+
+    public DayOfWeek DayOfWeek { get; set; }
+
+    public TimeSpan StartTime { get; set; }
+
+    public TimeSpan EndTime { get; set; }
+
+    public Guid? RoomId { get; set; }
+    
+=======
     public Employee Employee { get; set; } = null!;
 
     /// <summary>.NET <see cref="DayOfWeek"/>: e diel = 0, e hënë = 1, … e shtunë = 6.</summary>
@@ -19,5 +35,6 @@ public class WorkingHour : BaseEntity
 
     /// <summary>Dhomë opsionale nëse orari është i lidhur me një hapësirë konkrete.</summary>
     public Guid? RoomId { get; set; }
+>>>>>>> origin/main
     public Room? Room { get; set; }
 }

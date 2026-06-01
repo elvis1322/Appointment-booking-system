@@ -23,6 +23,22 @@ public static class AppDefaults
         public static readonly Guid UsersDelete = Guid.Parse("11111111-2222-3333-4444-555555555554");
     }
 
+<<<<<<< HEAD
+    
+    //Member 2
+    public static class StaffPermissions
+    {
+        public static readonly Guid StaffRead = Guid.Parse("22222222-1111-1111-1111-222222222221");
+        public static readonly Guid StaffCreate = Guid.Parse("22222222-1111-1111-1111-222222222222");
+        public static readonly Guid StaffUpdate = Guid.Parse("22222222-1111-1111-1111-222222222223");
+        public static readonly Guid StaffDelete = Guid.Parse("22222222-1111-1111-1111-222222222224");
+    }
+
+    public static class SchedulePermissions
+    {
+        public static readonly Guid SchedulesRead = Guid.Parse("44444444-1111-1111-1111-444444444441");
+        public static readonly Guid SchedulesUpdate = Guid.Parse("44444444-1111-1111-1111-444444444442");
+=======
     //Member 3
     
      public static class AppointmentPermissions
@@ -38,6 +54,7 @@ public static class AppDefaults
         public static readonly Guid Confirmed = Guid.Parse("22222222-2222-2222-2222-222222222222");
         public static readonly Guid Cancelled = Guid.Parse("33333333-3333-3333-3333-333333333333");
         public static readonly Guid Completed = Guid.Parse("44444444-4444-4444-4444-444444444444");
+>>>>>>> origin/main
     }
    
 }

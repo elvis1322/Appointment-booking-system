@@ -38,6 +38,8 @@ public class DataContext : DbContext
     public DbSet<WorkingHour> WorkingHours { get; set; }
     public DbSet<DayOff> DaysOff { get; set; }
     public DbSet<Schedule> Schedules { get; set; }
+<<<<<<< HEAD
+=======
      //Member 3 - Appointments & Payments
     public DbSet<Appointment> Appointments { get; set; }
     public DbSet<AppointmentStatus> AppointmentStatuses { get; set; }
@@ -46,6 +48,7 @@ public class DataContext : DbContext
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<Review> Reviews { get; set; }
+>>>>>>> origin/main
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

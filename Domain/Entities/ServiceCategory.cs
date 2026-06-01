@@ -11,11 +11,17 @@ public class ServiceCategory:BaseEntity
     [MaxLength(2000)]
     public string? Description { get; set; }
 
+<<<<<<< HEAD
+=======
     /// <summary>Renditje në UI (numër më i vogël = më sipër në listë).</summary>
+>>>>>>> origin/main
     public int SortOrder { get; set; }
 
     public bool IsActive { get; set; } = true;
 
+<<<<<<< HEAD
+=======
     /// <summary>Të gjithë shërbimet nën këtë kategori.</summary>
+>>>>>>> origin/main
     public ICollection<Service> Services { get; set; } = new List<Service>();
 }
