@@ -18,6 +18,8 @@ const Profile = lazy(() => import('./pages/auth/Profile'));
 const UserManagement = lazy(() => import('./pages/Admin/UserManagement'));
 const Unauthorized = lazy(() => import('./pages/Unauthorized'));
 
+const EmployeeList = lazy(() => import('./pages/Admin/EmployeeList'));
+
 function RouteFallback() {
     return <LinearProgress sx={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999 }} />;
 }
@@ -146,6 +148,7 @@ function AppLayout() {
                             {/* Rrugët Admin */}
                             <Route element={<ProtectedRoute allowedRoles={['Admin']} />}>
                                 <Route path="/admin/users" element={<UserManagement />} />
+                                <Route path="/admin/employees" element={<EmployeeList />} />
                             </Route>
 
                             {/* Redirects */}
