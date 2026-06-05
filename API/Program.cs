@@ -9,13 +9,13 @@ using Application.Interfaces;
 using Persistence.Repositories;
 using Domain.Interfaces;
 using Application.Services.Staff;
-
-
-
+using Stripe;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
+var stripeSettings = builder.Configuration.GetSection("Stripe");
+StripeConfiguration.ApiKey = stripeSettings["SecretKey"];
 
 var jwtSettingsSection = builder.Configuration.GetSection("JwtSettings");
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
