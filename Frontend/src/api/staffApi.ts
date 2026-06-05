@@ -1,7 +1,10 @@
 import api from './axiosConfig';
 import type {
-  Employee
-  
+  Employee,
+  Service,
+  ServiceCategory,
+  WorkingHour,
+  DayOff
 } from '../types/staff.types';
 
 // ── EMPLOYEES ──────────────────────────────────────────────
@@ -27,6 +30,46 @@ export const updateEmployee = (
 
 export const deleteEmployee = (id: string): Promise<void> =>
   api.delete(`/employees/${id}`).then(() => undefined);
+
+export const getEmployeeServices = (id: string): Promise<Employee> =>
+  api.get(`/employees/${id}`).then((r) => r.data);
+
+export const updateEmployeeServices = (
+  id: string,
+  serviceIds: string[]
+): Promise<void> =>
+  api.put(`/employees/${id}/services`, { serviceIds }).then(() => undefined);
+
+// ── SERVICES ───────────────────────────────────────────────
+
+export const getServices = (): Promise<Service[]> =>
+  api.get('/services').then((r) => r.data);
+
+export const createService = (data: Omit<Service, 'id' | 'serviceCategoryName' | 'categoryName'>): Promise<Service> =>
+  api.post('/services', data).then((r) => r.data);
+
+export const updateService = (id: string, data: Omit<Service, 'id' | 'serviceCategoryName' | 'categoryName'>): Promise<Service> =>
+  api.put(`/services/${id}`, data).then((r) => r.data);
+
+export const deleteService = (id: string): Promise<void> =>
+  api.delete(`/services/${id}`).then(() => undefined);
+
+// ── SERVICE CATEGORIES ─────────────────────────────────────
+
+export const getServiceCategories = (): Promise<ServiceCategory[]> =>
+  api.get('/service-categories').then((r) => r.data);
+
+export const createServiceCategory = (data: Omit<ServiceCategory, 'id'>): Promise<ServiceCategory> =>
+  api.post('/service-categories', data).then((r) => r.data);
+
+export const updateServiceCategory = (
+  id: string,
+  data: Omit<ServiceCategory, 'id'>
+): Promise<ServiceCategory> =>
+  api.put(`/service-categories/${id}`, data).then((r) => r.data);
+
+export const deleteServiceCategory = (id: string): Promise<void> =>
+  api.delete(`/service-categories/${id}`).then(() => undefined);
 
 // ── STAFF SCHEDULE ─────────────────────────────────────────
 
