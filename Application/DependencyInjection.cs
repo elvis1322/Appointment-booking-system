@@ -17,7 +17,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
-        // Module 3: Appointments
+        // Module 3: Appointments & Payments
         services.AddScoped<IAppointmentRepository, AppointmentRepository>();
         services.AddScoped<IAppointmentUserService, AppointmentUserService>();
         services.AddScoped<IAppointmentAdminService, AppointmentAdminService>();
@@ -25,6 +25,15 @@ public static class DependencyInjection
         services.AddScoped<IPaymentUsersService, PaymentUserService>();
         services.AddScoped<IPaymentAdminService, PaymentAdminService>();
         services.AddScoped<IStripeService, StripeService>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IOrderUserService, OrderUserService>();
+        services.AddScoped<IOrderAdminService, OrderAdminService>();
+        services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+        services.AddScoped<IOrderItemService, OrderItemService>();
+        services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+        services.AddScoped<IInvoiceService, InvoiceService>();
+        services.AddScoped<IReviewRepository, ReviewRepository>();
+        services.AddScoped<IReviewService, ReviewService>();
 
       return services;
     }
