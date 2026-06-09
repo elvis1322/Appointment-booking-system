@@ -35,20 +35,19 @@ public async Task<UserProfileDTO> GetUserProfileAsync(Guid userId)
         LastName = user.LastName,
         Email = user.Email,
         Gjinia = user.Gjinia,
-        // Kthejmë listën e roleve ashtu siç e pret Frontendi
         Roles = user.UserRoles?.Select(ur => ur.Role.Name).ToList() ?? new List<string>()
     };
 }
 
     public async Task<bool> UpdateProfile(string userId, UserDTO model)
     {
-        // 1. Konvertojmë ID-në nga string në Guid
+       
         if (!Guid.TryParse(userId, out var guidId))
         {
             return false; 
         }
 
-        // 2. Përdorim metodën tënde: GetByIdAsync(Guid id)
+       
         var user = await _userRepository.GetByIdAsync(guidId);
 
         if (user == null)
@@ -63,9 +62,7 @@ public async Task<UserProfileDTO> GetUserProfileAsync(Guid userId)
     
         _userRepository.Update(user);
 
-        // 5. Përdorim metodën tënde: SaveChangesAsync()
-        // Kjo kthen true nëse u bë të paktën 1 ndryshim në DB
-        return await _userRepository.SaveChangesAsync();
+       return await _userRepository.SaveChangesAsync();
     }
 
 public async Task<bool> PatchProfile(string userId, UserDTO model)
@@ -75,7 +72,7 @@ public async Task<bool> PatchProfile(string userId, UserDTO model)
     var user = await _userRepository.GetByIdAsync(guidId);
     if (user == null) return false;
 
-    // Përditëso vetëm nëse vlera nuk është null ose bosh
+  
     if (!string.IsNullOrEmpty(model.FirstName))
         user.FirstName = model.FirstName;
 
@@ -112,15 +109,15 @@ public async Task<bool> ChangePasswordAsync(Guid userId, string oldPassword, str
     var user = await _userRepository.GetByIdAsync(userId);
     if (user == null) return false;
 
-    // 1. Verifiko nëse fjalëkalimi i vjetër është i saktë
+  
     bool isValid = BCrypt.Net.BCrypt.Verify(oldPassword, user.PasswordHash);
     if (!isValid) return false;
 
-    // 2. Krijo Hash-in e ri për fjalëkalimin e ri
+  
     user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
  await _refreshTokenRepository.DeleteUserTokensAsync(userId);
 
-    // 3. Ruaj ndryshimet
+   
     return await _userRepository.UpdateAsync(user);
   
 }

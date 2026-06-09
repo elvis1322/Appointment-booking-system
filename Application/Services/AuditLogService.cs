@@ -26,7 +26,7 @@ public class AuditLogService
             Action = a.Action,
             TableName = a.TableName,
             DateTime = a.DateTime,
-            KeyValues = a.PrimaryKey, // SHTO KËTË RRESHT - Lidhja me DB
+            KeyValues = a.PrimaryKey,
             OldValues = a.OldValues,
             NewValues = a.NewValues,
             AffectedColumns = a.AffectedColumns
