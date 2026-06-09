@@ -1,6 +1,6 @@
 using Domain.Entities;
 
-namespace Application.Interfaces;
+namespace Domain.Interfaces;
 public interface IInvoiceRepository
     {
         Task AddAsync(Invoice invoice);

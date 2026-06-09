@@ -1,6 +1,6 @@
 using Domain.Entities;
-namespace Domain.Interfaces
-{
+namespace Domain.Interfaces;
+
     public interface IOrderRepository
     {
         Task AddAsync(Order order);
@@ -10,5 +10,5 @@ namespace Domain.Interfaces
         Task<Order?> GetByIdForUserAsync(Guid id, Guid userId);
         Task<IEnumerable<Order>> GetByUserIdAsync(Guid userId);
         Task<bool> SaveChangesAsync();
-    }
+    
 }
