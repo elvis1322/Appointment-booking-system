@@ -80,13 +80,19 @@ public static class DependencyInjection
         {
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings?.SecretKey ?? string.Empty)),
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero,
-                RoleClaimType = ClaimTypes.Role
+               ValidateIssuerSigningKey = true,
+
+               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings?.SecretKey ?? string.Empty)),
+    
+                ValidateIssuer = true,
+              ValidateAudience = true,
+    
+              ValidIssuer = jwtSettings?.Issuer, 
+            ValidAudience = jwtSettings?.Audience,
+
+               ValidateLifetime = true,
+              ClockSkew = TimeSpan.Zero, 
+             RoleClaimType = ClaimTypes.Role
             };
 
             options.Events = new JwtBearerEvents

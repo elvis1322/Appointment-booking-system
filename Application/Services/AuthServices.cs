@@ -188,7 +188,7 @@ public async Task LogoutAsync(LogoutDto logoutDto)
                     }
                 }
             }
-            // 2. Rruga rezervë: Fallback nese Role nuk eshte Include-uar
+            /*2. Rruga rezervë: Fallback nese Role nuk eshte Include-uar
             else 
             {
                 string roleName = string.Empty;
@@ -200,7 +200,7 @@ public async Task LogoutAsync(LogoutDto logoutDto)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, roleName));
                 }
-            }
+            }*/
         }
     }
 
