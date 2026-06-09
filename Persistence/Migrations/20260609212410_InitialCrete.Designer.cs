@@ -11,8 +11,8 @@ using Persistence.Data;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20260601201056_ntitiiialICreate")]
-    partial class ntitiiialICreate
+    [Migration("20260609212410_InitialCrete")]
+    partial class InitialCrete
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,6 +94,32 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppointmentStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Pending"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Confirmed"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Cancelled"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Completed"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.AuditLog", b =>
@@ -165,7 +191,8 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeId", "Date")
+                        .IsUnique();
 
                     b.ToTable("DaysOff");
                 });
@@ -204,7 +231,8 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Employees");
                 });
@@ -233,7 +261,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("EmployeeServices");
+                    b.ToTable("EmployeeServices", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Invoice", b =>
@@ -512,6 +540,222 @@ namespace Persistence.Migrations
                             Id = new Guid("11111111-2222-3333-4444-555555555554"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Users:Delete"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111661-2222-3333-4444-555555555555"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Users:CreateClient"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111781-2222-3333-4444-555555555556"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Users:CreateEmployee"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-1111-1111-1111-222222222221"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Staff:Read"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-1111-1111-1111-222222222222"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Staff:Create"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-1111-1111-1111-222222222223"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Staff:Update"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-1111-1111-1111-222222222224"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Staff:Delete"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-1111-1111-1111-333333333331"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Services:Read"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-1111-1111-1111-333333333332"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Services:Create"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-1111-1111-1111-333333333333"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Services:Update"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-1111-1111-1111-333333333334"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Services:Delete"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-1111-1111-1111-444444444441"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Schedules:Read"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-1111-1111-1111-444444444442"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Schedules:Update"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-1111-1111-1111-511111111211"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Appointments:Read"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-1111-1111-1111-005522222112"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Appointments:Create"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-1111-1111-1111-005533333313"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Appointments:Update"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-1111-1111-1111-055544444444"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Appointments:Delete"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-1111-1111-1111-666666666661"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Orders:Read"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-1111-1111-1111-666666666662"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Orders:Create"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-1111-1111-1111-666666666663"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Orders:Update"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-1111-1111-1111-666666666664"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Orders:Delete"
+                        },
+                        new
+                        {
+                            Id = new Guid("77777777-1111-1111-1111-777777777771"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "OrderItems:Read"
+                        },
+                        new
+                        {
+                            Id = new Guid("77777777-1111-1111-1111-777777777772"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "OrderItems:Create"
+                        },
+                        new
+                        {
+                            Id = new Guid("77777777-1111-1111-1111-777777777773"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "OrderItems:Update"
+                        },
+                        new
+                        {
+                            Id = new Guid("77777777-1111-1111-1111-777777777774"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "OrderItems:Delete"
+                        },
+                        new
+                        {
+                            Id = new Guid("88888888-1111-1111-1111-888888888881"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Payments:Read"
+                        },
+                        new
+                        {
+                            Id = new Guid("88888888-1111-1111-1111-888888888882"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Payments:Create"
+                        },
+                        new
+                        {
+                            Id = new Guid("88888888-1111-1111-1111-888888888883"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Payments:Update"
+                        },
+                        new
+                        {
+                            Id = new Guid("88888888-1111-1111-1111-888888888884"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Payments:Delete"
+                        },
+                        new
+                        {
+                            Id = new Guid("99999999-1111-1111-1111-999999999991"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Invoices:Read"
+                        },
+                        new
+                        {
+                            Id = new Guid("99999999-1111-1111-1111-999999999992"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Invoices:Create"
+                        },
+                        new
+                        {
+                            Id = new Guid("99999999-1111-1111-1111-999999999993"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Invoices:Update"
+                        },
+                        new
+                        {
+                            Id = new Guid("99999999-1111-1111-1111-999999999994"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Invoices:Delete"
+                        },
+                        new
+                        {
+                            Id = new Guid("aaaaaaaa-1111-1111-1111-aaaaaaaaaa11"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Reviews:Read"
+                        },
+                        new
+                        {
+                            Id = new Guid("aaaaaaaa-1111-1111-1111-aaaaaaaaaa12"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Reviews:Create"
+                        },
+                        new
+                        {
+                            Id = new Guid("aaaaaaaa-1111-1111-1111-aaaaaaaaaa13"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Reviews:Update"
+                        },
+                        new
+                        {
+                            Id = new Guid("aaaaaaaa-1111-1111-1111-aaaaaaaaaa14"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Reviews:Delete"
                         });
                 });
 
@@ -694,6 +938,222 @@ namespace Persistence.Migrations
                             RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
                             PermissionId = new Guid("11111111-2222-3333-4444-555555555554"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("11111661-2222-3333-4444-555555555555"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("11111781-2222-3333-4444-555555555556"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("22222222-1111-1111-1111-222222222221"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("22222222-1111-1111-1111-222222222222"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("22222222-1111-1111-1111-222222222223"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("22222222-1111-1111-1111-222222222224"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("33333333-1111-1111-1111-333333333331"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("33333333-1111-1111-1111-333333333332"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("33333333-1111-1111-1111-333333333333"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("33333333-1111-1111-1111-333333333334"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("44444444-1111-1111-1111-444444444441"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("44444444-1111-1111-1111-444444444442"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("55555555-1111-1111-1111-511111111211"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("55555555-1111-1111-1111-005522222112"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("55555555-1111-1111-1111-005533333313"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("55555555-1111-1111-1111-055544444444"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("66666666-1111-1111-1111-666666666661"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("66666666-1111-1111-1111-666666666662"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("66666666-1111-1111-1111-666666666663"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("66666666-1111-1111-1111-666666666664"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("77777777-1111-1111-1111-777777777771"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("77777777-1111-1111-1111-777777777772"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("77777777-1111-1111-1111-777777777773"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("77777777-1111-1111-1111-777777777774"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("88888888-1111-1111-1111-888888888881"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("88888888-1111-1111-1111-888888888882"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("88888888-1111-1111-1111-888888888883"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("88888888-1111-1111-1111-888888888884"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("99999999-1111-1111-1111-999999999991"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("99999999-1111-1111-1111-999999999992"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("99999999-1111-1111-1111-999999999993"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("99999999-1111-1111-1111-999999999994"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("aaaaaaaa-1111-1111-1111-aaaaaaaaaa11"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("aaaaaaaa-1111-1111-1111-aaaaaaaaaa12"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("aaaaaaaa-1111-1111-1111-aaaaaaaaaa13"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            RoleId = new Guid("d1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+                            PermissionId = new Guid("aaaaaaaa-1111-1111-1111-aaaaaaaaaa14"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -731,7 +1191,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LocationId");
+                    b.HasIndex("LocationId", "Name");
 
                     b.ToTable("Rooms");
                 });
@@ -775,9 +1235,9 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
-
                     b.HasIndex("RoomId");
+
+                    b.HasIndex("EmployeeId", "Date", "StartTime");
 
                     b.ToTable("Schedules");
                 });
@@ -810,6 +1270,7 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("ServiceCategoryId")
@@ -991,9 +1452,9 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
-
                     b.HasIndex("RoomId");
+
+                    b.HasIndex("EmployeeId", "DayOfWeek", "StartTime");
 
                     b.ToTable("WorkingHours");
                 });
@@ -1033,7 +1494,8 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("User");
                 });
@@ -1052,8 +1514,8 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Employee", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Employee")
+                        .HasForeignKey("Domain.Entities.Employee", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1171,7 +1633,8 @@ namespace Persistence.Migrations
 
                     b.HasOne("Domain.Entities.Room", "Room")
                         .WithMany("Schedules")
-                        .HasForeignKey("RoomId");
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Employee");
 
@@ -1183,7 +1646,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.ServiceCategory", "ServiceCategory")
                         .WithMany("Services")
                         .HasForeignKey("ServiceCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ServiceCategory");
@@ -1218,7 +1681,8 @@ namespace Persistence.Migrations
 
                     b.HasOne("Domain.Entities.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("RoomId");
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Employee");
 
@@ -1275,6 +1739,8 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
+                    b.Navigation("Employee");
+
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

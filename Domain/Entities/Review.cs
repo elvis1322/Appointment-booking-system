@@ -8,4 +8,10 @@ public class Review : BaseEntity
     public int Rating { get; set; } // 1-5
     public string Comment { get; set; } = "";
     public User? User { get; set; }
+
+    [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+    public string ServiceName { get; set; } = "";
+
+    [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+    public string EmployeeName { get; set; } = "";
 }
