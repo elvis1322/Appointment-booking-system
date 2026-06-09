@@ -38,13 +38,10 @@ const Profile = () => {
     // --- FUNKSIONI REFETCH (Identik me Admin Dashboard) ---
     const fetchProfileData = useCallback(async () => {
         try {
-            // Mund të vendosësh setLoading(true) këtu nëse dëshiron loading spinner gjatë refetch
             const response = await api.get('/User/GetME');
             if (response.status === 200 && updateUser) {
-                // Përditësojmë Context-in
                 updateUser({ ...user, ...response.data } as any);
                 
-                // Përditësojmë Formën me të dhënat e fundit nga DB
                 setFormData({
                     firstName: response.data.firstName || '',
                     lastName: response.data.lastName || '',
@@ -92,8 +89,6 @@ const Profile = () => {
             if (response.status === 200) {
                 setSnackbar({ msg: t('profile.updateSuccess'), sev: 'success' });
                 setIsEditing(false);
-                
-                // PAS SUKSESIT -> REFETCH
                 await fetchProfileData();
             }
         } catch (error) {
@@ -122,8 +117,6 @@ const Profile = () => {
                 setSnackbar({ msg: t('profile.passwordSuccess'), sev: 'success' });
                 setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' });
                 setIsChangingPassword(false);
-                
-                // Edhe këtu mund të bësh refetch nëse backend ndryshon diçka në user state pas password change
                 await fetchProfileData();
             }
         } catch (error: unknown) {
@@ -142,96 +135,147 @@ const Profile = () => {
         }
     };
 
-    return (
-        <Box sx={{ p: { xs: 2, md: 5 }, width: '100%' }}>
-            <Typography variant="h4" sx={{ mb: 4, fontWeight: 'bold' }}>{t('profile.title')}</Typography>
+    // Stili që dëgjon plotësisht sistemin e të dhënave të Theme-s suaj
+    const cardStyle = {
+        p: { xs: 3, md: 4 }, 
+        borderRadius: '16px', 
+        boxShadow: (theme: any) => theme.shadows[1] || '0px 4px 20px rgba(0,0,0,0.05)',
+        border: '1px solid',
+        borderColor: 'divider',         // Përdor kufirin e paracaktuar të temës
+        backgroundColor: 'background.paper', // Përshtatet me Light/Dark mode automatikisht
+        color: 'text.primary'
+    };
 
-            <Grid container spacing={3}>
-                <Grid size={12}>
-                    <Paper sx={{ p: 3, display: 'flex', alignItems: 'center', gap: 3, borderRadius: 2, boxShadow: '0px 4px 20px rgba(0,0,0,0.05)' }}>
-                        <Avatar sx={{ width: 90, height: 90, bgcolor: 'primary.main', fontSize: '2.2rem', fontWeight: 'bold' }}>
+    return (
+        <Box sx={{ p: { xs: 2, md: 5 }, width: '100%', maxWidth: '1200px', margin: '0 auto', backgroundColor: 'background.default', color: 'text.primary' }}>
+            <Typography variant="h4" sx={{ mb: 4, fontWeight: 800, color: 'text.primary', letterSpacing: '-0.5px' }}>
+                {t('profile.title')}
+            </Typography>
+
+            <Grid container spacing={4}>
+                {/* Header-i i Profilit */}
+                <Grid size={{ xs: 12 }}>
+                    <Paper sx={{ ...cardStyle, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'center', gap: 3, textAlign: { xs: 'center', sm: 'left' } }}>
+                        <Avatar sx={{ 
+                            width: 100, 
+                            height: 100, 
+                            backgroundColor: 'primary.main', // Merr ngjyrën kryesore nga tema juaj
+                            color: 'primary.contrastText', // Teksti merr kontrastin e duhur bazuar mbi ngjyrën kryesore
+                            fontSize: '2.5rem', 
+                            fontWeight: 'bold',
+                            border: '4px solid',
+                            borderColor: 'background.paper'
+                        }}>
                             {user?.firstName?.[0]}{user?.lastName?.[0]}
                         </Avatar>
-                        <Box>
-                            <Typography variant="h5" sx={{ fontWeight: 'bold' }}>{user?.firstName} {user?.lastName}</Typography>
-                            <Typography variant="body1" color="text.secondary">{user?.roles?.[0] || 'User'}</Typography>
-                            <Typography variant="caption" color="text.disabled">Prishtina, Kosovo</Typography>
+                        <Box sx={{ flexGrow: 1 }}>
+                            <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5, color: 'text.primary' }}>{user?.firstName} {user?.lastName}</Typography>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '1px', mb: 0.5, color: 'primary.main' }}>
+                                {user?.roles?.[0] || 'User'}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">Prishtina, Kosovo</Typography>
                         </Box>
                     </Paper>
                 </Grid>
 
+                {/* Seksioni i të Dhënave Personale */}
                 <Grid size={{ xs: 12 }}>
-                    <Paper sx={{ p: 4, borderRadius: 2 }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{t('profile.personalInfo')}</Typography>
+                    <Paper sx={cardStyle}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4, pb: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+                            <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>{t('profile.personalInfo')}</Typography>
                             {!isEditing ? (
-                                <Button variant="contained" color="warning" startIcon={<EditIcon />} onClick={() => setIsEditing(true)}>
+                                <Button variant="outlined" color="primary" startIcon={<EditIcon />} onClick={() => setIsEditing(true)} sx={{ borderRadius: '8px', textTransform: 'none', fontWeight: 600 }}>
                                     {t('profile.edit')}
                                 </Button>
                             ) : (
-                                <Box sx={{ display: 'flex', gap: 1 }}>
-                                    <Button variant="contained" color="success" onClick={handleSaveProfile} disabled={loading}>
-                                        {loading ? <CircularProgress size={24} color="inherit" /> : <SaveIcon />}
+                                <Box sx={{ display: 'flex', gap: 1.5 }}>
+                                    <Button variant="contained" color="success" startIcon={loading ? <CircularProgress size={18} color="inherit" /> : <SaveIcon />} onClick={handleSaveProfile} disabled={loading} sx={{ borderRadius: '8px', textTransform: 'none', fontWeight: 600 }}>
+                                        {t('profile.save') || 'Ruaj'}
                                     </Button>
-                                    <Button variant="outlined" color="error" onClick={() => setIsEditing(false)}><CancelIcon /></Button>
+                                    <Button variant="outlined" color="error" startIcon={<CancelIcon />} onClick={() => setIsEditing(false)} sx={{ borderRadius: '8px', textTransform: 'none', fontWeight: 600 }}>
+                                        {t('profile.cancel') || 'Anulo'}
+                                    </Button>
                                 </Box>
                             )}
                         </Box>
 
                         <Grid container spacing={3}>
                             <Grid size={{ xs: 12, md: 6 }}>
-                                <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 'bold' }}>{t('profile.firstName')}</Typography>
-                                {isEditing ? <TextField fullWidth size="small" variant="standard" value={formData.firstName} error={formErrors.firstName} helperText={formErrors.firstName ? t('users.table.firstNamex') : ''} onChange={(e) => { setFormData({...formData, firstName: e.target.value}); setFormErrors({...formErrors, firstName: false}); }} /> : <Typography variant="body1">{user?.firstName}</Typography>}
-                            </Grid>
-                            <Grid size={{ xs: 12, md: 6 }}>
-                                <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 'bold' }}>{t('profile.lastName')}</Typography>
-                                {isEditing ? <TextField fullWidth size="small" variant="standard" value={formData.lastName} error={formErrors.lastName} helperText={formErrors.lastName ? t('users.table.lastNamex') : ''} onChange={(e) => { setFormData({...formData, lastName: e.target.value}); setFormErrors({...formErrors, lastName: false}); }} /> : <Typography variant="body1">{user?.lastName}</Typography>}
-                            </Grid>
-                            <Grid size={{ xs: 12, md: 6 }}>
-                                <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 'bold' }}>{t('profile.email')}</Typography>
-                                <Typography variant="body1">{user?.email}</Typography>
-                            </Grid>
-                            <Grid size={{ xs: 12, md: 6 }}>
-                                <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 'bold' }}>{t('register.gender')}</Typography>
+                                <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600, mb: 1 }}>{t('profile.firstName')}</Typography>
                                 {isEditing ? (
-                                    <TextField select fullWidth size="small" variant="standard" value={formData.gjinia} error={formErrors.gjinia} helperText={formErrors.gjinia ? t('users.table.genderx') : ''} onChange={(e) => { setFormData({...formData, gjinia: e.target.value}); setFormErrors({...formErrors, gjinia: false}); }}>
+                                    <TextField fullWidth size="small" variant="outlined" value={formData.firstName} error={formErrors.firstName} helperText={formErrors.firstName ? t('users.table.firstNamex') : ''} onChange={(e) => { setFormData({...formData, firstName: e.target.value}); setFormErrors({...formErrors, firstName: false}); }} />
+                                ) : (
+                                    <Typography variant="body1" sx={{ fontWeight: 500, p: '8px 0', color: 'text.primary' }}>{user?.firstName || '---'}</Typography>
+                                )}
+                            </Grid>
+                            
+                            <Grid size={{ xs: 12, md: 6 }}>
+                                <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600, mb: 1 }}>{t('profile.lastName')}</Typography>
+                                {isEditing ? (
+                                    <TextField fullWidth size="small" variant="outlined" value={formData.lastName} error={formErrors.lastName} helperText={formErrors.lastName ? t('users.table.lastNamex') : ''} onChange={(e) => { setFormData({...formData, lastName: e.target.value}); setFormErrors({...formErrors, lastName: false}); }} />
+                                ) : (
+                                    <Typography variant="body1" sx={{ fontWeight: 500, p: '8px 0', color: 'text.primary' }}>{user?.lastName || '---'}</Typography>
+                                )}
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6 }}>
+                                <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600, mb: 1 }}>{t('profile.email')}</Typography>
+                                <TextField fullWidth size="small" variant="outlined" value={user?.email || ''} disabled sx={{ '& .MuiOutlinedInput-root': { backgroundColor: 'action.hover' } }} />
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6 }}>
+                                <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600, mb: 1 }}>{t('register.gender')}</Typography>
+                                {isEditing ? (
+                                    <TextField select fullWidth size="small" variant="outlined" value={formData.gjinia} error={formErrors.gjinia} helperText={formErrors.gjinia ? t('users.table.genderx') : ''} onChange={(e) => { setFormData({...formData, gjinia: e.target.value}); setFormErrors({...formErrors, gjinia: false}); }}>
                                         <MenuItem value="M">{t('register.genderM')}</MenuItem>
                                         <MenuItem value="F">{t('register.genderF')}</MenuItem>
                                     </TextField>
                                 ) : (
-                                    <Typography variant="body1">{user?.gjinia === 'M' ? t('register.genderM') : user?.gjinia === 'F' ? t('register.genderF') : '---'}</Typography>
+                                    <Typography variant="body1" sx={{ fontWeight: 500, p: '8px 0', color: 'text.primary' }}>
+                                        {user?.gjinia === 'M' ? t('register.genderM') : user?.gjinia === 'F' ? t('register.genderF') : '---'}
+                                    </Typography>
                                 )}
                             </Grid>
                         </Grid>
                     </Paper>
                 </Grid>
 
-                <Grid size={12}>
-                    <Paper sx={{ p: 4, borderRadius: 2 }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                <LockResetIcon color="primary" />
-                                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{t('profile.changePassword')}</Typography>
+                {/* Seksioni i Ndryshimit të Fjalëkalimit */}
+                <Grid size={{ xs: 12 }}>
+                    <Paper sx={cardStyle}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: isChangingPassword ? 4 : 0 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                                <LockResetIcon color="primary" sx={{ fontSize: '1.8rem' }} />
+                                <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>{t('profile.changePassword')}</Typography>
                             </Box>
                             {!isChangingPassword && (
-                                <Button variant="outlined" onClick={() => setIsChangingPassword(true)}>{t('profile.editPassword')}</Button>
+                                <Button variant="outlined" color="primary" onClick={() => setIsChangingPassword(true)} sx={{ borderRadius: '8px', textTransform: 'none', fontWeight: 600 }}>
+                                    {t('profile.editPassword')}
+                                </Button>
                             )}
                         </Box>
 
                         {isChangingPassword && (
-                            <Grid container spacing={2}>
-                                <Grid  size={{ xs: 12, md: 4 }}>
-                                    <TextField fullWidth type="password" label={t('profile.oldPassword')} value={passwordData.oldPassword} onChange={(e) => setPasswordData({...passwordData, oldPassword: e.target.value})} />
+                            <Grid container spacing={3}>
+                                <Grid size={{ xs: 12, md: 4 }}>
+                                    <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600, mb: 1 }}>{t('profile.oldPassword')}</Typography>
+                                    <TextField fullWidth size="small" type="password" placeholder="••••••••" value={passwordData.oldPassword} onChange={(e) => setPasswordData({...passwordData, oldPassword: e.target.value})} />
                                 </Grid>
                                 <Grid size={{ xs: 12, md: 4 }}>
-                                    <TextField fullWidth type="password" label={t('profile.newPassword')} value={passwordData.newPassword} onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})} />
+                                    <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600, mb: 1 }}>{t('profile.newPassword')}</Typography>
+                                    <TextField fullWidth size="small" type="password" placeholder="••••••••" value={passwordData.newPassword} onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})} />
                                 </Grid>
                                 <Grid size={{ xs: 12, md: 4 }}>
-                                    <TextField fullWidth type="password" label={t('profile.confirmPassword')} value={passwordData.confirmPassword} onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})} />
+                                    <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600, mb: 1 }}>{t('profile.confirmPassword')}</Typography>
+                                    <TextField fullWidth size="small" type="password" placeholder="••••••••" value={passwordData.confirmPassword} onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})} />
                                 </Grid>
-                                <Grid size={{ xs: 12 }} sx={{ display: 'flex', gap: 2, mt: 2 }}>
-                                    <Button variant="contained" color="success" onClick={handleChangePassword} disabled={loading}>{t('profile.save')}</Button>
-                                    <Button variant="text" color="error" onClick={() => setIsChangingPassword(false)}>{t('profile.cancel')}</Button>
+                                <Grid size={{ xs: 12 }} sx={{ display: 'flex', gap: 2, mt: 1, pt: 2, borderTop: '1px solid', borderColor: 'divider' }}>
+                                    <Button variant="contained" color="success" onClick={handleChangePassword} disabled={loading} sx={{ borderRadius: '8px', textTransform: 'none', fontWeight: 600 }}>
+                                        {t('profile.save')}
+                                    </Button>
+                                    <Button variant="text" color="error" onClick={() => setIsChangingPassword(false)} sx={{ borderRadius: '8px', textTransform: 'none', fontWeight: 600 }}>
+                                        {t('profile.cancel')}
+                                    </Button>
                                 </Grid>
                             </Grid>
                         )}
@@ -240,7 +284,7 @@ const Profile = () => {
             </Grid>
 
             <Snackbar open={!!snackbar} autoHideDuration={4000} onClose={() => setSnackbar(null)}>
-                <Alert severity={snackbar?.sev || 'info'} sx={{ width: '100%' }}>{snackbar?.msg}</Alert>
+                <Alert severity={snackbar?.sev || 'info'} variant="filled" sx={{ width: '100%', borderRadius: '8px' }}>{snackbar?.msg}</Alert>
             </Snackbar>
         </Box>
     );

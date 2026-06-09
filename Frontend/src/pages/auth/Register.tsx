@@ -11,13 +11,14 @@ import {
     InputLabel,
     Select,
     Paper,
+    FormHelperText,
     type SelectChangeEvent,
 } from '@mui/material';
 import api from '../../api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-
-
+import { LanguagePopover } from '../../components/Layout/LanguagePopover';
+import axios from 'axios';
 
 type FormState = {
     firstName: string;
@@ -49,66 +50,121 @@ function formReducer(state: FormState, action: FormAction): FormState {
 const Register = () => {
     const { t } = useTranslation();
     const [formData, dispatchForm] = useReducer(formReducer, initialForm);
-    const [error, setError] = useState('');
+    const [globalError, setGlobalError] = useState('');
     const navigate = useNavigate();
 
-    const formatRegisterError = (err: unknown): string => {
-        const ax = err as { response?: { data?: unknown } };
-        const data = ax.response?.data;
-        if (typeof data === 'string') return data;
-        if (data && typeof data === 'object') {
-            const rec = data as Record<string, unknown>;
-            if (typeof rec.message === 'string') return rec.message;
+    // Ruajmë vetëm emrin e thjeshtë të çelësit që gjendet brenda "register.errors" te JSON
+    const [errorKeys, setErrorKeys] = useState<Record<keyof FormState | 'global', string>>({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        gjinia: '',
+        global: ''
+    });
+
+    const validateForm = (): boolean => {
+        const newErrors = { firstName: '', lastName: '', email: '', password: '', gjinia: '', global: '' };
+        let isValid = true;
+
+        // 1. Validimi për FirstName
+        if (!formData.firstName.trim()) {
+            newErrors.firstName = 'firstName'; 
+            isValid = false;
+        } else if (formData.firstName.length < 2 || formData.firstName.length > 50) {
+            newErrors.firstName = 'firstNameLength';
+            isValid = false;
         }
-        return t('register.errorFailed');
+
+        // 2. Validimi për LastName
+        if (!formData.lastName.trim()) {
+            newErrors.lastName = 'lastName';
+            isValid = false;
+        } else if (formData.lastName.length < 2 || formData.lastName.length > 50) {
+            newErrors.lastName = 'lastNameLength';
+            isValid = false;
+        }
+
+        // 3. Validimi për Email
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+        if (!formData.email.trim()) {
+            newErrors.email = 'emailRequired';
+            isValid = false;
+        } else if (!emailRegex.test(formData.email)) {
+            newErrors.email = 'emailInvalid';
+            isValid = false;
+        }
+
+        // 4. Validimi për Gjinia
+        if (!formData.gjinia) {
+            newErrors.gjinia = 'gender';
+            isValid = false;
+        }
+
+        // 5. Validimi për Password
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+        if (!formData.password) {
+            newErrors.password = 'passwordRequired';
+            isValid = false;
+        } else if (formData.password.length < 6 || formData.password.length > 100) {
+            newErrors.password = 'passwordTooShort';
+            isValid = false;
+        } else if (!passwordRegex.test(formData.password)) {
+            newErrors.password = 'passwordStrength';
+            isValid = false;
+        }
+
+        setErrorKeys(newErrors);
+        return isValid;
     };
-    const [genderError, setGenderError] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError('');
-        setGenderError(false);
-       const missingFields: string[] = [];
-
-    if (!formData.firstName.trim()) missingFields.push(t('register.firstName'));
-    if (!formData.lastName.trim()) missingFields.push(t('register.lastName'));
-    if (!formData.email.trim()) missingFields.push(t('register.email'));
-    if (!formData.gjinia) missingFields.push(t('register.gender'));
-    if (!formData.password.trim()) missingFields.push(t('register.password'));
-
-    // 2. Kontrollojmë nëse ka fusha bosh
-    if (missingFields.length > 0) {
-        // Bashkojmë emrat e fushave me presje
-        const fieldsText = missingFields.join(', ');
+        setGlobalError('');
         
-        // Kriojmë mesazhin e plotë: "Fushat vijuese janë të detyrueshme: Emri, Mbiemri..."
-        setError(`${t('register.errors.requiredPrefix')}: ${fieldsText}`);
-        return;
-    }
+        if (!validateForm()) return;
 
- 
-
-    if (formData.password.length < 6) {
-        setError(t('register.errors.passwordTooShort'));
-        return;
-    }
         try {
             await api.post('/auth/register', formData);
             navigate('/login');
         } catch (err: unknown) {
-            setError(formatRegisterError(err));
+            if (axios.isAxiosError(err) && err.response?.data) {
+                const serverData = err.response.data;
+                
+                if (serverData.errors) {
+                    const backendErrors: any = {};
+                    Object.keys(serverData.errors).forEach((key) => {
+                        const fieldName = key.charAt(0).toLowerCase() + key.slice(1);
+                        // Nëse gabimi vjen nga backend, e shfaqim si mesazh të gatshëm direkt
+                        backendErrors[fieldName] = serverData.errors[key][0];
+                    });
+                    setErrorKeys((prev) => ({ ...prev, ...backendErrors }));
+                } else if (typeof serverData === 'string') {
+                    setGlobalError(serverData);
+                } else if (serverData.message) {
+                    setGlobalError(serverData.message);
+                }
+            } else {
+                setGlobalError(t('register.errorFailed'));
+            }
+        }
+    };
+
+    const handleInputChange = (field: keyof FormState, value: string) => {
+        dispatchForm({ type: 'SET', field, value });
+        if (errorKeys[field]) {
+            setErrorKeys(prev => ({ ...prev, [field]: '' }));
         }
     };
 
     const inputStyles = {
         '& .MuiOutlinedInput-root': {
-            color: 'white',
+            color: 'text.primary',
             borderRadius: 2,
-            '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.2)' },
+            '& fieldset': { borderColor: 'divider' },
             '&:hover fieldset': { borderColor: 'primary.main' },
         },
-        '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.5)' },
-        '& .MuiFormHelperText-root': { color: 'rgba(255, 255, 255, 0.4)' }
+        '& .MuiInputLabel-root': { color: 'text.secondary' },
     };
 
     return (
@@ -116,13 +172,13 @@ const Register = () => {
             minHeight: '100vh', 
             display: 'flex', 
             alignItems: 'center', 
-            justifyContent: 'center',
-            bgcolor: '#121212',
+            justify: 'center',
+            bgcolor: 'background.default',
             position: 'relative',
-            py: 5 // Hapësirë shtesë për scroll në mobile
+            py: 5 
         }}>
-            {/* Language Selector lart djathtas */}
             <Box sx={{ position: 'absolute', top: 24, right: 24 }}>
+                <LanguagePopover />
             </Box>
 
             <Container maxWidth="xs">
@@ -131,70 +187,76 @@ const Register = () => {
                     display: 'flex', 
                     flexDirection: 'column', 
                     alignItems: 'center',
-                    bgcolor: 'rgba(255, 255, 255, 0.03)',
+                    bgcolor: 'background.paper',
                     borderRadius: 3,
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    border: '1px solid',
+                    borderColor: 'divider',
                     backdropFilter: 'blur(10px)'
                 }}>
-                    <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'white', mb: 1 }}>
+                    <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'text.primary', mb: 3 }}>
                         {t('register.title')}
                     </Typography>
 
-                    {error && (
+                    {globalError && (
                         <Alert severity="error" variant="filled" sx={{ mb: 2, width: '100%', borderRadius: 1.5 }}>
-                            {error}
+                            {globalError}
                         </Alert>
                     )}
 
-                    <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%' }}>
+                    <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%' }} noValidate>
                         <TextField
                             fullWidth
                             label={t('register.firstName')}
                             margin="normal"
                             value={formData.firstName}
-                            onChange={(e) => dispatchForm({ type: 'SET', field: 'firstName', value: e.target.value })}
+                            error={!!errorKeys.firstName}
+                            helperText={errorKeys.firstName ? (errorKeys.firstName.includes(' ') ? errorKeys.firstName : t(`register.errors.${errorKeys.firstName}`)) : ''}
+                            onChange={(e) => handleInputChange('firstName', e.target.value)}
                             sx={inputStyles}
                         />
+                        
                         <TextField
                             fullWidth
                             label={t('register.lastName')}
                             margin="normal"
                             value={formData.lastName}
-                            onChange={(e) => dispatchForm({ type: 'SET', field: 'lastName', value: e.target.value })}
+                            error={!!errorKeys.lastName}
+                            helperText={errorKeys.lastName ? (errorKeys.lastName.includes(' ') ? errorKeys.lastName : t(`register.errors.${errorKeys.lastName}`)) : ''}
+                            onChange={(e) => handleInputChange('lastName', e.target.value)}
                             sx={inputStyles}
                         />
+                        
                         <TextField
                             fullWidth
                             label={t('register.email')}
                             margin="normal"
                             type="email"
                             value={formData.email}
-                            onChange={(e) => dispatchForm({ type: 'SET', field: 'email', value: e.target.value })}
+                            error={!!errorKeys.email}
+                            helperText={errorKeys.email ? (errorKeys.email.includes(' ') ? errorKeys.email : t(`register.errors.${errorKeys.email}`)) : ''}
+                            onChange={(e) => handleInputChange('email', e.target.value)}
                             sx={inputStyles}
                         />
                         
-                        <FormControl fullWidth margin="normal" sx={inputStyles}>
+                        <FormControl fullWidth margin="normal" error={!!errorKeys.gjinia} sx={inputStyles}>
                             <InputLabel id="gjinia-label">{t('register.gender')}</InputLabel>
                             <Select
                                 labelId="gjinia-label"
                                 label={t('register.gender')}
                                 value={formData.gjinia}
-                                onChange={(e: SelectChangeEvent) =>{
-                                    setGenderError(false);
-                                    dispatchForm({ type: 'SET', field: 'gjinia', value: e.target.value })
-                                }}
-                                sx={{ borderRadius: 2, color: 'white' }}
-                            displayEmpty
+                                onChange={(e: SelectChangeEvent) => handleInputChange('gjinia', e.target.value)}
+                                sx={(theme) => ({ borderRadius: 2, color: theme.palette.text.primary })}
                             >
                                 <MenuItem value="" disabled>
-                               <em>{t('register.gender')}</em></MenuItem>
+                                    <em>{t('register.gender')}</em>
+                                </MenuItem>
                                 <MenuItem value="M">{t('register.genderM')}</MenuItem>
                                 <MenuItem value="F">{t('register.genderF')}</MenuItem>
                             </Select>
-                            {genderError && (
-                                <Typography variant="caption" color="error" sx={{ ml: 2, mt: 0.5 }}>
-                                    {t('register.errorGenderRequired') || t('register.selectGenderPlaceholder')}
-                                </Typography>
+                            {errorKeys.gjinia && (
+                                <FormHelperText sx={{ mx: 2 }}>
+                                    {errorKeys.gjinia.includes(' ') ? errorKeys.gjinia : t(`register.errors.${errorKeys.gjinia}`)}
+                                </FormHelperText>
                             )}
                         </FormControl>
 
@@ -204,8 +266,9 @@ const Register = () => {
                             type="password"
                             margin="normal"
                             value={formData.password}
-                            onChange={(e) => dispatchForm({ type: 'SET', field: 'password', value: e.target.value })}
-                            helperText={t('register.passwordHelper')}
+                            error={!!errorKeys.password}
+                            helperText={errorKeys.password ? (errorKeys.password.includes(' ') ? errorKeys.password : t(`register.errors.${errorKeys.password}`)) : t('register.passwordHelper')}
+                            onChange={(e) => handleInputChange('password', e.target.value)}
                             sx={inputStyles}
                         />
                         
@@ -230,7 +293,7 @@ const Register = () => {
                         <Button 
                             fullWidth 
                             variant="text" 
-                            sx={{ mt: 2, color: 'rgba(255, 255, 255, 0.6)', textTransform: 'none' }} 
+                            sx={(theme) => ({ mt: 2, color: theme.palette.text.secondary, textTransform: 'none' })} 
                             onClick={() => navigate('/login')}
                         >
                             {t('register.haveAccount')}

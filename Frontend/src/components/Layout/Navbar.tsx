@@ -52,7 +52,7 @@ const Navbar: React.FC = () => {
                             {displayName}
                         </Typography>
                         <Button variant="contained" color="error" size="small" onClick={handleLogout}>
-                            Dil
+                            {t('nav.logout')}
                         </Button>
                     </Box>
                 </Toolbar>

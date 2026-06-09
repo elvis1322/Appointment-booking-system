@@ -14,17 +14,17 @@ export function LanguagePopover() {
     { code: 'de', label: 'DE' },
   ];
 
-  return (
+    return (
     <Box
-      sx={{
+      sx={(theme) => ({
         display: 'flex',
         alignItems: 'center',
-        bgcolor: 'rgba(255, 255, 255, 0.05)', // Sfondi i zi/gri i hapur
+        bgcolor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'background.paper',
         p: '4px',
         borderRadius: '12px',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
+        border: `1px solid ${theme.palette.divider}`,
         backdropFilter: 'blur(10px)',
-      }}
+      })}
     >
       <Stack direction="row" spacing={0.5}>
         {languages.map((lang) => {
@@ -47,12 +47,11 @@ export function LanguagePopover() {
 
                 // Ngjyrat dinamike
                 bgcolor: isActive ? 'primary.main' : 'transparent',
-                color: isActive ? 'white' : 'rgba(255, 255, 255, 0.6)',
+                color: isActive ? 'primary.contrastText' : (theme: any) => theme.palette.text.secondary,
                 boxShadow: isActive ? '0px 4px 10px rgba(25, 118, 210, 0.3)' : 'none',
 
                 '&:hover': {
-                  bgcolor: isActive ? 'primary.dark' : 'rgba(255, 255, 255, 0.1)',
-                  color: 'white',
+                  bgcolor: isActive ? 'primary.dark' : (theme: any) => (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)'),
                 },
               }}
             >

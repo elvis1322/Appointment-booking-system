@@ -11,24 +11,40 @@ const Login = () => {
     const { t } = useTranslation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    
+    // Tani ruajmë vetëm "kodin" e gabimit dhe jo fjalitë e gatshme string
+    const [errorCode, setErrorCode] = useState('');
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const formatLoginError = (err: unknown): string => {
+    // Ky funksion tani thjesht klasifikon llojin e gabimit që vjen nga backend
+    const parseErrorCode = (err: unknown): string => {
         const ax = err as { response?: { data?: unknown } };
         const data = ax.response?.data;
-        if (typeof data === 'string') return data;
+        
+        if (typeof data === 'string') {
+            if (data.toLowerCase().includes("incorrect") || data.toLowerCase().includes("invalid")) {
+                return 'invalidCredentials';
+            }
+            return data; // Kthen mesazhin e backend-it si string nëse s'është kredinciale e gabuar
+        }
+        
         if (data && typeof data === 'object' && 'message' in data) {
             const m = (data as { message?: unknown }).message;
-            if (typeof m === 'string') return m;
+            if (typeof m === 'string') {
+                if (m.toLowerCase().includes("incorrect") || m.toLowerCase().includes("invalid")) {
+                    return 'invalidCredentials';
+                }
+                return m;
+            }
         }
-        return t('login.errorInvalid');
+        
+        return 'invalidCredentials';
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError('');
+        setErrorCode('');
 
         try {
             const response = await api.post('/auth/login', { email, password });
@@ -38,14 +54,21 @@ const Login = () => {
             const isAdmin = session.user.roles.includes('Admin');
             navigate(isAdmin ? '/admin/users' : '/profile');
         } catch (err: unknown) {
-            const errorMsg = formatLoginError(err);
-            // Kontrollojmë mesazhin që vjen nga backend-i për ta përkthyer
-            if (errorMsg.includes("incorrect") || errorMsg.includes("invalid")) {
-                setError(t('login.errorInvalid'));
-            } else {
-                setError(errorMsg);
-            }
+            const code = parseErrorCode(err);
+            setErrorCode(code);
         }
+    };
+
+    // Funksion i vogël që i kthen gabimet dinamike në bazë të gjuhës aktive
+    const renderErrorMessage = () => {
+        if (!errorCode) return '';
+        
+        if (errorCode === 'invalidCredentials') {
+            return t('login.errorInvalid');
+        }
+        
+        // Nëse është një string specifik nga backend që nuk është përkthyer lokalish
+        return errorCode;
     };
 
     return (
@@ -54,11 +77,10 @@ const Login = () => {
             display: 'flex', 
             alignItems: 'center', 
             justifyContent: 'center',
-            bgcolor: '#121212', // Sfondi i zi
+            bgcolor: 'background.default',
             position: 'relative',
             overflow: 'hidden'
         }}>
-            {/* Butoni i gjuhëve i pozicionuar fiks lart-djathtas */}
             <Box sx={{ position: 'absolute', top: 24, right: 24 }}>
                 <LanguagePopover />
             </Box>
@@ -69,13 +91,14 @@ const Login = () => {
                     display: 'flex', 
                     flexDirection: 'column', 
                     alignItems: 'center',
-                    bgcolor: 'rgba(255, 255, 255, 0.03)', // Glassmorphism i lehtë
+                    bgcolor: 'background.paper',
                     borderRadius: 3,
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    border: '1px solid',
+                    borderColor: 'divider',
                     backdropFilter: 'blur(10px)'
                 }}>
                     
-                    <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'white', mb: 1 }}>
+                    <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'text.primary', mb: 1 }}>
                         {t('nav.SystemName')}
                     </Typography>
                     
@@ -83,9 +106,10 @@ const Login = () => {
                         {t('login.title')}
                     </Typography>
 
-                    {error && (
+                    {/* Thirret funksioni i përkthimit dinamik në kohë reale */}
+                    {errorCode && (
                         <Alert severity="error" variant="filled" sx={{ mb: 2, width: '100%', borderRadius: 1.5 }}>
-                            {error}
+                            {renderErrorMessage()}
                         </Alert>
                     )}
 
@@ -96,15 +120,15 @@ const Login = () => {
                             margin="normal"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            sx={{
+                            sx={(theme) => ({
                                 '& .MuiOutlinedInput-root': {
-                                    color: 'white',
+                                    color: theme.palette.text.primary,
                                     borderRadius: 2,
-                                    '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.2)' },
+                                    '& fieldset': { borderColor: theme.palette.divider },
                                     '&:hover fieldset': { borderColor: 'primary.main' },
                                 },
-                                '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.5)' }
-                            }}
+                                '& .MuiInputLabel-root': { color: theme.palette.text.secondary }
+                            })}
                         />
                         <TextField
                             fullWidth
@@ -113,15 +137,15 @@ const Login = () => {
                             margin="normal"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            sx={{
+                            sx={(theme) => ({
                                 '& .MuiOutlinedInput-root': {
-                                    color: 'white',
+                                    color: theme.palette.text.primary,
                                     borderRadius: 2,
-                                    '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.2)' },
+                                    '& fieldset': { borderColor: theme.palette.divider },
                                     '&:hover fieldset': { borderColor: 'primary.main' },
                                 },
-                                '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.5)' }
-                            }}
+                                '& .MuiInputLabel-root': { color: theme.palette.text.secondary }
+                            })}
                         />
                         
                         <Button 
@@ -146,7 +170,7 @@ const Login = () => {
                         <Button 
                             fullWidth 
                             variant="text" 
-                            sx={{ mt: 2, color: 'rgba(255, 255, 255, 0.6)', textTransform: 'none' }} 
+                            sx={(theme) => ({ mt: 2, color: theme.palette.text.secondary, textTransform: 'none' })} 
                             onClick={() => navigate('/register')}
                         >
                             {t('login.noAccount')}
