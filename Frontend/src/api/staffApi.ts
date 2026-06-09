@@ -4,7 +4,9 @@ import type {
   Service,
   ServiceCategory,
   WorkingHour,
-  DayOff
+  DayOff,
+  Room,
+  Location
 } from '../types/staff.types';
 
 // ── EMPLOYEES ──────────────────────────────────────────────
@@ -117,3 +119,30 @@ export const updateDayOff = (
 export const deleteDayOff = (id: string): Promise<void> =>
   api.delete(`/staff-schedule/days-off/${id}`).then(() => undefined);
 
+
+// ── LOCATIONS ──────────────────────────────────────────────
+export const getLocations = (): Promise<Location[]> =>
+  api.get('/locations').then((r) => r.data);
+
+export const createLocation = (data: Omit<Location, 'id'>): Promise<Location> =>
+  api.post('/locations', data).then((r) => r.data);
+
+export const updateLocation = (id: string, data: Omit<Location, 'id'>): Promise<Location> =>
+  api.put(`/locations/${id}`, data).then((r) => r.data);
+
+export const deleteLocation = (id: string): Promise<void> =>
+  api.delete(`/locations/${id}`).then(() => undefined);
+
+// ── ROOMS ──────────────────────────────────────────────────
+
+export const getRoomsByLocation = (locationId: string): Promise<Room[]> =>
+  api.get(`/rooms?locationId=${locationId}`).then((r) => r.data);
+
+export const createRoom = (data: Omit<Room, 'id' | 'locationName'>): Promise<Room> =>
+  api.post('/rooms', data).then((r) => r.data);
+
+export const updateRoom = (id: string, data: Omit<Room, 'id' | 'locationName'>): Promise<Room> =>
+  api.put(`/rooms/${id}`, data).then((r) => r.data);
+
+export const deleteRoom = (id: string): Promise<void> =>
+  api.delete(`/rooms/${id}`).then(() => undefined);

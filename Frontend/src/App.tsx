@@ -19,9 +19,11 @@ const UserManagement = lazy(() => import('./pages/Admin/UserManagement'));
 const Unauthorized = lazy(() => import('./pages/Unauthorized'));
 
 const EmployeeList = lazy(() => import('./pages/Admin/EmployeeList'));
-const StaffSchedule = lazy(() => import('./pages/Admin/StaffSchedule'));
 const ServiceList = lazy(() => import('./pages/Admin/ServiceList'));
 const ServiceCategoryList = lazy(() => import('./pages/Admin/ServiceCategoryList'));
+const EmployeeServices = lazy(() => import('./pages/Admin/EmployeeServices'));
+const StaffSchedule = lazy(() => import('./pages/Admin/StaffSchedule'));
+const LocationList = lazy(() => import('./pages/Admin/LocationList'));
 
 function RouteFallback() {
     return <LinearProgress sx={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999 }} />;
@@ -152,9 +154,11 @@ function AppLayout() {
                             <Route element={<ProtectedRoute allowedRoles={['Admin']} />}>
                                 <Route path="/admin/users" element={<UserManagement />} />
                                 <Route path="/admin/employees" element={<EmployeeList />} />
-                                <Route path="/admin/staff-schedule" element={<StaffSchedule />} />
                                 <Route path="/admin/services" element={<ServiceList />} />
                                 <Route path="/admin/service-categories" element={<ServiceCategoryList />} />
+                                <Route path="/admin/employee-services" element={<EmployeeServices />} />
+                                <Route path="/admin/staff-schedule" element={<StaffSchedule />} />
+                                <Route path="/admin/locations" element={<LocationList />} /> 
                             </Route>
 
                             {/* Redirects */}
