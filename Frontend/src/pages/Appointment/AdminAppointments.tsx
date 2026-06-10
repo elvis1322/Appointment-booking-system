@@ -2,14 +2,11 @@ import { useEffect, useState, useRef } from 'react';
 import { Box, Typography, Paper, Table, TableBody, TableCell,TableContainer, TableHead, TableRow, Chip, CircularProgress,
   Alert, Select, MenuItem, IconButton, Tooltip, Dialog,DialogTitle, DialogContent, DialogActions, Button,} from '@mui/material';
 import { Icon } from '@iconify/react';
-import {
-  adminGetAllAppointments,
-  adminChangeAppointmentStatus,
-  adminDeleteAppointment,
-  type AppointmentStatus,
+import {adminGetAllAppointments,adminChangeAppointmentStatus,adminDeleteAppointment,type AppointmentStatus,
 } from '../../api/appointmentApi';
 import type { AppointmentAdminDto } from '../../types/appointment.types';
 import { useTranslation } from 'react-i18next';
+import { notificationConnection } from '../../services/signalr/notificationConnection';
 
 const STATUSES = ['Pending', 'Confirmed', 'Cancelled', 'Completed'];
 
@@ -70,13 +67,21 @@ export default function AdminAppointments() {
 
     window.addEventListener('focus', handleFocus);
     document.addEventListener('visibilitychange', handleFocus);
-
+    
+     // Real-time: listen for SYSTEM_UPDATE directly (no NotificationBell changes needed)
+    const handleSignalR = (notification: { title: string }) => {
+      if (notification.title === 'SYSTEM_UPDATE') fetchData(true);
+    };
+    notificationConnection.on('ReceiveNotification', handleSignalR); 
+    
     return () => {
       clearInterval(intervalId);
       window.removeEventListener('focus', handleFocus);
       document.removeEventListener('visibilitychange', handleFocus);
+      notificationConnection.off('ReceiveNotification', handleSignalR);
     };
-  }, []);  const handleStatusChange = async (id: string, status: AppointmentStatus) => {
+  }, []);
+    const handleStatusChange = async (id: string, status: AppointmentStatus) => {
     setUpdatingId(id);
     setError(null);
     try {

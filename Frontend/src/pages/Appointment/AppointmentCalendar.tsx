@@ -1,7 +1,6 @@
-import { useState, useEffect, useMemo } from 'react';
-import {Container,Paper,Typography,Box, CircularProgress,Alert,Chip,
-  IconButton,Button,Dialog,DialogTitle, DialogContent,DialogActions,
-} from '@mui/material';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import {Container,Paper,Typography,Box,CircularProgress,Alert,Chip,
+  IconButton, Button,Dialog,DialogTitle,DialogContent,DialogActions } from '@mui/material';
 import { Icon } from '@iconify/react';
 
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -9,7 +8,6 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import { getAppointments, adminGetAllAppointments } from '../../api/appointmentApi';
 import api from '../../api/axiosConfig';
-import axios from 'axios';
 import {
   getEmployees,
   getWorkingHours,
@@ -22,9 +20,10 @@ import type { DayOff } from '../../types/staff.types';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 
+import axios from 'axios';
+import { notificationConnection } from '../../services/signalr/notificationConnection';
 
-
-
+// --- Helpers for Dates & Times ---
 
 const TIME_SLOTS: string[] = [];
 for (let h = 6; h <= 21; h++) {
@@ -62,74 +61,79 @@ export default function AppointmentCalendar() {
   const isEmployee = user?.roles?.includes('Employee') ?? false;
   const isAdmin = user?.roles?.includes('Admin') ?? false;
 
-  useEffect(() => {
+  const loadData = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     setError(null);
-
-    const run = async () => {
-      try {
-        let appsData: AppointmentUserDto[] = [];
-        if (isAdmin) {
-          const adminData = await adminGetAllAppointments();
-          appsData = adminData.map((a) => ({
-            id: a.id,
-            startTime: a.startTime,
-            endTime: a.endTime,
-            statusName: a.statusName,
-            serviceName: a.serviceName || '',
-            employeeName: a.employeeName || '',
-          }));
-        } else if (isEmployee) {
-          const res = await api.get('/EmployeeAppointments/MyAppointments');
-          appsData = res.data.data;
-        } else {
-          appsData = await getAppointments();
-        }
-
-        appsData = appsData.filter((a) => {
-          const status = a.statusName?.toLowerCase();
-          return (
-            status !== 'cancelled' &&
-            status !== 'anuluar' &&
-            status !== 'abgebrochen'
-          );
-        });
-        setAppointments(appsData);
-
-        if (isEmployee) {
-          try {
-            const employees = await getEmployees();
-            const myEmployee = employees.find((e) => e.userId === user.id);
-            if (myEmployee) {
-              const [, doData] = await Promise.all([
-                getWorkingHours(myEmployee.id),
-                getDaysOff(myEmployee.id),
-              ]);
-              setDaysOff(doData);
-            }
-          } catch (employeeErr) {
-            console.warn('Could not load employee configuration', employeeErr);
-          }
-        }
-      } catch (err) {
-        if (axios.isAxiosError(err)) {
-          const axiosErr = err as import('axios').AxiosError<{ message?: string }>;
-          setError(axiosErr.response?.data?.message || t('calendar.loadFailed'));
-        } else {
-          setError(t('calendar.loadFailed'));
-        }
-      } finally {
-        setLoading(false);
+    try {
+      // Fetch appointments from the correct endpoint based on role
+      let appsData: AppointmentUserDto[] = [];
+      if (isAdmin) {
+        const adminData = await adminGetAllAppointments();
+        // Map admin DTO to the same shape used by the calendar
+        appsData = adminData.map((a) => ({
+          id: a.id,
+          startTime: a.startTime,
+          endTime: a.endTime,
+          statusName: a.statusName,
+          serviceName: a.serviceName || '',
+          employeeName: a.employeeName || '',
+        }));
+      } else if (isEmployee) {
+        const res = await api.get('/EmployeeAppointments/MyAppointments');
+        appsData = res.data.data;
+      } else {
+        appsData = await getAppointments();
       }
-    };
+      // Filter out cancelled appointments – they should not appear on the calendar
+      appsData = appsData.filter((a) => {
+        const status = a.statusName?.toLowerCase();
+        return (
+          status !== 'cancelled' &&
+          status !== 'anuluar' &&
+          status !== 'abgebrochen'
+        );
+      });
+      setAppointments(appsData);
 
-    run();
+      if (isEmployee) {
+        try {
+          const employees = await getEmployees();
+          const myEmployee = employees.find((e) => e.userId === user.id);
+          if (myEmployee) {
+            const [, doData] = await Promise.all([
+              getWorkingHours(myEmployee.id),
+              getDaysOff(myEmployee.id),
+            ]);
+            setDaysOff(doData);
+          }
+        } catch (employeeErr) {
+          console.warn('Could not load employee configuration', employeeErr);
+        }
+      }
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || t('calendar.loadFailed'));
+      } else {
+        setError(t('calendar.loadFailed'));
+      }
+    } finally {
+      setLoading(false);
+    }
   }, [user, isEmployee, isAdmin, t]);
 
+  useEffect(() => {
+    void loadData();
 
-    
-  
+    // Real-time: listen for SYSTEM_UPDATE directly
+    const handleSignalR = (notification: { title: string }) => {
+      if (notification.title === 'SYSTEM_UPDATE') void loadData();
+    };
+    notificationConnection.on('ReceiveNotification', handleSignalR);
+    return () => {
+      notificationConnection.off('ReceiveNotification', handleSignalR);
+    };
+  }, [loadData]);
 
   // Compute Current Week Days
   const currentWeekDays = useMemo(() => {
@@ -147,12 +151,12 @@ export default function AppointmentCalendar() {
     return days;
   }, [weekOffset]);
 
-  
+  // Handle Prev/Next Week
   const handlePrevWeek = () => setWeekOffset((prev) => prev - 1);
   const handleNextWeek = () => setWeekOffset((prev) => prev + 1);
   const handleToday = () => setWeekOffset(0);
 
-  
+  // Group events by date string
   const eventsByDate = useMemo(() => {
     const map: Record<string, any[]> = {};
     
@@ -195,7 +199,8 @@ export default function AppointmentCalendar() {
     // Check for day off
     const dayOff = dayEvents.find(e => e.type === 'dayOff');
     if (dayOff) {
-      
+      // If it's a day off, we might just style the whole row or show it differently.
+      // For now, we will render a disabled looking cell.
       return (
         <Box
           sx={{
@@ -211,7 +216,7 @@ export default function AppointmentCalendar() {
       );
     }
 
-    
+    // Check if an appointment starts here or falls within this 30-minute slot
     const appointment = dayEvents.find(e => {
       if (e.type !== 'appointment') return false;
       const [slotH, slotM] = timeStr.split(':').map(Number);

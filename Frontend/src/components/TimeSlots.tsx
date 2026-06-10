@@ -32,11 +32,13 @@ export default function TimeSlots({
     const current = new Date(`1970-01-01T${employeeStartTime}`);
     const end = new Date(`1970-01-01T${employeeEndTime}`);
 
+    // Safety: bail out if either time string produced an Invalid Date
+    // (e.g. SQL Server returns "HH:mm:ss.fffffff" with 7 decimal places)
     if (isNaN(current.getTime()) || isNaN(end.getTime())) return [];
 
     const slots: string[] = [];
     let iter = current;
-    const MAX_SLOTS = 200; 
+    const MAX_SLOTS = 200; // hard cap to prevent infinite loop
 
     while (slots.length < MAX_SLOTS) {
       const slotEnd = new Date(iter.getTime() + intervalMinutes * 60 * 1000);
@@ -46,7 +48,7 @@ export default function TimeSlots({
       const mm = String(iter.getMinutes()).padStart(2, '0');
       slots.push(`${hh}:${mm}`);
 
-      
+      // Advance by intervalMinutes, then round UP to nearest 5 min
       const next = new Date(iter.getTime() + intervalMinutes * 60 * 1000);
       const rem = next.getMinutes() % 5;
       if (rem !== 0) next.setMinutes(next.getMinutes() + (5 - rem));

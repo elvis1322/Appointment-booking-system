@@ -5,12 +5,11 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Container, Paper, Typography, Box, CircularProgress, Alert, Button, Chip } from '@mui/material';
 import { Icon } from '@iconify/react';
 import { createPaymentIntent } from '../../api/paymentApi';
-import { getOrderById } from '../../api/orderApi';
-import type { OrderResponseDto } from '../../api/orderApi';
 import CheckoutForm from '../../components/Payment/CheckoutForm';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-
+import { getOrderById } from '../../api/orderApi';
+import type { OrderResponseDto } from '../../api/orderApi';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || 'pk_test_TYooMQauvdEDq54NiTphI7jx');
 
