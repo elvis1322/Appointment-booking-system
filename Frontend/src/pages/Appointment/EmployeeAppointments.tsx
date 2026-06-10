@@ -1,23 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
-    Box, Typography, Paper, Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow, Chip, CircularProgress, Alert, Button,
-    Tooltip, Dialog, DialogTitle, DialogContent, DialogActions,
+    Box, Typography, Paper, Table, TableBody, TableCell,
+    TableContainer, TableHead, TableRow, Button, Chip, CircularProgress,
+    Alert, Dialog, DialogTitle, DialogContent, DialogActions, Tooltip,
 } from '@mui/material';
 import { Icon } from '@iconify/react';
-import type { AppointmentUserDto } from '../../types/appointment.types';
 import { useTranslation } from 'react-i18next';
 import api from '../../api/axiosConfig';
-import { useAuth } from '../../context/AuthContext';
-import ChatWindow from '../../components/chat/ChatWindow';
-import { notificationConnection } from '../../services/signalr/notificationConnection';
-
-type AdminChatUser = {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-};
+import type { AppointmentUserDto } from '../../types/appointment.types';
 
 function getStatusColor(s?: string): 'default' | 'warning' | 'success' | 'error' | 'info' {
     switch (s?.toLowerCase()) {
@@ -38,7 +28,6 @@ const STATUS_MAP: Record<string, string> = {
 
 export default function EmployeeAppointments() {
     const { t, i18n } = useTranslation();
-    const { user } = useAuth();
 
     const [appointments, setAppointments] = useState<AppointmentUserDto[]>([]);
     const [loading, setLoading] = useState(true);
@@ -46,48 +35,10 @@ export default function EmployeeAppointments() {
     const [success, setSuccess] = useState<string | null>(null);
     const [updatingId, setUpdatingId] = useState<string | null>(null);
 
-    // Chat state
-    const [chatTarget, setChatTarget] = useState<AppointmentUserDto | null>(null);
-    const [adminChat, setAdminChat] = useState<AdminChatUser | null>(null);
-    const [adminUser, setAdminUser] = useState<AdminChatUser | null>(null);
-    const [unreadChats, setUnreadChats] = useState<Record<string, boolean>>({});
-
     // Confirmation modal state
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [pendingActionId, setPendingActionId] = useState<string | null>(null);
-
-    const buildConversationId = (firstUserId: string, secondUserId: string) => {
-        return [firstUserId, secondUserId].sort().join('_');
-    };
-
-    const handleOpenChat = (app: AppointmentUserDto) => {
-        if (!user?.id || !app.userId) return;
-        const conversationId = buildConversationId(user.id, app.userId);
-        const updatedUnreadChats = { ...unreadChats };
-        delete updatedUnreadChats[conversationId];
-        setUnreadChats(updatedUnreadChats);
-        localStorage.setItem('unreadChats', JSON.stringify(updatedUnreadChats));
-        setChatTarget(app);
-    };
-
-    const handleOpenAdminChat = async () => {
-        try {
-            const admin = adminUser ?? (await api.get('/User/admin')).data;
-            if (user?.id && admin.id) {
-                const conversationId = buildConversationId(user.id, admin.id);
-                const updatedUnreadChats = { ...unreadChats };
-                delete updatedUnreadChats[conversationId];
-                setUnreadChats(updatedUnreadChats);
-                localStorage.setItem('unreadChats', JSON.stringify(updatedUnreadChats));
-            }
-            setAdminChat(admin);
-            setAdminUser(admin);
-        } catch (error) {
-            console.error(error);
-            setError('Could not open admin chat.');
-        }
-    };
 
     useEffect(() => {
         const fetchAppointments = () => {
@@ -98,35 +49,7 @@ export default function EmployeeAppointments() {
         };
 
         fetchAppointments();
-
-        // Real-time: listen for SYSTEM_UPDATE directly
-        const handleSignalR = (notification: { title: string }) => {
-            if (notification.title === 'SYSTEM_UPDATE') fetchAppointments();
-        };
-        notificationConnection.on('ReceiveNotification', handleSignalR);
-
-        return () => {
-            notificationConnection.off('ReceiveNotification', handleSignalR);
-        };
     }, [t]);
-
-    useEffect(() => {
-        const loadUnreadChats = () => {
-            const storedUnreadChats = JSON.parse(localStorage.getItem('unreadChats') || '{}');
-            setUnreadChats(storedUnreadChats);
-        };
-        loadUnreadChats();
-        window.addEventListener('unreadChatsChanged', loadUnreadChats);
-        return () => {
-            window.removeEventListener('unreadChatsChanged', loadUnreadChats);
-        };
-    }, []);
-
-    useEffect(() => {
-        api.get('/User/admin')
-            .then((res) => setAdminUser(res.data))
-            .catch((err) => console.error(err));
-    }, []);
 
     // --- Status change (Confirm / Cancel / Complete) ---
     const handleStatusChange = async (id: string, status: string) => {
@@ -205,30 +128,6 @@ export default function EmployeeAppointments() {
                         {t('employeeAppointments.subtitle')}
                     </Typography>
                 </Box>
-            </Box>
-
-            {/* Chat Admin Button */}
-            <Box sx={{ mb: 3 }}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={
-                        <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-                            <Icon icon="solar:chat-round-bold" />
-                            {adminUser && user?.id && unreadChats[buildConversationId(user.id, adminUser.id)] && (
-                                <Box
-                                    sx={{
-                                        position: 'absolute', top: -3, right: -4,
-                                        width: 8, height: 8, borderRadius: '50%', bgcolor: 'error.main',
-                                    }}
-                                />
-                            )}
-                        </Box>
-                    }
-                    onClick={handleOpenAdminChat}
-                >
-                    {t('employeeAppointments.chatAdmin', 'Chat Admin')}
-                </Button>
             </Box>
 
             {/* Dashboard stat cards */}
@@ -349,32 +248,6 @@ export default function EmployeeAppointments() {
                                                     </Tooltip>
                                                 ) : (
                                                     <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end', flexWrap: 'wrap' }}>
-                                                        {/* Chat with client */}
-                                                        {user?.id && app.userId && (
-                                                            <Button
-                                                                variant="outlined"
-                                                                size="small"
-                                                                color="primary"
-                                                                startIcon={
-                                                                    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-                                                                        <Icon icon="solar:chat-round-bold" />
-                                                                        {unreadChats[buildConversationId(user.id, app.userId)] && (
-                                                                            <Box
-                                                                                sx={{
-                                                                                    position: 'absolute', top: -3, right: -4,
-                                                                                    width: 8, height: 8, borderRadius: '50%', bgcolor: 'error.main',
-                                                                                }}
-                                                                            />
-                                                                        )}
-                                                                    </Box>
-                                                                }
-                                                                onClick={() => handleOpenChat(app)}
-                                                                sx={{ textTransform: 'none', fontSize: '0.75rem' }}
-                                                            >
-                                                                {t('bookings.actions.chat', 'Chat')}
-                                                            </Button>
-                                                        )}
-
                                                         {/* Confirm button — only for Pending */}
                                                         {!isConfirmed && (
                                                             <Button
@@ -478,34 +351,6 @@ export default function EmployeeAppointments() {
                         {t('employeeAppointments.deleteModal.yes', 'Yes, Delete')}
                     </Button>
                 </DialogActions>
-            </Dialog>
-
-            {/* ── Chat: Client ────────────────────────────────────────── */}
-            <Dialog open={!!chatTarget} onClose={() => setChatTarget(null)} maxWidth="md" fullWidth>
-                <DialogContent sx={{ p: 0 }}>
-                    {chatTarget && user?.id && chatTarget.userId && (
-                        <ChatWindow
-                            conversationId={buildConversationId(user.id, chatTarget.userId)}
-                            senderId={user.id}
-                            receiverId={chatTarget.userId}
-                            title={`Chat with ${chatTarget.userName}`}
-                        />
-                    )}
-                </DialogContent>
-            </Dialog>
-
-            {/* ── Chat: Admin ─────────────────────────────────────────── */}
-            <Dialog open={!!adminChat} onClose={() => setAdminChat(null)} maxWidth="md" fullWidth>
-                <DialogContent sx={{ p: 0 }}>
-                    {adminChat && user?.id && (
-                        <ChatWindow
-                            conversationId={buildConversationId(user.id, adminChat.id)}
-                            senderId={user.id}
-                            receiverId={adminChat.id}
-                            title={`Chat with ${adminChat.firstName} ${adminChat.lastName}`}
-                        />
-                    )}
-                </DialogContent>
             </Dialog>
         </Box>
     );
