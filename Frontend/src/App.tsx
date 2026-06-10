@@ -25,6 +25,19 @@ const EmployeeServices = lazy(() => import('./pages/Admin/EmployeeServices'));
 const StaffSchedule = lazy(() => import('./pages/Admin/StaffSchedule'));
 const LocationList = lazy(() => import('./pages/Admin/LocationList'));
 
+const BookingPage = lazy(() => import('./pages/Appointment/BookingPage'));
+const AppointmentCalendar = lazy(() => import('./pages/Appointment/AppointmentCalendar'));
+const PaymentPage = lazy(() => import('./pages/Appointment/PaymentPage'));
+const MyBookings = lazy(() => import('./pages/Appointment/MyBookings'));
+const MyInvoices = lazy(() => import('./pages/Appointment/MyInvoices'));
+const MyReviews = lazy(() => import('./pages/Appointment/UserReviews'));
+
+const AdminAppointments = lazy(() => import('./pages/Appointment/AdminAppointments'));
+const AdminTransactions = lazy(() => import('./pages/Appointment/AdminTransactions'));
+const AdminReviews = lazy(() => import('./pages/Appointment/AdminReviews'));
+const EmployeeAppointments = lazy(() => import('./pages/Appointment/EmployeeAppointments'));
+const EmployeeReviews = lazy(() => import('./pages/Appointment/EmployeeReviews'));
+
 function RouteFallback() {
     return <LinearProgress sx={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999 }} />;
 }
@@ -148,6 +161,15 @@ function AppLayout() {
                             {/* Rrugët e Mbrojtura */}
                             <Route element={<ProtectedRoute />}>
                                 <Route path="/profile" element={<Profile />} />
+                                 <Route path="/book-appointment" element={<BookingPage />} />
+                                <Route path="/calendar" element={<AppointmentCalendar />} />
+                                <Route path="/payment/:orderId" element={<PaymentPage />} />
+                                <Route path="/my-bookings" element={<MyBookings />} />
+                                <Route path="/my-invoices" element={<MyInvoices />} />
+                                <Route path="/my-reviews" element={<MyReviews />} />
+                                <Route path="/employee/appointments" element={<EmployeeAppointments />}/>
+                                <Route path="/employee/reviews"element={<EmployeeReviews />}/>
+        
                             </Route>
 
                             {/* Rrugët Admin */}
@@ -159,6 +181,10 @@ function AppLayout() {
                                 <Route path="/admin/employee-services" element={<EmployeeServices />} />
                                 <Route path="/admin/staff-schedule" element={<StaffSchedule />} />
                                 <Route path="/admin/locations" element={<LocationList />} /> 
+                                <Route path="/admin/employee-services" element={<EmployeeServices />}/>
+                                <Route path="/admin/appointments" element={<AdminAppointments />}/>
+                                <Route path="/admin/transactions" element={<AdminTransactions />}/>
+                                <Route path="/admin/reviews" element={<AdminReviews />}/>
                             </Route>
 
                             {/* Redirects */}
