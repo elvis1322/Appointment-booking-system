@@ -20,6 +20,16 @@ public class CreateEmployeeDto
     public string? Phone { get; set; }
 }
 
+public class CreateEmployeeRequestDto
+{
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string? Gjinia { get; set; }
+    public string? JobTitle { get; set; }
+    public string? Phone { get; set; }
+}
+
 public class UpdateEmployeeDto
 {
     public string? JobTitle { get; set; }

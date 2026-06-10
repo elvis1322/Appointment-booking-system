@@ -1,4 +1,5 @@
 using API;
+using Application.DTOs;
 using Application.DTOs.Staff;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,13 @@ namespace API.Controllers.Staff;
 [Route("api/employees")]
 public class EmployeesController : ControllerBase
 {
+    private readonly IUADServices _uadServices;
+
+    public EmployeesController(IUADServices uadServices)
+    {
+        _uadServices = uadServices;
+    }
+
     [HttpGet]
     [AllowAnonymous]
     public async Task<ActionResult<IReadOnlyList<EmployeeResponseDto>>> GetAll(
@@ -17,8 +25,9 @@ public class EmployeesController : ControllerBase
         [FromQuery] bool includeInactive = false,
         CancellationToken ct = default)
     {
-        if (!User.Claims.Any(c => c.Type == "permission" && c.Value == "Staff:Read"))
-            return Forbid();
+        
+        /// if (!User.Claims.Any(c => c.Type == "permission" && c.Value == "Staff:Read"))
+          //   return Forbid();
         return Ok(await svc.GetEmployeesAsync(includeInactive, ct));
     }
 
@@ -29,10 +38,55 @@ public class EmployeesController : ControllerBase
         Guid id,
         CancellationToken ct = default)
     {
-        if (!User.Claims.Any(c => c.Type == "permission" && c.Value == "Staff:Read"))
-            return Forbid();
+        
+        /// if (!User.Claims.Any(c => c.Type == "permission" && c.Value == "Staff:Read"))
+          //   return Forbid();
         var e = await svc.GetEmployeeByIdAsync(id, ct);
         return e == null ? NotFound() : Ok(e);
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<EmployeeResponseDto>> Create(
+        [FromServices] IStaffDirectoryService svc,
+        [FromBody] CreateEmployeeRequestDto dto,
+        CancellationToken ct = default)
+    {
+        if (!User.Claims.Any(c => c.Type == "permission" && c.Value == "Staff:Create"))
+            return Forbid();
+
+        if (string.IsNullOrWhiteSpace(dto.FirstName) ||
+            string.IsNullOrWhiteSpace(dto.LastName) ||
+            string.IsNullOrWhiteSpace(dto.Email))
+        {
+            return BadRequest("Emri, mbiemri dhe email-i janë të detyrueshëm.");
+        }
+
+        try
+        {
+            var createdUser = await _uadServices.AddEmployee(new UserAdminDTO
+            {
+                FirstName = dto.FirstName.Trim(),
+                LastName = dto.LastName.Trim(),
+                Email = dto.Email.Trim(),
+                Gjinia = string.IsNullOrWhiteSpace(dto.Gjinia) ? string.Empty : dto.Gjinia.Trim(),
+                RoleId = Guid.Empty,
+                RoleName = "Employee"
+            });
+
+            var employee = await svc.CreateEmployeeAsync(new CreateEmployeeDto
+            {
+                UserId = createdUser.Id,
+                JobTitle = string.IsNullOrWhiteSpace(dto.JobTitle) ? null : dto.JobTitle.Trim(),
+                Phone = string.IsNullOrWhiteSpace(dto.Phone) ? null : dto.Phone.Trim(),
+            }, StaffAuditHelper.Actor(User), ct);
+
+            return CreatedAtAction(nameof(GetById), new { id = employee.Id }, employee);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPut("{id:guid}")]
