@@ -14,6 +14,8 @@ import { createReview } from '../../api/reviewApi';
 import type { AppointmentUserDto } from '../../types/appointment.types';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import ChatWindow from '../../components/chat/ChatWindow';
+import { notificationConnection } from '../../services/signalr/notificationConnection';
 
 export default function MyBookings() {
     const { user } = useAuth();
@@ -36,7 +38,9 @@ export default function MyBookings() {
     const [submittingReview, setSubmittingReview] = useState(false);
     const [ratedIds, setRatedIds] = useState<Set<string>>(new Set());
 
+    const [chatTarget, setChatTarget] = useState<AppointmentUserDto | null>(null);
 
+    const [unreadChats, setUnreadChats] = useState<Record<string, boolean>>({});
 
     const lastFetchTimeRef = useRef<number>(0);
 
@@ -75,10 +79,12 @@ export default function MyBookings() {
 
         loadData();
 
+        // Background polling every 30 seconds
         const intervalId = setInterval(() => {
             fetchData(true);
         }, 30000);
 
+        // Refetch when page becomes visible or focused
         const handleFocus = () => {
             if (document.visibilityState === 'visible') {
                 fetchData(true);
@@ -88,13 +94,44 @@ export default function MyBookings() {
         window.addEventListener('focus', handleFocus);
         document.addEventListener('visibilitychange', handleFocus);
 
+        // Real-time: listen for SYSTEM_UPDATE directly
+        const handleSignalR = (notification: { title: string }) => {
+            if (notification.title === 'SYSTEM_UPDATE') fetchData(true);
+        };
+        notificationConnection.on('ReceiveNotification', handleSignalR);
+
         return () => {
             clearInterval(intervalId);
             window.removeEventListener('focus', handleFocus);
             document.removeEventListener('visibilitychange', handleFocus);
+            notificationConnection.off('ReceiveNotification', handleSignalR);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        const loadUnreadChats = () => {
+            const storedUnreadChats = JSON.parse(
+                localStorage.getItem("unreadChats") || "{}"
+            );
+
+            setUnreadChats(storedUnreadChats);
+        };
+
+        loadUnreadChats();
+
+        window.addEventListener(
+            "unreadChatsChanged",
+            loadUnreadChats
+        );
+
+        return () => {
+            window.removeEventListener(
+                "unreadChatsChanged",
+                loadUnreadChats
+            );
+        };
+    }, []);
 
     const handleCancelClick = (id: string) => {
         setCancelTargetId(id);
@@ -174,7 +211,31 @@ export default function MyBookings() {
         }
     };
 
+    const buildConversationId = (firstUserId: string, secondUserId: string) => {
+        return [firstUserId, secondUserId].sort().join('_');
+    };
 
+    const handleOpenChat = (app: AppointmentUserDto) => {
+        if (!user?.id || !app.employeeUserId) return;
+
+        const conversationId = buildConversationId(
+            user.id,
+            app.employeeUserId
+        );
+
+        const updatedUnreadChats = { ...unreadChats };
+
+        delete updatedUnreadChats[conversationId];
+
+        setUnreadChats(updatedUnreadChats);
+
+        localStorage.setItem(
+            "unreadChats",
+            JSON.stringify(updatedUnreadChats)
+        );
+
+        setChatTarget(app);
+    };
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
@@ -284,7 +345,9 @@ export default function MyBookings() {
 
                                     const isCompleted = app.statusName?.toLowerCase() === 'completed';
 
-
+                                    const isActiveAppointment =
+    app.statusName?.toLowerCase() !== 'cancelled' &&
+    app.statusName?.toLowerCase() !== 'completed';
                                     const appointmentOrder = orders.find((o) => o.appointmentId === app.id);
 
                                     const isOrderPending =
@@ -324,6 +387,47 @@ export default function MyBookings() {
 
                                             <TableCell align="right">
                                                 <Box component="div" sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
+                                                    {isActiveAppointment && user?.id && app.employeeUserId && (
+                                                        <Button
+                                                            variant="outlined"
+                                                            color="primary"
+                                                            size="small"
+                                                            startIcon={
+                                                                <Box
+                                                                    sx={{
+                                                                        position: "relative",
+                                                                        display: "inline-flex",
+                                                                    }}
+                                                                >
+                                                                    <Icon icon="solar:chat-round-bold" />
+
+                                                                    {isActiveAppointment &&
+                                                                        unreadChats[
+                                                                        buildConversationId(
+                                                                            user.id,
+                                                                            app.employeeUserId
+                                                                        )
+                                                                        ] && (
+                                                                            <Box
+                                                                                sx={{
+                                                                                    position: "absolute",
+                                                                                    top: -3,
+                                                                                    right: -4,
+                                                                                    width: 8,
+                                                                                    height: 8,
+                                                                                    borderRadius: "50%",
+                                                                                    bgcolor: "error.main",
+                                                                                }}
+                                                                            />
+                                                                        )}
+                                                                </Box>
+                                                            }
+                                                            onClick={() => handleOpenChat(app)}
+                                                            sx={{ borderRadius: 2 }}
+                                                        >
+                                                            {t('bookings.actions.chat', 'Chat')}
+                                                        </Button>
+                                                    )}
 
                                                     {isOrderPending && (
                                                         <Button
@@ -450,7 +554,23 @@ export default function MyBookings() {
                 </DialogActions>
             </Dialog>
 
-            
+            <Dialog
+                open={!!chatTarget}
+                onClose={() => setChatTarget(null)}
+                maxWidth="md"
+                fullWidth
+            >
+                <DialogContent sx={{ p: 0 }}>
+                    {chatTarget && user?.id && chatTarget.employeeUserId && (
+                        <ChatWindow
+                            conversationId={buildConversationId(user.id, chatTarget.employeeUserId)}
+                            senderId={user.id}
+                            receiverId={chatTarget.employeeUserId}
+                            title={`${t('bookings.actions.chatWith', 'Chat with')} ${chatTarget.employeeName}`}
+                        />
+                    )}
+                </DialogContent>
+            </Dialog>
         </Container>
     );
 }
