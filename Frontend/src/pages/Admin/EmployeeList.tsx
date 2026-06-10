@@ -1,3 +1,7 @@
+// ============================================================
+// [Member 2] - Employee List Page
+// ============================================================
+
 import { useEffect, useState } from 'react';
 import {
   Box, Typography, Paper, Table, TableBody, TableCell,
@@ -8,13 +12,18 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import type { Employee } from '../../types/staff.types.ts';
+import type { Employee } from '../../types/staff.types';
 import {
   createEmployee,
   getEmployees,
   updateEmployee,
   deleteEmployee,
-} from '../../api/staffApi.ts';
+} from '../../api/staffApi';
+
+import ChatIcon from '@mui/icons-material/Chat';
+import ChatWindow from '../../components/chat/ChatWindow';
+
+import { useAuth } from '../../context/AuthContext';
 
 // Forma për Edit (nuk ndryshon userId — vetëm të dhënat e stafit)
 const emptyUpdateForm = {
@@ -53,6 +62,9 @@ export default function EmployeeList() {
   const [deleteTarget, setDeleteTarget] = useState<Employee | null>(null);
   const [deleting, setDeleting] = useState(false);
 
+    const [chatTarget, setChatTarget] = useState<Employee | null>(null);
+    const { user } = useAuth();
+
   const fetchEmployees = () => {
     setLoading(true);
     getEmployees()
@@ -64,7 +76,11 @@ export default function EmployeeList() {
         console.error(err);
         setLoading(false);
       });
-  };
+    };
+
+    const buildConversationId = (firstUserId: string, secondUserId: string) => {
+        return [firstUserId, secondUserId].sort().join('_');
+    };
 
   useEffect(() => {
     fetchEmployees();
@@ -216,7 +232,16 @@ export default function EmployeeList() {
                       size="small" variant="outlined"
                     />
                   </TableCell>
-                  <TableCell align="right">
+                      <TableCell align="right">
+                          <IconButton
+                              color="primary"
+                              size="small"
+                              sx={{ mr: 1 }}
+                              onClick={() => setChatTarget(emp)}
+                              title="Chat"
+                          >
+                              <ChatIcon fontSize="small" />
+                          </IconButton>
                     <IconButton color="info" size="small" sx={{ mr: 1 }}
                       onClick={() => handleOpenEdit(emp)} title="Ndrysho">
                       <EditIcon fontSize="small" />
@@ -390,7 +415,24 @@ export default function EmployeeList() {
           </Button>
         </DialogActions>
       </Dialog>
+          <Dialog
+              open={!!chatTarget}
+              onClose={() => setChatTarget(null)}
+              maxWidth="md"
+              fullWidth
+          >
+              <DialogContent sx={{ p: 0 }}>
+                  {chatTarget && user?.id && chatTarget.userId && (
+                      <ChatWindow
+                          conversationId={buildConversationId(user.id, chatTarget.userId)}
+                          senderId={user.id}
+                          receiverId={chatTarget.userId}
+                          title={`Chat with ${chatTarget.firstName} ${chatTarget.lastName}`}
 
+                      />
+                  )}
+              </DialogContent>
+          </Dialog>
     </Box>
   );
 }
