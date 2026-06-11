@@ -1,12 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
 import { Box, Typography, Paper, Table, TableBody, TableCell,TableContainer, TableHead, TableRow, Chip, CircularProgress,
-  Alert, Select, MenuItem, IconButton, Tooltip, Dialog,DialogTitle, DialogContent, DialogActions, Button,} from '@mui/material';
+  Alert, Select, MenuItem, IconButton, Tooltip, Dialog,DialogTitle, DialogContent, DialogActions, Button, Menu,} from '@mui/material';
 import { Icon } from '@iconify/react';
-import {adminGetAllAppointments,adminChangeAppointmentStatus,adminDeleteAppointment,type AppointmentStatus,
-} from '../../api/appointmentApi';
+import {adminGetAllAppointments,adminChangeAppointmentStatus,adminDeleteAppointment,type AppointmentStatus} from '../../api/appointmentApi';
 import type { AppointmentAdminDto } from '../../types/appointment.types';
 import { useTranslation } from 'react-i18next';
 import { notificationConnection } from '../../services/signalr/notificationConnection';
+import { exportData } from '../../api/reportsApi';
 
 const STATUSES = ['Pending', 'Confirmed', 'Cancelled', 'Completed'];
 
@@ -29,8 +29,22 @@ export default function AdminAppointments() {
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<AppointmentAdminDto | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [exportAnchor, setExportAnchor] = useState<null | HTMLElement>(null);
+  const [exporting, setExporting] = useState(false);
 
   const lastFetchTimeRef = useRef<number>(0);
+
+  const handleExport = async (format: 'json' | 'csv' | 'excel') => {
+    setExportAnchor(null);
+    setExporting(true);
+    try {
+      await exportData('appointments', format);
+    } catch {
+      setError('Export dështoi. Provoni përsëri.');
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const fetchData = async (silent = false) => {
     const now = Date.now();
@@ -54,11 +68,12 @@ export default function AdminAppointments() {
   useEffect(() => {
     fetchData();
 
+    // Background polling every 30 seconds
     const intervalId = setInterval(() => {
       fetchData(true);
     }, 30000);
 
-    
+    // Refetch only when tab becomes visible
     const handleFocus = () => {
       if (document.visibilityState === 'visible') {
         fetchData(true);
@@ -67,21 +82,23 @@ export default function AdminAppointments() {
 
     window.addEventListener('focus', handleFocus);
     document.addEventListener('visibilitychange', handleFocus);
-    
-     // Real-time: listen for SYSTEM_UPDATE directly (no NotificationBell changes needed)
+
+    // Real-time: listen for SYSTEM_UPDATE directly (no NotificationBell changes needed)
     const handleSignalR = (notification: { title: string }) => {
       if (notification.title === 'SYSTEM_UPDATE') fetchData(true);
     };
-    notificationConnection.on('ReceiveNotification', handleSignalR); 
-    
+    notificationConnection.on('ReceiveNotification', handleSignalR);
+
     return () => {
       clearInterval(intervalId);
       window.removeEventListener('focus', handleFocus);
       document.removeEventListener('visibilitychange', handleFocus);
       notificationConnection.off('ReceiveNotification', handleSignalR);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-    const handleStatusChange = async (id: string, status: AppointmentStatus) => {
+
+  const handleStatusChange = async (id: string, status: AppointmentStatus) => {
     setUpdatingId(id);
     setError(null);
     try {
@@ -121,9 +138,9 @@ export default function AdminAppointments() {
   return (
     <Box sx={{ p: { xs: 2, md: 4 }, width: '100%' }}>
       {/* Header */}
-      <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', gap: 2 }}>
+      <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
         <Icon icon="solar:calendar-bold-duotone" width={36} style={{ color: '#1976d2' }} />
-        <Box>
+        <Box sx={{ flex: 1 }}>
           <Typography variant="h4" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
             {t('adminAppointments.title')}
           </Typography>
@@ -131,6 +148,35 @@ export default function AdminAppointments() {
             {t('adminAppointments.subtitle')}
           </Typography>
         </Box>
+        {/* Export Button */}
+        <Button
+          variant="outlined"
+          startIcon={<Icon icon="solar:export-bold" width={18} />}
+          endIcon={<Icon icon="solar:alt-arrow-down-bold" width={14} />}
+          onClick={(e) => setExportAnchor(e.currentTarget)}
+          disabled={exporting}
+          sx={{ borderRadius: 2, fontWeight: 600, whiteSpace: 'nowrap' }}
+        >
+          {exporting ? t('export.exportingBtn', 'Duke eksportuar...') : t('export.exportBtn', 'Eksporto')}
+        </Button>
+        <Menu
+          anchorEl={exportAnchor}
+          open={Boolean(exportAnchor)}
+          onClose={() => setExportAnchor(null)}
+        >
+          <MenuItem onClick={() => handleExport('excel')}>
+            <Icon icon="vscode-icons:file-type-excel" width={18} style={{ marginRight: 8 }} />
+            {t('export.downloadExcel', 'Shkarko Excel (.xlsx)')}
+          </MenuItem>
+          <MenuItem onClick={() => handleExport('csv')}>
+            <Icon icon="vscode-icons:file-type-csv" width={18} style={{ marginRight: 8 }} />
+            {t('export.downloadCsv', 'Shkarko CSV (.csv)')}
+          </MenuItem>
+          <MenuItem onClick={() => handleExport('json')}>
+            <Icon icon="vscode-icons:file-type-json" width={18} style={{ marginRight: 8 }} />
+            {t('export.downloadJson', 'Shkarko JSON (.json)')}
+          </MenuItem>
+        </Menu>
       </Box>
 
       {/* Summary Cards */}

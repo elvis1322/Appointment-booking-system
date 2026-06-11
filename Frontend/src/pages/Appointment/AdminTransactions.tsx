@@ -1,18 +1,16 @@
 import { useEffect, useState } from 'react';
-import {Box, Typography, Paper, Table,TableBody,TableCell,TableContainer,TableHead,
-    TableRow,Chip,CircularProgress,Alert,Select,MenuItem,IconButton,Tooltip,
-    Dialog,DialogTitle,DialogContent,DialogActions,Button,
-} from '@mui/material';
+import {Box,Typography, Paper,Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Chip,CircularProgress,
+    Alert,Select,MenuItem,IconButton,Tooltip,Dialog,DialogTitle,DialogContent,DialogActions,Button,Menu } from '@mui/material';
 
 import { Icon } from '@iconify/react';
 
+import { BarChart, Bar, XAxis, YAxis, PieChart, Pie, Cell, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
 
-import {adminGetAllOrders,adminUpdateOrderStatus,adminDeleteOrder,
-    type OrderResponseDto,
-    type OrderStatus,
+import {adminGetAllOrders,adminUpdateOrderStatus,adminDeleteOrder,type OrderResponseDto,type OrderStatus,
 } from '../../api/orderApi';
 
 import { useTranslation } from 'react-i18next';
+import { exportData } from '../../api/reportsApi';
 
 const ORDER_STATUSES = ['Pending', 'Paid', 'Cancelled', 'Refunded'];
 
@@ -44,6 +42,20 @@ export default function AdminTransactions() {
     const [deleteTarget, setDeleteTarget] =
         useState<OrderResponseDto | null>(null);
     const [deleting, setDeleting] = useState(false);
+    const [exportAnchor, setExportAnchor] = useState<null | HTMLElement>(null);
+    const [exporting, setExporting] = useState(false);
+
+    const handleExport = async (format: 'json' | 'csv' | 'excel') => {
+        setExportAnchor(null);
+        setExporting(true);
+        try {
+            await exportData('payments', format);
+        } catch {
+            setError('Export dështoi. Provoni përsëri.');
+        } finally {
+            setExporting(false);
+        }
+    };
 
     useEffect(() => {
         adminGetAllOrders()
@@ -122,38 +134,40 @@ export default function AdminTransactions() {
     return (
         <Box sx={{ p: { xs: 2, md: 4 }, width: '100%' }}>
             {/* Header */}
-            <Box
-                sx={{
-                    mb: 4,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 2,
-                }}
-            >
-                <Icon
-                    icon="solar:wallet-money-bold-duotone"
-                    width={36}
-                    style={{ color: '#1976d2' }}
-                />
-
-                <Box>
-                    <Typography
-                        variant="h4"
-                        sx={{
-                            color: 'primary.main',
-                            fontWeight: 'bold',
-                        }}
-                    >
+            <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+                <Icon icon="solar:wallet-money-bold-duotone" width={36} style={{ color: '#1976d2' }} />
+                <Box sx={{ flex: 1 }}>
+                    <Typography variant="h4" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
                         {t('adminTransactions.title')}
                     </Typography>
-
-                    <Typography
-                        variant="body2"
-                        sx={{ color: 'text.secondary' }}
-                    >
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                         {t('adminTransactions.subtitle')}
                     </Typography>
                 </Box>
+                <Button
+                    variant="outlined"
+                    startIcon={<Icon icon="solar:export-bold" width={18} />}
+                    endIcon={<Icon icon="solar:alt-arrow-down-bold" width={14} />}
+                    onClick={(e) => setExportAnchor(e.currentTarget)}
+                    disabled={exporting}
+                    sx={{ borderRadius: 2, fontWeight: 600, whiteSpace: 'nowrap' }}
+                >
+                    {exporting ? t('export.exportingBtn', 'Duke eksportuar...') : t('export.exportBtn', 'Eksporto')}
+                </Button>
+                <Menu anchorEl={exportAnchor} open={Boolean(exportAnchor)} onClose={() => setExportAnchor(null)}>
+                    <MenuItem onClick={() => handleExport('excel')}>
+                        <Icon icon="vscode-icons:file-type-excel" width={18} style={{ marginRight: 8 }} />
+                        {t('export.downloadExcel', 'Shkarko Excel (.xlsx)')}
+                    </MenuItem>
+                    <MenuItem onClick={() => handleExport('csv')}>
+                        <Icon icon="vscode-icons:file-type-csv" width={18} style={{ marginRight: 8 }} />
+                        {t('export.downloadCsv', 'Shkarko CSV (.csv)')}
+                    </MenuItem>
+                    <MenuItem onClick={() => handleExport('json')}>
+                        <Icon icon="vscode-icons:file-type-json" width={18} style={{ marginRight: 8 }} />
+                        {t('export.downloadJson', 'Shkarko JSON (.json)')}
+                    </MenuItem>
+                </Menu>
             </Box>
 
 
@@ -246,8 +260,6 @@ export default function AdminTransactions() {
                         borderRadius: 3,
                         border: `1px solid ${theme.palette.divider}`,
                         height: 360,
-                        display: 'flex',
-                        flexDirection: 'column',
                     })}
                 >
                     <Typography
@@ -256,30 +268,22 @@ export default function AdminTransactions() {
                     >
                         {t('adminTransactions.charts.revenueByOrder', 'Revenue by Order')}
                     </Typography>
-                    <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1, overflowY: 'auto' }}>
-                        {revenueChartData.slice(0, 12).map((item, i) => {
-                            const max = Math.max(...revenueChartData.map(d => d.total), 1);
-                            const pct = Math.round((item.total / max) * 100);
-                            return (
-                                <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                    <Typography variant="caption" sx={{ minWidth: 72, color: 'text.secondary', fontSize: '0.7rem' }}>
-                                        {item.name}
-                                    </Typography>
-                                    <Box sx={{ flex: 1, bgcolor: 'action.hover', borderRadius: 1, height: 18, overflow: 'hidden' }}>
-                                        <Box sx={{ width: `${pct}%`, height: '100%', bgcolor: '#1976d2', borderRadius: 1, transition: 'width 0.4s' }} />
-                                    </Box>
-                                    <Typography variant="caption" sx={{ minWidth: 50, textAlign: 'right', fontWeight: 'bold' }}>
-                                        €{item.total.toFixed(2)}
-                                    </Typography>
-                                </Box>
-                            );
-                        })}
-                        {revenueChartData.length === 0 && (
-                            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 4 }}>
-                                {t('adminTransactions.noData', 'No data')}
-                            </Typography>
-                        )}
-                    </Box>
+
+                    <ResponsiveContainer
+                        width="100%"
+                        height="85%"
+                    >
+                        <BarChart data={revenueChartData}>
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <RechartsTooltip />
+                            <Bar
+                                dataKey="total"
+                                fill="#1976d2"
+                                radius={[8, 8, 0, 0]}
+                            />
+                        </BarChart>
+                    </ResponsiveContainer>
                 </Paper>
 
                 <Paper
@@ -289,8 +293,6 @@ export default function AdminTransactions() {
                         borderRadius: 3,
                         border: `1px solid ${theme.palette.divider}`,
                         height: 360,
-                        display: 'flex',
-                        flexDirection: 'column',
                     })}
                 >
                     <Typography
@@ -299,27 +301,39 @@ export default function AdminTransactions() {
                     >
                         {t('adminTransactions.charts.ordersByStatus', 'Orders by Status')}
                     </Typography>
-                    <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2, justifyContent: 'center' }}>
-                        {statusChartData.map((item, i) => {
-                            const colors = ['#ed6c02', '#2e7d32', '#d32f2f', '#0288d1'];
-                            const total = statusChartData.reduce((s, d) => s + d.value, 0) || 1;
-                            const pct = Math.round((item.value / total) * 100);
-                            return (
-                                <Box key={i}>
-                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                            <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: colors[i % 4] }} />
-                                            <Typography variant="body2" sx={{ fontWeight: 600 }}>{item.name}</Typography>
-                                        </Box>
-                                        <Typography variant="body2" color="text.secondary">{item.value} ({pct}%)</Typography>
-                                    </Box>
-                                    <Box sx={{ width: '100%', bgcolor: 'action.hover', borderRadius: 1, height: 10, overflow: 'hidden' }}>
-                                        <Box sx={{ width: `${pct}%`, height: '100%', bgcolor: colors[i % 4], borderRadius: 1, transition: 'width 0.4s' }} />
-                                    </Box>
-                                </Box>
-                            );
-                        })}
-                    </Box>
+
+                    <ResponsiveContainer
+                        width="100%"
+                        height="85%"
+                    >
+                        <PieChart>
+                            <Pie
+                                data={statusChartData}
+                                dataKey="value"
+                                nameKey="name"
+                                outerRadius={105}
+                                label
+                            >
+                                {statusChartData.map(
+                                    (_, index) => (
+                                        <Cell
+                                            key={`cell-${index}`}
+                                            fill={
+                                                [
+                                                    '#ed6c02',
+                                                    '#2e7d32',
+                                                    '#d32f2f',
+                                                    '#0288d1',
+                                                ][index % 4]
+                                            }
+                                        />
+                                    )
+                                )}
+                            </Pie>
+
+                            <RechartsTooltip />
+                        </PieChart>
+                    </ResponsiveContainer>
                 </Paper>
             </Box>
 

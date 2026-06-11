@@ -38,6 +38,7 @@ const AdminReviews = lazy(() => import('./pages/Appointment/AdminReviews'));
 const EmployeeAppointments = lazy(() => import('./pages/Appointment/EmployeeAppointments'));
 const EmployeeReviews = lazy(() => import('./pages/Appointment/EmployeeReviews'));
 
+
 function RouteFallback() {
     return <LinearProgress sx={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999 }} />;
 }

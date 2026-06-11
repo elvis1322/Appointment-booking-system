@@ -1,16 +1,29 @@
 import { useEffect, useState } from 'react';
-import {Box, Typography, Paper, Table, TableBody, TableCell,TableContainer, TableHead, TableRow, Chip, CircularProgress,Alert, Rating,
+import {Box, Typography, Paper, Table, TableBody, TableCell,TableContainer, TableHead, TableRow, Chip, CircularProgress, Alert, Rating, Button, Menu, MenuItem,
 } from '@mui/material';
 import { Icon } from '@iconify/react';
 import { adminGetAllReviews } from '../../api/reviewApi';
 import type { ReviewDto } from '../../types/review.types';
 import { useTranslation } from 'react-i18next';
+import { exportData } from '../../api/reportsApi';
 
 export default function AdminReviews() {
   const { t } = useTranslation();
   const [reviews, setReviews] = useState<ReviewDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [exportAnchor, setExportAnchor] = useState<null | HTMLElement>(null);
+  const [exporting, setExporting] = useState(false);
+
+  const handleExport = async (format: 'json' | 'csv' | 'excel') => {
+    setExportAnchor(null);
+    setExporting(true);
+    try { await exportData('reviews', format); }
+    catch { setError('Export dështoi.'); }
+    finally { setExporting(false); }
+  };
+
+
 
   useEffect(() => {
     adminGetAllReviews()
@@ -25,12 +38,41 @@ export default function AdminReviews() {
 
   return (
     <Box sx={{ p: { xs: 2, md: 4 }, width: '100%' }}>
-      <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', gap: 2 }}>
+      <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
         <Icon icon="solar:star-bold-duotone" width={36} style={{ color: '#1976d2' }} />
-        <Box>
+        <Box sx={{ flex: 1 }}>
           <Typography variant="h4" sx={{ color: 'primary.main', fontWeight: 'bold' }}>{t('adminReviews.title', 'Të gjitha vlerësimet')}</Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>{t('adminReviews.subtitle', 'Monitoroni vlerësimet dhe kënaqësinë e klientëve.')}</Typography>
         </Box>
+        {/* Export */}
+        <Button
+          variant="outlined"
+          startIcon={<Icon icon="solar:export-bold" width={18} />}
+          endIcon={<Icon icon="solar:alt-arrow-down-bold" width={14} />}
+          onClick={(e) => setExportAnchor(e.currentTarget)}
+          disabled={exporting}
+          sx={{ borderRadius: 2, fontWeight: 600, whiteSpace: 'nowrap' }}
+        >
+          {exporting ? t('export.exportingBtn', 'Duke eksportuar...') : t('export.exportBtn', 'Eksporto')}
+        </Button>
+        <Menu
+          anchorEl={exportAnchor}
+          open={Boolean(exportAnchor)}
+          onClose={() => setExportAnchor(null)}
+        >
+          <MenuItem onClick={() => handleExport('excel')}>
+            <Icon icon="vscode-icons:file-type-excel" width={18} style={{ marginRight: 8 }} />
+            {t('export.downloadExcel', 'Shkarko Excel (.xlsx)')}
+          </MenuItem>
+          <MenuItem onClick={() => handleExport('csv')}>
+            <Icon icon="vscode-icons:file-type-csv" width={18} style={{ marginRight: 8 }} />
+            {t('export.downloadCsv', 'Shkarko CSV (.csv)')}
+          </MenuItem>
+          <MenuItem onClick={() => handleExport('json')}>
+            <Icon icon="vscode-icons:file-type-json" width={18} style={{ marginRight: 8 }} />
+            {t('export.downloadJson', 'Shkarko JSON (.json)')}
+          </MenuItem>
+        </Menu>
       </Box>
 
       {/* Summary */}
