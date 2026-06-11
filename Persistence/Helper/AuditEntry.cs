@@ -33,7 +33,7 @@ public class AuditEntry
         audit.UserId = UserId;
         audit.Action = AuditAction; // Këtu ia kalojmë vlerën AuditLog-ut
         audit.TableName = TableName;
-        audit.DateTime = DateTime.UtcNow;
+        audit.CreatedAt = DateTime.UtcNow;
         
         // Përdorim Newtonsoft.Json për të konvertuar Dictionary në String
         audit.PrimaryKey = JsonConvert.SerializeObject(KeyValues);

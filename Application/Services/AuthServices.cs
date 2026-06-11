@@ -82,15 +82,12 @@ public class AuthService : IAuthService
 
 
 if (user == null) {
-    Console.WriteLine("Email not found in database!");
     return null; 
 }   
 
 bool verify = BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash);
-    Console.WriteLine($"--- REZULTATI I BCRYPT: {verify}");
 if (!verify) 
     {
-        Console.WriteLine("--- Wrong password provided!");
         return null; // NDALON KËTU! Nuk gjeneron token nëse fjalëkalimi është gabim
     }
 
@@ -135,13 +132,11 @@ var accessToken = CreateToken(user);
     }
 public async Task LogoutAsync(LogoutDto logoutDto)
 {
-    Console.WriteLine($"Duke kërkuar token-in: {logoutDto.RefreshToken}");
     // 1. Gjejmë token-in në DB
     var refreshToken = await _tokenRepo.GetByTokenAsync(logoutDto.RefreshToken);
 
     if (refreshToken == null)
     {
-        Console.WriteLine("Token not found!");
         throw new Exception("Token not found or invalid.");
     }
 
@@ -188,8 +183,8 @@ public async Task LogoutAsync(LogoutDto logoutDto)
                     }
                 }
             }
-            /*2. Rruga rezervë: Fallback nese Role nuk eshte Include-uar
-            else 
+       
+          /*  else 
             {
                 string roleName = string.Empty;
                 if (userRole.RoleId == AppDefaults.Roles.AdminId) roleName = "Admin";

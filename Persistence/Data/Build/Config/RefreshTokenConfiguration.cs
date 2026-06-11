@@ -19,5 +19,17 @@ internal static class RefreshTokenConfiguration
          .HasOne(a => a.Status)
          .WithMany(s => s.Appointments)
          .HasForeignKey(a => a.StatusId);
+
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.Appointment)
+            .WithMany()
+            .HasForeignKey(o => o.AppointmentId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.User)
+            .WithMany()
+            .HasForeignKey(o => o.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

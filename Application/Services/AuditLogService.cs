@@ -17,7 +17,7 @@ public class AuditLogService
     {
          return await _context.AuditLogs
         .Include(a => a.User)
-        .OrderByDescending(a => a.DateTime)
+        .OrderByDescending(a => a.CreatedAt)
         .Take(100)
         .Select(a => new AuditLogDto
         {
@@ -25,7 +25,7 @@ public class AuditLogService
             UserName = a.User != null ? $"{a.User.FirstName} {a.User.LastName}" : "System/Anonymous",
             Action = a.Action,
             TableName = a.TableName,
-            DateTime = a.DateTime,
+            DateTime = a.CreatedAt,
             KeyValues = a.PrimaryKey, // SHTO KËTË RRESHT - Lidhja me DB
             OldValues = a.OldValues,
             NewValues = a.NewValues,

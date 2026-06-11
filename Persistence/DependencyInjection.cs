@@ -15,7 +15,7 @@ public static class DependencyInjection
       
         services.AddDbContext<DataContext>(options =>
         {
-            options.UseSqlite(config.GetConnectionString("DefaultConnection"));
+            options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
         });
 
         services.AddAuthRepositories();
@@ -43,6 +43,7 @@ public static class DependencyInjection
     private static IServiceCollection AddAppointmentRepositories(this IServiceCollection services)
     {
         services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+        services.AddScoped<IServiceRepository, ServiceRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddScoped<IOrderItemRepository, OrderItemRepository>();
@@ -50,4 +51,4 @@ public static class DependencyInjection
         services.AddScoped<IReviewRepository, ReviewRepository>();
         return services;
     }
-}
+}a

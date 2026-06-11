@@ -26,7 +26,8 @@ public class DataContext : DbContext
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
-
+    public DbSet<SystemSettings> SystemSettings { get; set; }
+    public DbSet<UploadedFile> Files { get; set; }
 
     // Member 2 – Services, staff, locations, schedule 
     public DbSet<ServiceCategory> ServiceCategories { get; set; }

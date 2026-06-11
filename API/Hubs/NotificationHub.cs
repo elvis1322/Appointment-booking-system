@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Hubs;
 
+[Authorize]
 public class NotificationHub : Hub
 {
     public override async Task OnConnectedAsync()

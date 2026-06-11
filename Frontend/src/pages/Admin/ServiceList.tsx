@@ -4,12 +4,12 @@ import {
   Box, Typography, Button, Paper, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Chip, CircularProgress,
   IconButton, Dialog, DialogTitle, DialogContent, DialogActions,
-  TextField, Select, MenuItem, FormControl, InputLabel,
-  Switch, FormControlLabel,
+  TextField, Select, MenuItem, Menu, FormControl, InputLabel,
+  Switch, FormControlLabel, Snackbar, Alert, Stack,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Icon } from '@iconify/react';
 import type { Service, ServiceCategory } from '../../types/staff.types';
 import {
   getServices,
@@ -18,6 +18,7 @@ import {
   deleteService,
   getServiceCategories,
 } from '../../api/staffApi';
+import api from '../../api/axiosConfig';
 
 const emptyForm = {
   serviceCategoryId: '',
@@ -43,6 +44,12 @@ export default function ServiceList() {
   // Dialog state — Delete
   const [deleteTarget, setDeleteTarget] = useState<Service | null>(null);
   const [deleting, setDeleting] = useState(false);
+
+  // Export state
+  const [exporting, setExporting] = useState(false);
+  const [exportAnchor, setExportAnchor] = useState<null | HTMLElement>(null);
+  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' | 'info' }>({ open: false, message: '', severity: 'success' });
+
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -127,17 +134,76 @@ export default function ServiceList() {
     setDeleting(false);
   };
 
+  // ── EXPORT ────────────────────────────────────────────────
+  const handleExport = async (format: 'json' | 'csv' | 'excel') => {
+    setExportAnchor(null);
+    setExporting(true);
+    try {
+      if (format === 'json') {
+        const res = await api.get('/reports/services/json');
+        const blob = new Blob([JSON.stringify(res.data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'services.json'; a.click();
+        URL.revokeObjectURL(url);
+      } else if (format === 'csv') {
+        const res = await api.get('/reports/services/csv', { responseType: 'blob' });
+        const url = URL.createObjectURL(res.data);
+        const a = document.createElement('a'); a.href = url; a.download = 'services.csv'; a.click();
+        URL.revokeObjectURL(url);
+      } else {
+        const res = await api.get('/reports/services/excel', { responseType: 'blob' });
+        const url = URL.createObjectURL(res.data);
+        const a = document.createElement('a'); a.href = url; a.download = 'services.xlsx'; a.click();
+        URL.revokeObjectURL(url);
+      }
+      setSnackbar({ open: true, message: `U eksportua si ${format.toUpperCase()} me sukses!`, severity: 'success' });
+    } catch {
+      setSnackbar({ open: true, message: 'Gabim gjatë eksportimit.', severity: 'error' });
+    } finally {
+      setExporting(false);
+    }
+  };
+
+
   // ── RENDER ────────────────────────────────────────────────
   return (
     <Box sx={{ p: 4, width: '100%' }}>
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4, flexWrap: 'wrap', gap: 2 }}>
         <Typography sx={{ fontWeight: 'bold' }} variant="h4">
           {t('serviceList.title')}
         </Typography>
-        <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenCreate}>
-          {t('serviceList.addService')}
-        </Button>
+        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', alignItems: 'center' }}>
+          <Button
+            variant="outlined"
+            startIcon={<Icon icon="solar:export-bold" width={18} />}
+            endIcon={<Icon icon="solar:alt-arrow-down-bold" width={14} />}
+            onClick={(e) => setExportAnchor(e.currentTarget)}
+            disabled={exporting}
+            sx={{ borderRadius: 2, fontWeight: 600, whiteSpace: 'nowrap' }}
+          >
+            {exporting ? t('export.exportingBtn', 'Duke eksportuar...') : t('export.exportBtn', 'Eksporto')}
+          </Button>
+          <Menu anchorEl={exportAnchor} open={Boolean(exportAnchor)} onClose={() => setExportAnchor(null)}>
+            <MenuItem onClick={() => handleExport('excel')}>
+              <Icon icon="vscode-icons:file-type-excel" width={18} style={{ marginRight: 8 }} />
+              {t('export.downloadExcel', 'Shkarko Excel (.xlsx)')}
+            </MenuItem>
+            <MenuItem onClick={() => handleExport('csv')}>
+              <Icon icon="vscode-icons:file-type-csv" width={18} style={{ marginRight: 8 }} />
+              {t('export.downloadCsv', 'Shkarko CSV (.csv)')}
+            </MenuItem>
+            <MenuItem onClick={() => handleExport('json')}>
+              <Icon icon="vscode-icons:file-type-json" width={18} style={{ marginRight: 8 }} />
+              {t('export.downloadJson', 'Shkarko JSON (.json)')}
+            </MenuItem>
+          </Menu>
+
+          <Button variant="contained" color="primary" startIcon={<Icon icon="solar:add-circle-bold" width={18} />} onClick={handleOpenCreate}
+            sx={{ borderRadius: 2, fontWeight: 600 }}>
+            {t('serviceList.addService')}
+          </Button>
+        </Stack>
       </Box>
 
       {loading ? (
@@ -292,6 +358,12 @@ export default function ServiceList() {
           </Button>
         </DialogActions>
       </Dialog>
+      {/* Snackbar feedback */}
+      <Snackbar open={snackbar.open} autoHideDuration={5000} onClose={() => setSnackbar(s => ({ ...s, open: false }))} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert severity={snackbar.severity} onClose={() => setSnackbar(s => ({ ...s, open: false }))} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
 
     </Box>
   );

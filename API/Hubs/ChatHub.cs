@@ -3,9 +3,11 @@ using API.Services.Mongo;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Hubs;
 
+[Authorize]
 public class ChatHub : Hub
 {
     private readonly ChatMongoService _chatMongoService;

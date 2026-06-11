@@ -4,11 +4,13 @@ import {
   Box, Typography, Paper, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Chip, CircularProgress,
   IconButton, Dialog, DialogTitle, DialogContent, DialogActions,
-  TextField, Switch, FormControlLabel, Button, MenuItem,
+  TextField, Switch, FormControlLabel, Button, MenuItem, Menu,
   FormControl, InputLabel, Select, FormHelperText,
+  Snackbar, Alert, Stack,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Icon } from '@iconify/react';
 import type { Employee } from '../../types/staff.types';
 import {
   createEmployee,
@@ -16,6 +18,7 @@ import {
   updateEmployee,
   deleteEmployee,
 } from '../../api/staffApi';
+import api from '../../api/axiosConfig';
 
 import ChatIcon from '@mui/icons-material/Chat';
 import ChatWindow from '../../components/chat/ChatWindow';
@@ -59,7 +62,12 @@ export default function EmployeeList() {
   const [deleteTarget, setDeleteTarget] = useState<Employee | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-    const [chatTarget, setChatTarget] = useState<Employee | null>(null);
+  // Export state
+  const [exporting, setExporting] = useState(false);
+  const [exportAnchor, setExportAnchor] = useState<null | HTMLElement>(null);
+  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' | 'info' }>({ open: false, message: '', severity: 'success' });
+
+  const [chatTarget, setChatTarget] = useState<Employee | null>(null);
   const { t } = useTranslation();
   const { user } = useAuth();
 
@@ -190,15 +198,74 @@ export default function EmployeeList() {
     setDeleting(false);
   };
 
+  // ── EXPORT ────────────────────────────────────────────────
+  const handleExport = async (format: 'json' | 'csv' | 'excel') => {
+    setExportAnchor(null);
+    setExporting(true);
+    try {
+      if (format === 'json') {
+        const res = await api.get('/reports/employees/json');
+        const blob = new Blob([JSON.stringify(res.data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'employees.json'; a.click();
+        URL.revokeObjectURL(url);
+      } else if (format === 'csv') {
+        const res = await api.get('/reports/employees/csv', { responseType: 'blob' });
+        const url = URL.createObjectURL(res.data);
+        const a = document.createElement('a'); a.href = url; a.download = 'employees.csv'; a.click();
+        URL.revokeObjectURL(url);
+      } else {
+        const res = await api.get('/reports/employees/excel', { responseType: 'blob' });
+        const url = URL.createObjectURL(res.data);
+        const a = document.createElement('a'); a.href = url; a.download = 'employees.xlsx'; a.click();
+        URL.revokeObjectURL(url);
+      }
+      setSnackbar({ open: true, message: `U eksportua si ${format.toUpperCase()} me sukses!`, severity: 'success' });
+    } catch {
+      setSnackbar({ open: true, message: 'Gabim gjatë eksportimit.', severity: 'error' });
+    } finally {
+      setExporting(false);
+    }
+  };
+
+
   // ── RENDER ────────────────────────────────────────────────
   return (
     <Box sx={{ p: 4, width: '100%' }}>
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4, flexWrap: 'wrap', gap: 2 }}>
         <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{t('employeeList.title')}</Typography>
-        <Button variant="contained" color="primary" onClick={handleOpenCreate}>
-          {t('employeeList.addEmployee')}
-        </Button>
+        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', alignItems: 'center' }}>
+          <Button
+            variant="outlined"
+            startIcon={<Icon icon="solar:export-bold" width={18} />}
+            endIcon={<Icon icon="solar:alt-arrow-down-bold" width={14} />}
+            onClick={(e) => setExportAnchor(e.currentTarget)}
+            disabled={exporting}
+            sx={{ borderRadius: 2, fontWeight: 600, whiteSpace: 'nowrap' }}
+          >
+            {exporting ? t('export.exportingBtn', 'Duke eksportuar...') : t('export.exportBtn', 'Eksporto')}
+          </Button>
+          <Menu anchorEl={exportAnchor} open={Boolean(exportAnchor)} onClose={() => setExportAnchor(null)}>
+            <MenuItem onClick={() => handleExport('excel')}>
+              <Icon icon="vscode-icons:file-type-excel" width={18} style={{ marginRight: 8 }} />
+              {t('export.downloadExcel', 'Shkarko Excel (.xlsx)')}
+            </MenuItem>
+            <MenuItem onClick={() => handleExport('csv')}>
+              <Icon icon="vscode-icons:file-type-csv" width={18} style={{ marginRight: 8 }} />
+              {t('export.downloadCsv', 'Shkarko CSV (.csv)')}
+            </MenuItem>
+            <MenuItem onClick={() => handleExport('json')}>
+              <Icon icon="vscode-icons:file-type-json" width={18} style={{ marginRight: 8 }} />
+              {t('export.downloadJson', 'Shkarko JSON (.json)')}
+            </MenuItem>
+          </Menu>
+          
+          <Button variant="contained" color="primary" startIcon={<Icon icon="solar:user-plus-bold" width={18} />} onClick={handleOpenCreate}
+            sx={{ borderRadius: 2, fontWeight: 600 }}>
+            {t('employeeList.addEmployee')}
+          </Button>
+        </Stack>
       </Box>
 
       {loading ? (
@@ -443,6 +510,12 @@ export default function EmployeeList() {
                   )}
               </DialogContent>
           </Dialog>
+      {/* Snackbar feedback */}
+      <Snackbar open={snackbar.open} autoHideDuration={5000} onClose={() => setSnackbar(s => ({ ...s, open: false }))} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert severity={snackbar.severity} onClose={() => setSnackbar(s => ({ ...s, open: false }))} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
