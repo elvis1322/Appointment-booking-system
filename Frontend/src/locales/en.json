@@ -1,9 +1,368 @@
 {
+  "statuses": {
+    "Pending": "Pending",
+    "Paid": "Paid",
+    "Cancelled": "Cancelled",
+    "Refunded": "Refunded",
+    "Confirmed": "Confirmed",
+    "Completed": "Completed"
+  },
+  "register": {
+    "title": "Register",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "gender": "Gender",
+    "genderM": "Male",
+    "genderF": "Female",
+    "password": "Password",
+    "passwordHelper": "At least 6 characters, including uppercase, lowercase letters and a number.",
+    "submit": "Create account",
+    "haveAccount": "Already have an account? Login",
+    "errorFailed": "Registration failed.",
+    "errorGenderRequired": "Gender selection is required!",
+    "selectGenderPlaceholder": "Select gender...",
+    "errors": {
+      "firstName": "First Name is required",
+      "lastName": "Last Name is required",
+      "email": "Email is required and must be valid",
+      "gender": "Gender selection is required",
+      "requiredPrefix": "The following fields are required",
+      "firstNameLength": "First name must be between 2 and 50 characters",
+      "lastNameLength": "Last name must be between 2 and 50 characters",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address.",
+      "passwordRequired": "Password is required",
+      "passwordTooShort": "Password must be at least 6 characters!",
+      "passwordStrength": "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+    }
+  },
   "nav": {
     "profile": "Profile",
     "users": "User Management",
     "logout": "Logout",
-    "SystemName": "Appointment System"
+    "SystemName": "Appointment System",
+    "employees": "Staff Directory",
+    "services": "Services",
+    "serviceCategories": "Service Categories",
+    "employeeServices": "Employee Services",
+    "staffSchedule": "Staff Schedule",
+    "locations": "Locations & Rooms",
+    "bookAppointment": "Book Appointment",
+    "myBookings": "My Bookings",
+    "myInvoices": "My Invoices",
+    "myCalendar": "My Calendar",
+    "mySchedule": "My Schedule",
+    "myAppointments": "My Appointments",
+    "allAppointments": "All Appointments",
+    "transactions": "Transactions & Orders",
+    "allReviews": "All Reviews",
+    "myReviews": "My Reviews",
+    "settings": "Settings"
+  },
+  "booking": {
+    "title": "Book an Appointment",
+    "subtitle": "Select service, professional, date and time.",
+    "selectService": "Select Service",
+    "noServices": "No services found",
+    "summaryTitle": "Booking Summary",
+    "service": "Service",
+    "duration": "Duration",
+    "minutes": "minutes",
+    "date": "Date",
+    "time": "Time",
+    "total": "Total",
+    "confirmBtn": "Confirm Booking",
+    "errorMissingFields": "Please select a professional, date and time.",
+    "errorMissingService": "Please select a service.",
+    "errorPastTime": "You cannot book an appointment in the past. Please select a future date and time.",
+    "errorBookingFailed": "Failed to book appointment.",
+    "errorBusy": "Failed to book appointment. Check if the slot is already taken.",
+    "success": "Appointment booked successfully! Redirecting to payment...",
+    "selectProfessional": "Select Professional",
+    "noProfessionals": "No professionals found",
+    "appointmentDate": "Appointment Date",
+    "selectTime": "Select Time",
+    "invoicePrefix": "Invoice",
+    "booked": "Booked",
+    "noSlotsEmployeeUnavailable": "Employee is not available on this date.",
+    "noSlotsForDuration": "No available slots for the selected duration.",
+    "selectServiceFirst": "Select a service first",
+    "noStaffAvailable": "No staff available for this service",
+    "selectEmployeeFirst": "Please select a professional to see available times.",
+    "selectDateFirst": "Please select a date to see available times.",
+    "conflictError": "You already have an appointment at this time. Please choose a different time slot."
+  },
+  "payment": {
+    "title": "Complete Payment",
+    "subtitle": "Please enter your card details to finalize the booking.",
+    "orderPrefix": "Order #",
+    "returnBtn": "Return to Bookings",
+    "initializing": "Initializing payment...",
+    "errorInvalidId": "Invalid order ID",
+    "errorDataFailed": "Failed to get payment details.",
+    "errorInitFailed": "Payment initialization failed.",
+    "errorUnexpected": "An unexpected error occurred.",
+    "successAlert": "Payment completed successfully! Thank you for your booking.",
+    "redirecting": "Redirecting to my bookings...",
+    "goToBookings": "Go to My Bookings",
+    "payNow": "Pay Now",
+    "payLater": "Pay Later",
+    "paymentFailed": "Payment failed",
+    "paymentVerificationFailed": "Payment succeeded but we could not verify it with our server. Please contact support."
+  },
+  "invoices": {
+    "title": "Payment History & Invoices",
+    "subtitle": "View your transactions and download official PDF invoices.",
+    "noInvoicesTitle": "You have no recorded transactions.",
+    "noInvoicesDesc": "Your invoices will appear here after you make a payment.",
+    "table": {
+      "orderId": "Order ID",
+      "amount": "Amount",
+      "status": "Payment Status",
+      "details": "Invoice Details",
+      "download": "Download",
+      "defaultStatus": "Pending",
+      "invoiceIdPrefix": "Invoice ID: ",
+      "unpaid": "Unpaid",
+      "paymentStatus": "Payment Status"
+    },
+    "actions": {
+      "downloading": "Downloading...",
+      "downloadPdf": "PDF",
+      "noInvoice": "No Invoice"
+    },
+    "messages": {
+      "loadFailed": "Failed to load invoice history.",
+      "downloadFailed": "Failed to download PDF invoice."
+    }
+  },
+  "bookings": {
+    "title": "My Bookings",
+    "subtitle": "Manage and view your appointment history.",
+    "noBookingsTitle": "You have no booked appointments.",
+    "noBookingsDesc": "Book a new appointment quickly and easily.",
+    "table": {
+      "service": "Service",
+      "dateTime": "Date & Time",
+      "status": "Status",
+      "actions": "Actions",
+      "timePrefix": "Time: ",
+      "defaultService": "General Service",
+      "defaultStatus": "Pending",
+      "employee": "Professional"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "review": "Review",
+      "rate": "Rate",
+      "chat": "Chat",
+      "chatWith": "Chat with"
+    },
+    "cancelDialog": {
+      "title": "Cancel Appointment",
+      "desc": "Are you sure you want to cancel this appointment?",
+      "keep": "Cancel (No)",
+      "confirm": "Yes, cancel",
+      "cancelling": "Cancelling..."
+    },
+    "reviewDialog": {
+      "title": "Review Service",
+      "desc": "How was your experience with our service? Your review helps us improve.",
+      "commentLabel": "Comment (Optional)",
+      "commentPlaceholder": "Write your thoughts here...",
+      "cancel": "Cancel",
+      "submit": "Submit Review",
+      "submitting": "Submitting..."
+    },
+    "messages": {
+      "loadFailed": "Failed to load appointments.",
+      "cancelSuccess": "Appointment cancelled successfully.",
+      "cancelFailed": "Error cancelling appointment.",
+      "reviewSuccess": "Review submitted successfully! Thank you.",
+      "reviewFailed": "Error submitting review."
+    }
+  },
+  "calendar": {
+    "mySchedule": "My Schedule",
+    "myCalendar": "My Calendar",
+    "roleEmployee": "Employee",
+    "roleAdmin": "Admin",
+    "roleClient": "Client",
+    "dayOffPrefix": "Day Off: ",
+    "dayOffDefault": "Day Off",
+    "bookedAppointment": "Booked Appointment",
+    "alertAppointment": "Appointment: ",
+    "alertStatus": "Status: ",
+    "loadFailed": "Failed to load calendar.",
+    "today": "Today",
+    "date": "Date",
+    "appointmentTitle": "Appointment",
+    "serviceLabel": "Service",
+    "employeeLabel": "Professional",
+    "clientLabel": "Client",
+    "timeLabel": "Time",
+    "closeBtn": "Close"
+  },
+  "adminAppointments": {
+    "title": "All Appointments",
+    "subtitle": "View and manage all appointments across the system.",
+    "loadFailed": "Failed to load appointments.",
+    "statusUpdated": "Status updated successfully.",
+    "statusFailed": "Failed to update status.",
+    "deleteSuccess": "Appointment deleted successfully.",
+    "deleteFailed": "Failed to delete appointment.",
+    "delete": "Delete",
+    "noData": "No appointments found in the system.",
+    "total": "Total Appointments",
+    "pending": "Pending Appointments",
+    "confirmed": "Confirmed Appointments",
+    "cancelled": "Cancelled Appointments",
+    "table": {
+      "userName": "User Name",
+      "id": "ID",
+      "service": "Service",
+      "start": "Start Time",
+      "end": "End Time",
+      "status": "Status",
+      "actions": "Actions",
+      "employee": "Employee"
+    },
+    "deleteDialog": {
+      "title": "Delete Appointment",
+      "desc": "Are you sure you want to delete this appointment?",
+      "cancel": "Cancel (No)",
+      "confirm": "Yes, delete",
+      "deleting": "Deleting..."
+    }
+  },
+  "adminTransactions": {
+    "title": "Transactions & Orders",
+    "subtitle": "View and manage all orders and payment statuses.",
+    "loadFailed": "Failed to load orders.",
+    "statusUpdated": "Order status updated.",
+    "statusFailed": "Failed to update order status.",
+    "deleteSuccess": "Order deleted successfully.",
+    "deleteFailed": "Failed to delete order.",
+    "delete": "Delete",
+    "noData": "No orders found.",
+    "totalOrders": "Total Orders",
+    "totalRevenue": "Total Revenue (Paid)",
+    "pendingOrders": "Pending Orders",
+    "cancelledOrders": "Cancelled Orders",
+    "charts": {
+      "revenueByOrder": "Revenue by Order",
+      "ordersByStatus": "Orders by Status",
+      "orderLabel": "Order"
+    },
+    "table": {
+      "userName": "User Name",
+      "userId": "User ID",
+      "orderId": "Order ID",
+      "appointmentId": "Appointment ID",
+      "amount": "Amount",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "deleteDialog": {
+      "title": "Delete Order",
+      "desc": "Are you sure you want to delete this order?",
+      "cancel": "Cancel (No)",
+      "confirm": "Yes, delete",
+      "deleting": "Deleting..."
+    }
+  },
+  "adminReviews": {
+    "title": "All Reviews",
+    "subtitle": "Monitor customer reviews and ratings.",
+    "loadFailed": "Failed to load reviews.",
+    "noData": "No reviews found.",
+    "noComment": "No comment",
+    "totalReviews": "Total Reviews",
+    "avgRating": "Average Rating",
+    "table": {
+      "userName": "User Name",
+      "userId": "User ID",
+      "serviceId": "Service ID",
+      "employeeName": "Employee Name",
+      "serviceName": "Service Name",
+      "rating": "Rating",
+      "comment": "Comment"
+    }
+  },
+  "userReviews": {
+    "title": "My Reviews",
+    "subtitle": "Manage and view all the reviews you have submitted.",
+    "noData": "You have not submitted any reviews yet.",
+    "noComment": "No comment provided",
+    "totalReviews": "Total Reviews",
+    "avgRating": "Average Rating",
+    "loadFailed": "Failed to load reviews",
+    "table": {
+      "appointment": "Appointment ID",
+      "rating": "Rating",
+      "comment": "Comment"
+    }
+  },
+  "employeeAppointments": {
+    "title": "My Appointments",
+    "subtitle": "View and manage your assigned appointments.",
+    "loadFailed": "Failed to load appointments.",
+    "statusUpdated": "Status updated successfully.",
+    "statusFailed": "Failed to update status.",
+    "noData": "No appointments assigned to you.",
+    "noDataDesc": "Your scheduled appointments will appear here.",
+    "total": "Total",
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "cancelled": "Cancelled",
+    "lockedTooltip": "This appointment is locked and cannot be changed.",
+    "table": {
+      "service": "Service",
+      "start": "Start",
+      "end": "End",
+      "status": "Status",
+      "actions": "Actions",
+      "client": "Client"
+    },
+    "actions": {
+      "confirm": "Confirm",
+      "delete": "Delete",
+      "confirmed": "Confirm",
+      "completed": "Complete",
+      "cancelled": "Cancel"
+    },
+    "confirmModal": {
+      "title": "Confirm Appointment",
+      "message": "Are you sure you want to confirm this appointment?",
+      "yes": "Yes, Confirm",
+      "no": "Cancel"
+    },
+    "deleteModal": {
+      "title": "Delete Appointment",
+      "message": "Are you sure you want to delete this appointment? This action cannot be undone.",
+      "yes": "Yes, Delete",
+      "no": "Cancel"
+    },
+    "deleteSuccess": "Appointment deleted successfully.",
+    "deleteFailed": "Failed to delete appointment.",
+    "chatAdmin": "Chat Admin"
+  },
+  "employeeReviews": {
+    "title": "My Reviews",
+    "subtitle": "See what clients are saying about your services",
+    "loadFailed": "Failed to load your reviews.",
+    "totalReviews": "Total Reviews",
+    "avgRating": "Average Rating",
+    "noData": "No reviews yet.",
+    "noComment": "No comment provided.",
+    "unknown": "Unknown",
+    "table": {
+      "clientName": "Client Name",
+      "service": "Service",
+      "rating": "Rating",
+      "comment": "Comment"
+    }
   },
   "auth": {
     "login": "Login",
@@ -24,7 +383,6 @@
     }
   },
   "users": {
-    "updateError": "Error during profile update",
     "title": "User Management",
     "subtitle": "Here you can view, create and manage all system users.",
     "searchPlaceholder": "Search...",
@@ -47,8 +405,8 @@
     "dialog": {
       "deleteTitle": "Confirm Deletion",
       "deleteConfirm": "Are you sure you want to delete {{name}}?",
-      "deleteConfirmButton": "Delete",
-      "deleteCancelButton": "Cancel"
+      "deleteConfirmButton": "Yes, delete",
+      "deleteCancelButton": "Cancel (No)"
     },
     "form": {
       "firstName": "First Name",
@@ -57,6 +415,113 @@
       "Cancel": "Cancel",
       "Save": "Save"
     }
+  },
+  "employeeList": {
+    "title": "Staff Directory",
+    "addEmployee": "+ Add Employee",
+    "noData": "No employees found.",
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "phone": "Phone",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "dialog": {
+      "createTitle": "Add New Employee",
+      "editTitle": "Edit — {{name}}",
+      "createButton": "Create Employee",
+      "saveChanges": "Save Changes",
+      "saving": "Saving...",
+      "cancel": "Cancel",
+      "creating": "Creating...",
+      "deleteTitle": "Confirm Delete",
+      "deleteConfirm": "Are you sure you want to delete {{name}}?",
+      "deleteWarning": "This action cannot be undone.",
+      "deleteConfirmButton": "Yes, Delete",
+      "deleting": "Deleting..."
+    },
+    "actions": {
+      "chat": "Chat",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "errors": {
+      "createFailed": "Failed to create employee.",
+      "updateFailed": "Failed to update employee.",
+      "deleteFailed": "Failed to delete employee."
+    },
+    "form": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "gender": "Gender",
+      "genderMale": "Male",
+      "genderFemale": "Female",
+      "genderRequired": "Gender is required.",
+      "firstNameRequired": "First name is required.",
+      "lastNameRequired": "Last name is required.",
+      "emailRequired": "Email is required.",
+      "jobTitle": "Job Title",
+      "phone": "Phone",
+      "emailInvalid": "Please enter a valid email address."
+    }
+  },
+  "serviceList": {
+    "title": "Service List",
+    "addService": "Add Service",
+    "noData": "No services found.",
+    "table": {
+      "name": "Service Name",
+      "category": "Category",
+      "duration": "Duration",
+      "price": "Price",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "dialog": {
+      "createTitle": "Add New Service",
+      "editTitle": "Edit Service",
+      "createButton": "Save Service",
+      "saveChanges": "Save Changes",
+      "saving": "Saving...",
+      "cancel": "Cancel",
+      "deleteTitle": "Confirm Delete",
+      "deleteConfirm": "Are you sure you want to delete {{name}}?",
+      "deleteWarning": "This action cannot be undone.",
+      "deleteConfirmButton": "Yes, Delete",
+      "deleting": "Deleting..."
+    },
+    "form": {
+      "name": "Service Name",
+      "category": "Category",
+      "categoryPlaceholder": "Select a category...",
+      "description": "Description (optional)",
+      "duration": "Duration (minutes)",
+      "price": "Price ($)"
+    },
+    "errors": {
+      "nameRequired": "Service name is required.",
+      "categoryRequired": "Please select a category.",
+      "durationPositive": "Duration must be greater than zero.",
+      "priceNonNegative": "Price cannot be negative.",
+      "saveFailed": "Failed to save service.",
+      "deleteFailed": "Failed to delete service."
+    },
+    "actions": {
+      "edit": "Edit Service",
+      "delete": "Delete Service"
+    },
+    "minutesSuffix": "min"
   },
   "profile": {
     "title": "My Profile",
@@ -90,37 +555,28 @@
     "noAccount": "Don't have an account? Register",
     "errorInvalid": "Invalid email or password."
   },
-"register": {
-  "title": "Register",
-  "firstName": "First Name",
-  "lastName": "Last Name",
-  "email": "Email",
-  "gender": "Gender",
-  "genderM": "Male",
-  "genderF": "Female",
-  "password": "Password",
-  "passwordHelper": "At least 6 characters, including uppercase, lowercase letters and a number.",
-  "submit": "Create account",
-  "haveAccount": "Already have an account? Login",
-  "errorFailed": "Registration failed.",
-  "errorGenderRequired": "Gender selection is required!",
-  "selectGenderPlaceholder": "Select gender...",
-  "errors": {
-    "firstName": "First Name is required",
-    "lastName": "Last Name is required",
-    "email": "Email is required and must be valid",
-    "gender": "Gender selection is required",
-    "requiredPrefix": "The following fields are required",
-    "firstNameLength": "First name must be between 2 and 50 characters",
-    "lastNameLength": "Last name must be between 2 and 50 characters",
-    "emailRequired": "Email is required",
-    "emailInvalid": "Please enter a valid email address.",
-    "emailGmailInvalid": "Only emails in the format example@gmail.com are allowed",
-    "passwordRequired": "Password is required",
-    "passwordTooShort": "Password must be at least 6 characters!",
-    "passwordStrength": "Password must contain at least one uppercase letter, one lowercase letter, and one number",
-    "userHasClientAppointments": "This user cannot be deleted because they have booked appointments as a client.",
-    "userHasEmployeeAppointments": "This employee cannot be deleted because they have assigned appointments with clients."
+  "register": {
+    "title": "Register",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "gender": "Gender",
+    "genderM": "Male",
+    "genderF": "Female",
+    "password": "Password",
+    "passwordHelper": "At least 6 characters, including uppercase, lowercase letters and a number.",
+    "submit": "Create account",
+    "haveAccount": "Already have an account? Login",
+    "errorFailed": "Registration failed.",
+    "errorGenderRequired": "Gender selection is required!",
+    "selectGenderPlaceholder": "Select gender...",
+    "errors": {
+      "firstName": "First Name is required",
+      "lastName": "Last Name is required",
+      "email": "Email is required and must be valid",
+      "gender": "Gender selection is required",
+      "requiredPrefix": "The following fields are required",
+      "passwordTooShort": "Password must be at least 6 characters!"
+    }
   }
-}
 }

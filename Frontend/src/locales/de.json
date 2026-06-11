@@ -1,9 +1,368 @@
 {
+  "statuses": {
+    "Pending": "Ausstehend",
+    "Paid": "Bezahlt",
+    "Cancelled": "Storniert",
+    "Refunded": "Erstattet",
+    "Confirmed": "Bestätigt",
+    "Completed": "Abgeschlossen"
+  },
+  "register": {
+    "title": "Registrieren",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "email": "E-Mail",
+    "gender": "Geschlecht",
+    "genderM": "Männlich",
+    "genderF": "Weiblich",
+    "password": "Passwort",
+    "passwordHelper": "Mindestens 6 Zeichen, einschließlich Groß- und Kleinbuchstaben sowie einer Zahl.",
+    "submit": "Konto erstellen",
+    "haveAccount": "Haben Sie bereits ein Konto? Einloggen",
+    "errorFailed": "Registrierung fehlgeschlagen.",
+    "errorGenderRequired": "Die Auswahl des Geschlechts ist erforderlich!",
+    "selectGenderPlaceholder": "Geschlecht auswählen...",
+    "errors": {
+      "firstName": "Vorname ist erforderlich",
+      "lastName": "Nachname ist erforderlich",
+      "email": "E-Mail ist erforderlich und muss gültig sein",
+      "gender": "Die Auswahl des Geschlechts ist erforderlich",
+      "requiredPrefix": "Die folgenden Felder sind Pflichtfelder",
+      "firstNameLength": "Der Vorname muss zwischen 2 und 50 Zeichen lang sein",
+      "lastNameLength": "Der Nachname muss zwischen 2 und 50 Zeichen lang sein",
+      "emailRequired": "E-Mail ist erforderlich",
+      "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "passwordRequired": "Passwort ist erforderlich",
+      "passwordTooShort": "Das Passwort muss mindestens 6 Zeichen lang sein!",
+      "passwordStrength": "Das Passwort muss mindestens einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten"
+    }
+  },
   "nav": {
     "profile": "Profil",
     "users": "Benutzerverwaltung",
     "logout": "Abmelden",
-    "SystemName": "Terminsystem"
+    "SystemName": "Terminsystem",
+    "employees": "Mitarbeiterverzeichnis",
+    "services": "Dienstleistungen",
+    "serviceCategories": "Dienstleistungskategorien",
+    "employeeServices": "Mitarbeiter-Dienste",
+    "staffSchedule": "Mitarbeiter-Zeitplan",
+    "locations": "Standorte & Räume",
+    "bookAppointment": "Termin Buchen",
+    "myBookings": "Meine Buchungen",
+    "myInvoices": "Meine Rechnungen",
+    "myCalendar": "Mein Kalender",
+    "mySchedule": "Mein Zeitplan",
+    "myAppointments": "Meine Termine",
+    "allAppointments": "Alle Termine",
+    "transactions": "Transaktionen & Bestellungen",
+    "allReviews": "Alle Bewertungen",
+    "myReviews": "Meine Bewertungen",
+    "settings": "Einstellungen"
+  },
+  "booking": {
+    "title": "Termin buchen",
+    "subtitle": "Wählen Sie Dienstleistung, Mitarbeiter, Datum und Uhrzeit.",
+    "selectService": "Dienstleistung auswählen",
+    "noServices": "Keine Dienstleistungen gefunden",
+    "summaryTitle": "Buchungszusammenfassung",
+    "service": "Dienstleistung",
+    "duration": "Dauer",
+    "minutes": "Minuten",
+    "date": "Datum",
+    "time": "Uhrzeit",
+    "total": "Gesamt",
+    "confirmBtn": "Buchung bestätigen",
+    "errorMissingFields": "Bitte wählen Sie Mitarbeiter, Datum und Uhrzeit.",
+    "errorMissingService": "Bitte wählen Sie eine Dienstleistung.",
+    "errorPastTime": "Sie können keinen Termin in der Vergangenheit buchen. Bitte wählen Sie ein Datum und eine Uhrzeit in der Zukunft.",
+    "errorBookingFailed": "Terminbuchung fehlgeschlagen.",
+    "errorBusy": "Terminbuchung fehlgeschlagen. Überprüfen Sie, ob der Termin bereits vergeben ist.",
+    "success": "Termin erfolgreich gebucht! Weiterleitung zur Zahlung...",
+    "selectProfessional": "Mitarbeiter auswählen",
+    "noProfessionals": "Keine Mitarbeiter gefunden",
+    "appointmentDate": "Termindatum",
+    "selectTime": "Uhrzeit auswählen",
+    "invoicePrefix": "Rechnung",
+    "booked": "Gebucht",
+    "noSlotsEmployeeUnavailable": "Der Mitarbeiter ist an diesem Datum nicht verfügbar.",
+    "noSlotsForDuration": "Keine freien Termine für die gewählte Dauer verfügbar.",
+    "selectServiceFirst": "Bitte zuerst einen Dienst auswählen",
+    "noStaffAvailable": "Kein Personal für diesen Dienst verfügbar",
+    "selectEmployeeFirst": "Bitte wählen Sie einen Mitarbeiter aus, um verfügbare Zeiten zu sehen.",
+    "selectDateFirst": "Bitte wählen Sie ein Datum aus, um verfügbare Zeiten zu sehen.",
+    "conflictError": "Sie haben bereits einen Termin zu dieser Zeit. Bitte wählen Sie einen anderen Zeitraum."
+  },
+  "payment": {
+    "title": "Zahlung abschließen",
+    "subtitle": "Bitte geben Sie Ihre Kartendaten ein, um die Buchung abzuschließen.",
+    "orderPrefix": "Bestellung #",
+    "returnBtn": "Zurück zu Buchungen",
+    "initializing": "Zahlung wird initialisiert...",
+    "errorInvalidId": "Ungültige Bestell-ID",
+    "errorDataFailed": "Zahlungsdaten konnten nicht abgerufen werden.",
+    "errorInitFailed": "Initialisierung der Zahlung fehlgeschlagen.",
+    "errorUnexpected": "Ein unerwarteter Fehler ist aufgetreten.",
+    "successAlert": "Zahlung erfolgreich abgeschlossen! Vielen Dank für Ihre Buchung.",
+    "redirecting": "Weiterleitung zu meinen Buchungen...",
+    "goToBookings": "Gehe zu meinen Buchungen",
+    "payNow": "Jetzt bezahlen",
+    "payLater": "Später bezahlen",
+    "paymentFailed": "Zahlung fehlgeschlagen",
+    "paymentVerificationFailed": "Die Zahlung war erfolgreich, aber wir konnten sie nicht mit unserem Server überprüfen. Bitte kontaktieren Sie den Support."
+  },
+  "invoices": {
+    "title": "Zahlungsverlauf & Rechnungen",
+    "subtitle": "Sehen Sie Ihre Transaktionen an und laden Sie offizielle PDF-Rechnungen herunter.",
+    "noInvoicesTitle": "Sie haben keine aufgezeichneten Transaktionen.",
+    "noInvoicesDesc": "Ihre Rechnungen werden hier nach einer Zahlung angezeigt.",
+    "table": {
+      "orderId": "Bestell-ID",
+      "amount": "Betrag",
+      "status": "Zahlungsstatus",
+      "details": "Rechnungsdetails",
+      "download": "Herunterladen",
+      "defaultStatus": "Ausstehend",
+      "invoiceIdPrefix": "Rechnungs-ID: ",
+      "unpaid": "Unbezahlt",
+      "paymentStatus": "Zahlungsstatus"
+    },
+    "actions": {
+      "downloading": "Wird heruntergeladen...",
+      "downloadPdf": "PDF",
+      "noInvoice": "Keine Rechnung"
+    },
+    "messages": {
+      "loadFailed": "Fehler beim Laden des Rechnungsverlaufs.",
+      "downloadFailed": "Fehler beim Herunterladen der PDF-Rechnung."
+    }
+  },
+  "bookings": {
+    "title": "Meine Buchungen",
+    "subtitle": "Verwalten und überprüfen Sie Ihre Terminhistorie.",
+    "noBookingsTitle": "Sie haben keine gebuchten Termine.",
+    "noBookingsDesc": "Buchen Sie schnell und einfach einen neuen Termin.",
+    "table": {
+      "service": "Dienstleistung",
+      "dateTime": "Datum & Uhrzeit",
+      "status": "Status",
+      "actions": "Aktionen",
+      "timePrefix": "Zeit: ",
+      "defaultService": "Allgemeine Dienstleistung",
+      "defaultStatus": "Ausstehend",
+      "employee": "Mitarbeiter"
+    },
+    "actions": {
+      "cancel": "Abbrechen",
+      "review": "Bewerten",
+      "rate": "Bewerten",
+      "chat": "Chat",
+      "chatWith": "Chat mit"
+    },
+    "cancelDialog": {
+      "title": "Termin stornieren",
+      "desc": "Sind Sie sicher, dass Sie diesen Termin stornieren möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "keep": "Nein, behalten",
+      "confirm": "Ja, stornieren",
+      "cancelling": "Stornieren..."
+    },
+    "reviewDialog": {
+      "title": "Dienstleistung bewerten",
+      "desc": "Wie war Ihre Erfahrung mit unserem Service? Ihre Bewertung hilft uns, uns zu verbessern.",
+      "commentLabel": "Kommentar (Optional)",
+      "commentPlaceholder": "Schreiben Sie hier Ihre Gedanken...",
+      "cancel": "Abbrechen",
+      "submit": "Bewertung abgeben",
+      "submitting": "Wird gesendet..."
+    },
+    "messages": {
+      "loadFailed": "Fehler beim Laden der Termine.",
+      "cancelSuccess": "Termin erfolgreich storniert.",
+      "cancelFailed": "Fehler beim Stornieren des Termins.",
+      "reviewSuccess": "Bewertung erfolgreich eingereicht! Vielen Dank.",
+      "reviewFailed": "Fehler beim Einreichen der Bewertung."
+    }
+  },
+  "calendar": {
+    "mySchedule": "Mein Zeitplan",
+    "myCalendar": "Mein Kalender",
+    "roleEmployee": "Mitarbeiter",
+    "roleAdmin": "Admin",
+    "roleClient": "Klient",
+    "dayOffPrefix": "Freier Tag: ",
+    "dayOffDefault": "Freier Tag",
+    "bookedAppointment": "Gebuchter Termin",
+    "alertAppointment": "Termin: ",
+    "alertStatus": "Status: ",
+    "loadFailed": "Kalender konnte nicht geladen werden.",
+    "today": "Heute",
+    "date": "Datum",
+    "appointmentTitle": "Termin",
+    "serviceLabel": "Dienstleistung",
+    "employeeLabel": "Mitarbeiter",
+    "clientLabel": "Kunde",
+    "timeLabel": "Zeit",
+    "closeBtn": "Schließen"
+  },
+  "adminAppointments": {
+    "title": "Alle Termine",
+    "subtitle": "Alle Termine im System anzeigen und verwalten.",
+    "loadFailed": "Fehler beim Laden der Termine.",
+    "statusUpdated": "Status erfolgreich aktualisiert.",
+    "statusFailed": "Fehler beim Aktualisieren des Status.",
+    "deleteSuccess": "Termin erfolgreich gelöscht.",
+    "deleteFailed": "Fehler beim Löschen des Termins.",
+    "delete": "Löschen",
+    "noData": "Keine Termine im System gefunden.",
+    "total": "Termine Gesamt",
+    "pending": "Ausstehende Termine",
+    "confirmed": "Bestätigte Termine",
+    "cancelled": "Stornierte Termine",
+    "table": {
+      "userName": "Benutzername",
+      "id": "ID",
+      "service": "Dienstleistung",
+      "start": "Startzeit",
+      "end": "Endzeit",
+      "status": "Status",
+      "actions": "Aktionen",
+      "employee": "Mitarbeiter"
+    },
+    "deleteDialog": {
+      "title": "Termin löschen",
+      "desc": "Sind Sie sicher, dass Sie diesen Termin endgültig löschen möchten?",
+      "cancel": "Abbrechen",
+      "confirm": "Ja, löschen",
+      "deleting": "Wird gelöscht..."
+    }
+  },
+  "adminTransactions": {
+    "title": "Transaktionen & Bestellungen",
+    "subtitle": "Alle Bestellungen und Zahlungsstatus anzeigen und verwalten.",
+    "loadFailed": "Fehler beim Laden der Bestellungen.",
+    "statusUpdated": "Bestellstatus aktualisiert.",
+    "statusFailed": "Fehler beim Aktualisieren des Bestellstatus.",
+    "deleteSuccess": "Bestellung erfolgreich gelöscht.",
+    "deleteFailed": "Fehler beim Löschen der Bestellung.",
+    "delete": "Löschen",
+    "noData": "Keine Bestellungen gefunden.",
+    "totalOrders": "Bestellungen Gesamt",
+    "totalRevenue": "Gesamtumsatz (Bezahlt)",
+    "pendingOrders": "Ausstehende Bestellungen",
+    "cancelledOrders": "Stornierte Bestellungen",
+    "charts": {
+      "revenueByOrder": "Umsatz nach Bestellung",
+      "ordersByStatus": "Bestellungen nach Status",
+      "orderLabel": "Bestellung"
+    },
+    "table": {
+      "userName": "Benutzername",
+      "userId": "Benutzer-ID",
+      "orderId": "Bestell-ID",
+      "appointmentId": "Termin-ID",
+      "amount": "Betrag",
+      "status": "Status",
+      "actions": "Aktionen"
+    },
+    "deleteDialog": {
+      "title": "Bestellung löschen",
+      "desc": "Sind Sie sicher, dass Sie diese Bestellung endgültig löschen möchten?",
+      "cancel": "Abbrechen",
+      "confirm": "Ja, löschen",
+      "deleting": "Wird gelöscht..."
+    }
+  },
+  "adminReviews": {
+    "title": "Alle Bewertungen",
+    "subtitle": "Kundenbewertungen und Bewertungen überwachen.",
+    "loadFailed": "Fehler beim Laden der Bewertungen.",
+    "noData": "Keine Bewertungen gefunden.",
+    "noComment": "Kein Kommentar",
+    "totalReviews": "Bewertungen Gesamt",
+    "avgRating": "Durchschnittliche Bewertung",
+    "table": {
+      "userName": "Benutzername",
+      "userId": "Benutzer-ID",
+      "serviceId": "Dienstleistungs-ID",
+      "employeeName": "Mitarbeitername",
+      "serviceName": "Dienstleistungsname",
+      "rating": "Bewertung",
+      "comment": "Kommentar"
+    }
+  },
+  "userReviews": {
+    "title": "Meine Bewertungen",
+    "subtitle": "Verwalten und sehen Sie alle Ihre Bewertungen.",
+    "noData": "Sie haben noch keine Bewertungen abgegeben.",
+    "noComment": "Kein Kommentar",
+    "totalReviews": "Gesamtbewertungen",
+    "avgRating": "Durchschnittsbewertung",
+    "loadFailed": "Bewertungen konnten nicht geladen werden",
+    "table": {
+      "appointment": "Termin-ID",
+      "rating": "Bewertung",
+      "comment": "Kommentar"
+    }
+  },
+  "employeeAppointments": {
+    "title": "Meine Termine",
+    "subtitle": "Ihre zugewiesenen Termine anzeigen und verwalten.",
+    "loadFailed": "Fehler beim Laden der Termine.",
+    "statusUpdated": "Status erfolgreich aktualisiert.",
+    "statusFailed": "Fehler beim Aktualisieren des Status.",
+    "noData": "Keine Termine für Sie zugewiesen.",
+    "noDataDesc": "Ihre geplanten Termine werden hier angezeigt.",
+    "total": "Gesamt",
+    "pending": "Ausstehend",
+    "confirmed": "Bestätigt",
+    "cancelled": "Storniert",
+    "lockedTooltip": "Dieser Termin ist gesperrt und kann nicht geändert werden.",
+    "table": {
+      "service": "Dienstleistung",
+      "start": "Start",
+      "end": "Ende",
+      "status": "Status",
+      "actions": "Aktionen",
+      "client": "Kunde"
+    },
+    "actions": {
+      "confirm": "Bestätigen",
+      "delete": "Löschen",
+      "confirmed": "Bestätigen",
+      "completed": "Abschließen",
+      "cancelled": "Abbrechen"
+    },
+    "confirmModal": {
+      "title": "Termin bestätigen",
+      "message": "Sind Sie sicher, dass Sie diesen Termin bestätigen möchten?",
+      "yes": "Ja, Bestätigen",
+      "no": "Abbrechen"
+    },
+    "deleteModal": {
+      "title": "Termin löschen",
+      "message": "Sind Sie sicher, dass Sie diesen Termin löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "yes": "Ja, Löschen",
+      "no": "Abbrechen"
+    },
+    "deleteSuccess": "Termin erfolgreich gelöscht.",
+    "deleteFailed": "Termin konnte nicht gelöscht werden.",
+    "chatAdmin": "Mit Admin chatten"
+  },
+  "employeeReviews": {
+    "title": "Meine Bewertungen",
+    "subtitle": "Sehen Sie, was Kunden über Ihre Dienste sagen",
+    "loadFailed": "Bewertungen konnten nicht geladen werden.",
+    "totalReviews": "Bewertungen Gesamt",
+    "avgRating": "Durchschnittliche Bewertung",
+    "noData": "Noch keine Bewertungen.",
+    "noComment": "Kein Kommentar.",
+    "unknown": "Unbekannt",
+    "table": {
+      "clientName": "Kundenname",
+      "service": "Dienstleistung",
+      "rating": "Bewertung",
+      "comment": "Kommentar"
+    }
   },
   "auth": {
     "login": "Anmelden",
@@ -13,6 +372,62 @@
     "title": "Benutzerprofil",
     "edit": "Profil bearbeiten",
     "email": "E-Mail-Adresse"
+  },
+  "employeeList": {
+    "title": "Mitarbeiterverzeichnis",
+    "addEmployee": "+ Mitarbeiter hinzufügen",
+    "noData": "Keine Mitarbeiter gefunden.",
+    "table": {
+      "name": "Name",
+      "email": "E-Mail",
+      "role": "Rolle",
+      "phone": "Telefon",
+      "status": "Status",
+      "actions": "Aktionen"
+    },
+    "status": {
+      "active": "Aktiv",
+      "inactive": "Inaktiv"
+    },
+    "dialog": {
+      "createTitle": "Neuen Mitarbeiter hinzufügen",
+      "editTitle": "Bearbeiten — {{name}}",
+      "createButton": "Mitarbeiter erstellen",
+      "saveChanges": "Änderungen speichern",
+      "saving": "Wird gespeichert...",
+      "cancel": "Abbrechen",
+      "creating": "Wird erstellt...",
+      "deleteTitle": "Löschen bestätigen",
+      "deleteConfirm": "Sind Sie sicher, dass Sie {{name}} löschen möchten?",
+      "deleteWarning": "Diese Aktion kann nicht rückgängig gemacht werden.",
+      "deleteConfirmButton": "Ja, löschen",
+      "deleting": "Wird gelöscht..."
+    },
+    "actions": {
+      "chat": "Chat",
+      "edit": "Bearbeiten",
+      "delete": "Löschen"
+    },
+    "errors": {
+      "createFailed": "Erstellung des Mitarbeiters fehlgeschlagen.",
+      "updateFailed": "Änderung des Mitarbeiters fehlgeschlagen.",
+      "deleteFailed": "Löschen des Mitarbeiters fehlgeschlagen."
+    },
+    "form": {
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "email": "E-Mail",
+      "gender": "Geschlecht",
+      "genderMale": "Männlich",
+      "genderFemale": "Weiblich",
+      "genderRequired": "Geschlecht ist erforderlich.",
+      "firstNameRequired": "Vorname ist erforderlich.",
+      "lastNameRequired": "Nachname ist erforderlich.",
+      "emailRequired": "E-Mail ist erforderlich.",
+      "jobTitle": "Berufsbezeichnung",
+      "phone": "Telefon",
+      "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein."
+    }
   },
   "userManagement": {
     "title": "Benutzerverwaltung",
@@ -57,8 +472,58 @@
       "Save": "Speichern"
     }
   },
+  "serviceList": {
+    "title": "Dienstleistungsübersicht",
+    "addService": "Dienst hinzufügen",
+    "noData": "Keine Dienstleistungen gefunden.",
+    "table": {
+      "name": "Dienstname",
+      "category": "Kategorie",
+      "duration": "Dauer",
+      "price": "Preis",
+      "status": "Status",
+      "actions": "Aktionen"
+    },
+    "status": {
+      "active": "Aktiv",
+      "inactive": "Inaktiv"
+    },
+    "dialog": {
+      "createTitle": "Neuen Dienst hinzufügen",
+      "editTitle": "Dienst bearbeiten",
+      "createButton": "Dienst speichern",
+      "saveChanges": "Änderungen speichern",
+      "saving": "Wird gespeichert...",
+      "cancel": "Abbrechen",
+      "deleteTitle": "Löschen bestätigen",
+      "deleteConfirm": "Sind Sie sicher, dass Sie {{name}} löschen möchten?",
+      "deleteWarning": "Diese Aktion kann nicht rückgängig gemacht werden.",
+      "deleteConfirmButton": "Ja, löschen",
+      "deleting": "Wird gelöscht..."
+    },
+    "form": {
+      "name": "Dienstname",
+      "category": "Kategorie",
+      "categoryPlaceholder": "Wählen Sie eine Kategorie...",
+      "description": "Beschreibung (optional)",
+      "duration": "Dauer (Minuten)",
+      "price": "Preis ($)"
+    },
+    "errors": {
+      "nameRequired": "Dienstname ist erforderlich.",
+      "categoryRequired": "Bitte wählen Sie eine Kategorie.",
+      "durationPositive": "Die Dauer muss größer als null sein.",
+      "priceNonNegative": "Der Preis darf nicht negativ sein.",
+      "saveFailed": "Dienst konnte nicht gespeichert werden.",
+      "deleteFailed": "Dienst konnte nicht gelöscht werden."
+    },
+    "actions": {
+      "edit": "Dienst bearbeiten",
+      "delete": "Dienst löschen"
+    },
+    "minutesSuffix": "Min."
+  },
   "profile": {
-    "updateError": "Fehler beim Aktualisieren des Profils",
     "title": "Mein Profil",
     "welcome": "Willkommen",
     "personalInfo": "Persönliche Informationen",
@@ -90,37 +555,28 @@
     "noAccount": "Noch kein Konto? Registrieren",
     "errorInvalid": "Ungültige E-Mail oder Passwort."
   },
- "register": {
-  "title": "Registrieren",
-  "firstName": "Vorname",
-  "lastName": "Nachname",
-  "email": "E-Mail",
-  "gender": "Geschlecht",
-  "genderM": "Männlich",
-  "genderF": "Weiblich",
-  "password": "Passwort",
-  "passwordHelper": "Mindestens 6 Zeichen, einschließlich Groß- und Kleinbuchstaben sowie einer Zahl.",
-  "submit": "Konto erstellen",
-  "haveAccount": "Haben Sie bereits ein Konto? Einloggen",
-  "errorFailed": "Registrierung fehlgeschlagen.",
-  "errorGenderRequired": "Die Auswahl des Geschlechts ist erforderlich!",
-  "selectGenderPlaceholder": "Geschlecht auswählen...",
-  "errors": {
-    "firstName": "Vorname ist erforderlich",
-    "lastName": "Nachname ist erforderlich",
-    "email": "E-Mail ist erforderlich und muss gültig sein",
-    "gender": "Die Auswahl des Geschlechts ist erforderlich",
-    "requiredPrefix": "Die folgenden Felder sind Pflichtfelder",
-    "firstNameLength": "Der Vorname muss zwischen 2 und 50 Zeichen lang sein",
-    "lastNameLength": "Der Nachname muss zwischen 2 und 50 Zeichen lang sein",
-    "emailRequired": "E-Mail ist erforderlich",
-    "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
-    "emailGmailInvalid": "Es sind nur E-Mails im Format beispiel@gmail.com erlaubt",
-    "passwordRequired": "Passwort ist erforderlich",
-    "passwordTooShort": "Das Passwort muss mindestens 6 Zeichen lang sein!",
-    "passwordStrength": "Das Passwort muss mindestens einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten",
-    "userHasClientAppointments": "Dieser Benutzer kann nicht gelöscht werden, da er aktive Termine als Kunde hat.",
-    "userHasEmployeeAppointments": "Dieser Mitarbeiter kann nicht gelöscht werden, da er zugewiesene Termine mit Kunden hat."
-  }
+  "register": {
+    "title": "Registrieren",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "email": "E-Mail",
+    "gender": "Geschlecht",
+    "genderM": "Männlich",
+    "genderF": "Weiblich",
+    "password": "Passwort",
+    "passwordHelper": "Mindestens 6 Zeichen, einschließlich Groß- und Kleibuchstaben und einer Zahl.",
+    "submit": "Konto erstellen",
+    "haveAccount": "Haben Sie bereits ein Konto? Anmelden",
+    "errorFailed": "Registrierung fehlgeschlagen.",
+    "errorGenderRequired": "Geschlechtsauswahl ist erforderlich!",
+    "selectGenderPlaceholder": "Geschlecht auswählen...",
+    "errors": {
+      "firstName": "Vorname ist erforderlich",
+      "lastName": "Nachname ist erforderlich",
+      "email": "E-Mail ist erforderlich und muss gültig sein",
+      "gender": "Geschlechtsauswahl ist erforderlich",
+      "requiredPrefix": "Die folgenden Felder sind erforderlich",
+      "passwordTooShort": "Das Passwort muss mindestens 6 Zeichen lang sein!"
+    }
   }
 }

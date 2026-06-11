@@ -28,14 +28,14 @@ public class AuthService : IAuthService
     public async Task<UserResponseDto> RegisterAsync(UserRegisterDto registerDto)
     {
      var normalizedEmail = registerDto.Email.ToLower().Trim();
-        
+        // 1. Kontrollo nëse përdoruesi ekziston
         var existingUser = await _userRepo.GetByEmailAsync(normalizedEmail);
         if (existingUser != null) throw new Exception("Email already exists.");
 
-    
+        // 2. Hash Password-in
         string passwordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password);
 
-      
+        // 3. Krijo objektin User
         var user = new User
         {
             Id = Guid.NewGuid(),
@@ -45,7 +45,7 @@ public class AuthService : IAuthService
              Gjinia = registerDto.Gjinia,
             PasswordHash = passwordHash,
             CreatedAt = DateTime.UtcNow,
-        CreatedBy = normalizedEmail, 
+        CreatedBy = normalizedEmail, // Email-i i vetë personit që regjistrohet
         UpdatedAt = DateTime.UtcNow,
         UpdatedBy = normalizedEmail,
            UserRoles = new List<UserRole> 
@@ -64,7 +64,7 @@ public class AuthService : IAuthService
         await _userRepo.AddAsync(user);
         await _userRepo.SaveChangesAsync();
 
-       
+        // 5. Kthe përgjigjen me Token
         return new UserResponseDto
         {
             Id = user.Id,
@@ -91,16 +91,16 @@ bool verify = BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash);
 if (!verify) 
     {
         Console.WriteLine("--- Wrong password provided!");
-        return null;
+        return null; // NDALON KËTU! Nuk gjeneron token nëse fjalëkalimi është gabim
     }
 
 
 var accessToken = CreateToken(user);
 
-   
+    // 4. Gjenerojmë një Refresh Token unik (string)
     var refreshTokenValue = Guid.NewGuid().ToString();
 
-   
+    // 5. Krijo objektin e RefreshToken për ta ruajtur në SQL Server
     var refreshTokenEntity = new RefreshToken
     {
         Id = Guid.NewGuid(),
@@ -145,7 +145,7 @@ public async Task LogoutAsync(LogoutDto logoutDto)
         throw new Exception("Token not found or invalid.");
     }
 
-  
+    // 2. Markojmë token-in si të revokuar
     refreshToken.IsRevoked = true;
     refreshToken.IsActive = false; 
     
@@ -173,10 +173,10 @@ public async Task LogoutAsync(LogoutDto logoutDto)
             // 1. Rruga kryesore: Nëse objekti Role është i ngarkuar
             if (userRole.Role != null && !string.IsNullOrEmpty(userRole.Role.Name))
             {
-                
+                // SHUMË E RËNDËSISHME: Shto rolin si Claim!
                 claims.Add(new Claim(ClaimTypes.Role, userRole.Role.Name));
 
-    
+                // Shto të gjitha Permissions që ka ky Rol
                 if (userRole.Role.RolePermissions != null)
                 {
                     foreach (var rolePerm in userRole.Role.RolePermissions)

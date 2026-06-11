@@ -1,9 +1,368 @@
 {
+  "statuses": {
+    "Pending": "Në Pritje",
+    "Paid": "E Paguar",
+    "Cancelled": "Anuluar",
+    "Refunded": "E Rimbursuar",
+    "Confirmed": "Konfirmuar",
+    "Completed": "E Përfunduar"
+  },
+  "register": {
+    "title": "Regjistrohu",
+    "firstName": "Emri",
+    "lastName": "Mbiemri",
+    "email": "Email-i",
+    "gender": "Gjinia",
+    "genderM": "Mashkull",
+    "genderF": "Femër",
+    "password": "Fjalëkalimi",
+    "passwordHelper": "Të paktën 6 karaktere, përfshirë shkronja të mëdha, të vogla dhe një numër.",
+    "submit": "Krijo llogari",
+    "haveAccount": "Keni një llogari? Kyçuni",
+    "errorFailed": "Regjistrimi dështoi.",
+    "errorGenderRequired": "Zgjedhja e gjinisë është e detyrueshme!",
+    "selectGenderPlaceholder": "Zgjidhni gjininë...",
+    "errors": {
+      "firstName": "Emri është i detyrueshëm",
+      "lastName": "Mbiemri është i detyrueshëm",
+      "email": "Email-i kërkohet dhe duhet të jetë i vlefshëm",
+      "gender": "Zgjedhja e gjinisë është e detyrueshme",
+      "requiredPrefix": "Fushat e mëposhtme janë të detyrueshme",
+      "firstNameLength": "Emri duhet të jetë mes 2 dhe 50 karaktereve",
+      "lastNameLength": "Mbiemri duhet të jetë mes 2 dhe 50 karaktereve",
+      "emailRequired": "Email-i është i detyrueshëm",
+      "emailInvalid": "Ju lutem shkruani një adresë email-i të vlefshme.",
+      "passwordRequired": "Fjalëkalimi është i detyrueshëm",
+      "passwordTooShort": "Fjalëkalimi duhet të jetë të paktën 6 karaktere!",
+      "passwordStrength": "Fjalëkalimi duhet të ketë një shkronjë të madhe, një të vogël dhe një numër"
+    }
+  },
   "nav": {
     "profile": "Profili",
     "users": "Menaxhimi i Përdoruesve",
     "logout": "Shkyçu",
-    "SystemName": "Sistemi i Takimeve"
+    "SystemName": "Sistemi i termineve",
+    "employees": "Drejtoria e Stafit",
+    "services": "Shërbimet",
+    "serviceCategories": "Kategoritë e Shërbimeve",
+    "employeeServices": "Shërbimet e Punojësve",
+    "staffSchedule": "Oraret e Stafit",
+    "locations": "Lokacionet & Dhomat",
+    "bookAppointment": "Rezervo Termin",
+    "myBookings": "Terminet e Mia",
+    "myInvoices": "Faturat e Mia",
+    "myCalendar": "Kalendari Im",
+    "mySchedule": "Orari Im",
+    "myAppointments": "Terminet e Mia",
+    "allAppointments": "Të gjitha Terminet",
+    "transactions": "Transaksionet & Porositë",
+    "allReviews": "Të gjitha Vlerësimet",
+    "myReviews": "Vlerësimet e Mia",
+    "settings": "Cilësimet"
+  },
+  "booking": {
+    "title": "Rezervo një Termin",
+    "subtitle": "Zgjidhni shërbimin, profesionistin, datën dhe orën.",
+    "selectService": "Zgjidhni Shërbimin",
+    "noServices": "Nuk u gjet asnjë shërbim",
+    "summaryTitle": "Përmbledhje e Rezervimit",
+    "service": "Shërbimi",
+    "duration": "Kohëzgjatja",
+    "minutes": "minuta",
+    "date": "Data",
+    "time": "Ora",
+    "total": "Totali",
+    "confirmBtn": "Konfirmo Rezervimin",
+    "errorMissingFields": "Ju lutem zgjidhni një profesionist, datë dhe orë.",
+    "errorMissingService": "Ju lutem zgjidhni një shërbim.",
+    "errorPastTime": "Nuk mund të rezervoni një takim në të kaluarën. Ju lutem zgjidhni një datë dhe kohë në të ardhmen.",
+    "errorBookingFailed": "Dështoi rezervimi i terminit.",
+    "errorBusy": "Dështoi rezervimi i terminit. Kontrolloni nëse orari është i zënë.",
+    "success": "Termini u rezervua me sukses! Duke u ridrejtuar tek pagesa...",
+    "selectProfessional": "Zgjidhni Profesionistin",
+    "noProfessionals": "Nuk u gjet asnjë profesionist",
+    "appointmentDate": "Data e Terminit",
+    "selectTime": "Zgjidhni Orarin",
+    "invoicePrefix": "Faturë",
+    "booked": "I rezervuar",
+    "noSlotsEmployeeUnavailable": "Punonjësi nuk është i disponueshëm në këtë datë.",
+    "noSlotsForDuration": "Nuk ka orare të lira për kohëzgjatjen e zgjedhur.",
+    "selectServiceFirst": "Zgjidhni fillimisht një shërbim",
+    "noStaffAvailable": "Nuk ka staf i disponueshëm për këtë shërbim",
+    "selectEmployeeFirst": "Ju lutem zgjidhni një profesionist për të parë oraret e lira.",
+    "selectDateFirst": "Ju lutem zgjidhni një datë për të parë oraret e lira.",
+    "conflictError": "Keni tashmë një termin në këtë orë. Ju lutem zgjidhni një orar tjetër."
+  },
+  "payment": {
+    "title": "Përfundo Pagesën",
+    "subtitle": "Ju lutem shkruani detajet e kartës tuaj për të finalizuar rezervimin.",
+    "orderPrefix": "Porosi #",
+    "returnBtn": "Kthehu tek Rezervimet",
+    "initializing": "Duke inicializuar pagesën...",
+    "errorInvalidId": "ID e porosisë e pavlefshme",
+    "errorDataFailed": "Dështoi marrja e të dhënave të pagesës.",
+    "errorInitFailed": "Inicializimi i pagesës dështoi.",
+    "errorUnexpected": "Ndodhi një gabim i papritur.",
+    "successAlert": "Pagesa u krye me sukses! Faleminderit për rezervimin.",
+    "redirecting": "Duke u ridrejtuar tek terminet e mia...",
+    "goToBookings": "Shko tek Terminet e Mia",
+    "payNow": "Paguaj Tani",
+    "payLater": "Paguaj Më Vonë",
+    "paymentFailed": "Pagesa dështoi",
+    "paymentVerificationFailed": "Pagesa u krye me sukses por nuk mund ta verifikojmë me serverin tonë. Ju lutem na kontaktoni."
+  },
+  "invoices": {
+    "title": "Historiku i Pagesave & Faturave",
+    "subtitle": "Shikoni transaksionet tuaja dhe shkarkoni faturat zyrtare PDF.",
+    "noInvoicesTitle": "Nuk keni asnjë transaksion të regjistruar.",
+    "noInvoicesDesc": "Faturat tuaja do të shfaqen këtu pasi të kryeni një pagesë.",
+    "table": {
+      "orderId": "ID e Porosisë",
+      "amount": "Shuma",
+      "status": "Statusi i Pagesës",
+      "details": "Detajet e Faturës",
+      "download": "Shkarko",
+      "defaultStatus": "Në Pritje",
+      "invoiceIdPrefix": "Fatura ID: ",
+      "unpaid": "E papaguar",
+      "paymentStatus": "Statusi i Pagesës"
+    },
+    "actions": {
+      "downloading": "Duke shkarkuar...",
+      "downloadPdf": "PDF",
+      "noInvoice": "Nuk ka Faturë"
+    },
+    "messages": {
+      "loadFailed": "Dështoi ngarkimi i historikut të faturave.",
+      "downloadFailed": "Dështoi shkarkimi i faturës PDF."
+    }
+  },
+  "bookings": {
+    "title": "Terminet e Mia",
+    "subtitle": "Menaxhoni dhe shikoni historikun e termineve tuaja.",
+    "noBookingsTitle": "Nuk keni asnjë termin të rezervuar.",
+    "noBookingsDesc": "Rezervoni një termin të ri shpejt dhe lehtë.",
+    "table": {
+      "service": "Shërbimi",
+      "dateTime": "Data & Ora",
+      "status": "Statusi",
+      "actions": "Veprime",
+      "timePrefix": "Ora: ",
+      "defaultService": "Shërbim i Përgjithshëm",
+      "defaultStatus": "Në Pritje",
+      "employee": "Profesionisti"
+    },
+    "actions": {
+      "cancel": "Anulo",
+      "review": "Vlerëso",
+      "rate": "Vlerëso",
+      "chat": "Bisedo",
+      "chatWith": "Bisedo me"
+    },
+    "cancelDialog": {
+      "title": "Anulo Terminin",
+      "desc": "A jeni të sigurt që dëshironi të anuloni këtë termin? Ky veprim nuk mund të kthehet.",
+      "keep": "Jo, Mbaje",
+      "confirm": "Po, Anuloje",
+      "cancelling": "Duke u anuluar..."
+    },
+    "reviewDialog": {
+      "title": "Vlerëso Shërbimin",
+      "desc": "Si ishte eksperienca juaj me shërbimin tonë? Vlerësimi juaj na ndihmon të përmirësohemi.",
+      "commentLabel": "Koment (Opsionale)",
+      "commentPlaceholder": "Shkruani mendimin tuaj këtu...",
+      "cancel": "Anulo",
+      "submit": "Dërgo Vlerësimin",
+      "submitting": "Duke dërguar..."
+    },
+    "messages": {
+      "loadFailed": "Dështoi ngarkimi i termineve.",
+      "cancelSuccess": "Termini u anulua me sukses.",
+      "cancelFailed": "Gabim gjatë anulimit të terminit.",
+      "reviewSuccess": "Vlerësimi u dërgua me sukses! Faleminderit.",
+      "reviewFailed": "Gabim gjatë dërgimit të vlerësimit."
+    }
+  },
+  "calendar": {
+    "mySchedule": "Orari Im",
+    "myCalendar": "Kalendari Im",
+    "roleEmployee": "Punonjës",
+    "roleAdmin": "Admin",
+    "roleClient": "Klient",
+    "dayOffPrefix": "Pushim: ",
+    "dayOffDefault": "Dita e pushimit",
+    "bookedAppointment": "Takim i Rezervuar",
+    "alertAppointment": "Termini: ",
+    "alertStatus": "Statusi: ",
+    "loadFailed": "Dështoi ngarkimi i kalendarit.",
+    "today": "Sot",
+    "date": "Data",
+    "appointmentTitle": "Termin",
+    "serviceLabel": "Shërbimi",
+    "employeeLabel": "Profesionisti",
+    "clientLabel": "Klienti",
+    "timeLabel": "Ora",
+    "closeBtn": "Mbyll"
+  },
+  "adminAppointments": {
+    "title": "Të gjitha terminet",
+    "subtitle": "Shikoni dhe menaxhoni të gjitha terminet në sistem.",
+    "loadFailed": "Dështoi ngarkimi i termineve.",
+    "statusUpdated": "Statusi u azhurnua me sukses.",
+    "statusFailed": "Gabim gjatë azhurnimit të statusit.",
+    "deleteSuccess": "Termini u fshi me sukses.",
+    "deleteFailed": "Gabim gjatë fshirjes së terminit.",
+    "delete": "Fshi",
+    "noData": "Nuk u gjet asnjë termin në sistem.",
+    "total": "Totali i Termineve",
+    "pending": "Termine në Pritje",
+    "confirmed": "Termine të Konfirmuara",
+    "cancelled": "Termine e Anuluara",
+    "table": {
+      "userName": "Emri i Përdoruesit",
+      "id": "ID",
+      "service": "Shërbimi",
+      "start": "Fillimi",
+      "end": "Mbarimi",
+      "status": "Statusi",
+      "actions": "Veprime",
+      "employee": "Punonjësi"
+    },
+    "deleteDialog": {
+      "title": "Fshi Terminin",
+      "desc": "A jeni të sigurt që dëshironi të fshini përgjithmonë këtë termin?",
+      "cancel": "Anulo",
+      "confirm": "Po, Fshije",
+      "deleting": "Duke fshirë..."
+    }
+  },
+  "adminTransactions": {
+    "title": "Transaksionet & Porositë",
+    "subtitle": "Shikoni dhe menaxhoni të gjitha porositjet dhe statuset e pagesave.",
+    "loadFailed": "Dështoi ngarkimi i porosive.",
+    "statusUpdated": "Statusi i porosisë u azhurnua.",
+    "statusFailed": "Gabim gjatë azhurnimit të statusit.",
+    "deleteSuccess": "Porosia u fshi me sukses.",
+    "deleteFailed": "Gabim gjatë fshirjes së porosisë.",
+    "delete": "Fshi",
+    "noData": "Nuk u gjet asnjë porosi.",
+    "totalOrders": "Total Porosi",
+    "totalRevenue": "Të ardhura Totale (Të paguara)",
+    "pendingOrders": "Porosi në Pritje",
+    "cancelledOrders": "Porosi të Anuluara",
+    "charts": {
+      "revenueByOrder": "Të ardhurat sipas porosisë",
+      "ordersByStatus": "Porositë sipas statusit",
+      "orderLabel": "Porosia"
+    },
+    "table": {
+      "userName": "Emri i Përdoruesit",
+      "userId": "ID e Përdoruesit",
+      "orderId": "ID e Porosisë",
+      "appointmentId": "ID e Terminit",
+      "amount": "Shuma",
+      "status": "Statusi",
+      "actions": "Veprime"
+    },
+    "deleteDialog": {
+      "title": "Fshi Porosinë",
+      "desc": "A jeni të sigurt që dëshironi të fshini përgjithmonë këtë porosi?",
+      "cancel": "Anulo",
+      "confirm": "Po, Fshije",
+      "deleting": "Duke fshirë..."
+    }
+  },
+  "adminReviews": {
+    "title": "Të gjitha vlerësimet",
+    "subtitle": "Monitoroni vlerësimet dhe kënaqshinë e klientve.",
+    "loadFailed": "Dështoi ngarkimi i vlerësimeve.",
+    "noData": "Nuk u gjet asnjë vlerësim.",
+    "noComment": "Pa koment",
+    "totalReviews": "Total Vlerësime",
+    "avgRating": "Mesatarja e vlerësimit",
+    "table": {
+      "userName": "Emri i Përdoruesit",
+      "userId": "ID e Përdoruesit",
+      "serviceId": "ID e Shërbimit",
+      "employeeName": "Emri i Punonjësit",
+      "serviceName": "Emri i Shërbimit",
+      "rating": "Vlerësimi",
+      "comment": "Komenti"
+    }
+  },
+  "userReviews": {
+    "title": "Vlerësimet e mia",
+    "subtitle": "Menaxho dhe shiko të gjitha vlerësimet që ke dhënë.",
+    "noData": "Nuk keni dhënë ende asnjë vlerësim.",
+    "noComment": "Pa koment",
+    "totalReviews": "Totali i vlerësimeve",
+    "avgRating": "Mesatarja e vlerësimit",
+    "loadFailed": "Dështoi ngarkimi i vlerësimeve",
+    "table": {
+      "appointment": "ID e Terminit",
+      "rating": "Vlerësimi",
+      "comment": "Komenti"
+    }
+  },
+  "employeeAppointments": {
+    "title": "Terminet e Mia",
+    "subtitle": "Shikoni dhe menaxhoni terminet e caktuara për ju.",
+    "loadFailed": "Dështoi ngarkimi i termineve.",
+    "statusUpdated": "Statusi u azhurnua me sukses.",
+    "statusFailed": "Gabim gjatë azhurnimit të statusit.",
+    "noData": "Nuk keni termin të caktuar.",
+    "noDataDesc": "Terminet tuaja të planifikuara do të shfaqen këtu.",
+    "total": "Total",
+    "pending": "Në Pritje",
+    "confirmed": "Konfirmuar",
+    "cancelled": "Anuluar",
+    "lockedTooltip": "Ky termin është i bllokuar dhe nuk mund të ndryshohet.",
+    "table": {
+      "service": "Shërbimi",
+      "start": "Fillimi",
+      "end": "Mbarimi",
+      "status": "Statusi",
+      "actions": "Veprime",
+      "client": "Klienti"
+    },
+    "actions": {
+      "confirm": "Konfirmo",
+      "delete": "Fshi",
+      "confirmed": "Konfirmo",
+      "completed": "Përfundo",
+      "cancelled": "Anulo"
+    },
+    "confirmModal": {
+      "title": "Konfirmo Terminin",
+      "message": "Jeni i sigurt që dëshironi të konfirmoni këtë termin?",
+      "yes": "Po, Konfirmo",
+      "no": "Anulo"
+    },
+    "deleteModal": {
+      "title": "Fshi Terminin",
+      "message": "Jeni i sigurt që dëshironi të fshini këtë termin? Ky veprim nuk mund të kthehet.",
+      "yes": "Po, Fshi",
+      "no": "Anulo"
+    },
+    "deleteSuccess": "Termini u fshi me sukses.",
+    "deleteFailed": "Fshirja e terminit dështoi.",
+    "chatAdmin": "Bisedo me Adminin"
+  },
+  "employeeReviews": {
+    "title": "Vlerësimet e Mia",
+    "subtitle": "Shikoni çfarë thonë klientët për shërbimet tuaja",
+    "loadFailed": "Dështoi ngarkimi i vlerësimeve.",
+    "totalReviews": "Total Vlerësime",
+    "avgRating": "Mesatarja e Vlerësimit",
+    "noData": "Nuk keni asnjë vlerësim ende.",
+    "noComment": "Pa koment.",
+    "unknown": "I panjohur",
+    "table": {
+      "clientName": "Emri i Klientit",
+      "service": "Shërbimi",
+      "rating": "Vlerësimi",
+      "comment": "Komenti"
+    }
   },
   "auth": {
     "login": "Identifikohu",
@@ -13,6 +372,62 @@
     "title": "Profili i Përdoruesit",
     "edit": "Edito Profilin",
     "email": "Adresa e Email-it"
+  },
+  "employeeList": {
+    "title": "Drejtoria e Stafit",
+    "addEmployee": "+ Shto Punonjës",
+    "noData": "Nuk u gjet asnjë punonjës.",
+    "table": {
+      "name": "Emri & Mbiemri",
+      "email": "Email",
+      "role": "Roli",
+      "phone": "Telefoni",
+      "status": "Statusi",
+      "actions": "Veprime"
+    },
+    "status": {
+      "active": "Aktiv",
+      "inactive": "Jo Aktiv"
+    },
+    "dialog": {
+      "createTitle": "Shto punonjës të ri",
+      "editTitle": "Ndrysho — {{name}}",
+      "createButton": "Krijo punonjës",
+      "saveChanges": "Ruaj Ndryshimet",
+      "saving": "Duke ruajtur...",
+      "cancel": "Anulo",
+      "creating": "Duke krijuar...",
+      "deleteTitle": "Konfirmo Fshirjen",
+      "deleteConfirm": "A jeni i sigurt që dëshironi të fshini {{name}}?",
+      "deleteWarning": "Ky veprim nuk mund të zhbëhet.",
+      "deleteConfirmButton": "Po, Fshij",
+      "deleting": "Duke fshirë..."
+    },
+    "actions": {
+      "chat": "Chat",
+      "edit": "Ndrysho",
+      "delete": "Fshij"
+    },
+    "errors": {
+      "createFailed": "Dështoi krijimi i punonjësit.",
+      "updateFailed": "Dështoi ndryshimi i punonjësit.",
+      "deleteFailed": "Dështoi fshirja e punonjësit."
+    },
+    "form": {
+      "firstName": "Emri",
+      "lastName": "Mbiemri",
+      "email": "Email",
+      "gender": "Gjinia",
+      "genderMale": "Mashkull",
+      "genderFemale": "Femër",
+      "genderRequired": "Gjinia është e detyrueshme.",
+      "firstNameRequired": "Emri është i detyrueshëm.",
+      "lastNameRequired": "Mbiemri është i detyrueshëm.",
+      "emailRequired": "Email-i është i detyrueshëm.",
+      "jobTitle": "Titulli i Punës",
+      "phone": "Telefoni",
+      "emailInvalid": "Ju lutem shkruani një email të vlefshëm."
+    }
   },
   "userManagement": {
     "title": "Menaxhimi i Përdoruesve",
@@ -38,14 +453,11 @@
       "email": "Email",
       "role": "Roli",
       "actions": "Veprimet",
-      "firstNamex":"Emri është i detyrueshëm",
-        "lastNamex": "Mbiemri është i detyrueshëm",
-        "emailx": "Email-i është i detyrueshëm dhe duhet të jetë i vlefshëm",
-        "genderx": "Zgjedhja e gjinisë është e detyrueshme"
-
+      "firstNamex": "Emri është i detyrueshëm",
+      "lastNamex": "Mbiemri është i detyrueshëm",
+      "emailx": "Email-i është i detyrueshëm dhe duhet të jetë i vlefshëm",
+      "genderx": "Zgjedhja e gjinisë është e detyrueshme"
     },
-     
-    
     "dialog": {
       "deleteTitle": "Konfirmo Fshirjen",
       "deleteConfirm": "A jeni i sigurt që dëshironi të fshini {{name}}?",
@@ -60,8 +472,58 @@
       "Save": "Ruaj"
     }
   },
+  "serviceList": {
+    "title": "Lista e Shërbimeve",
+    "addService": "Shto Shërbim",
+    "noData": "Nuk u gjet asnjë shërbim.",
+    "table": {
+      "name": "Emri i Shërbimit",
+      "category": "Kategoria",
+      "duration": "Kohëzgjatja",
+      "price": "Çmimi",
+      "status": "Statusi",
+      "actions": "Veprimet"
+    },
+    "status": {
+      "active": "Aktiv",
+      "inactive": "Jo Aktiv"
+    },
+    "dialog": {
+      "createTitle": "Shto Shërbim të Ri",
+      "editTitle": "Ndrysho Shërbimin",
+      "createButton": "Ruaj Shërbimin",
+      "saveChanges": "Ruaj Ndryshimet",
+      "saving": "Duke ruajtur...",
+      "cancel": "Anulo",
+      "deleteTitle": "Konfirmo Fshirjen",
+      "deleteConfirm": "A jeni i sigurt që dëshironi të fshini {{name}}?",
+      "deleteWarning": "Ky veprim nuk mund të zhbëhet.",
+      "deleteConfirmButton": "Po, Fshij",
+      "deleting": "Duke fshirë..."
+    },
+    "form": {
+      "name": "Emri i Shërbimit",
+      "category": "Kategoria",
+      "categoryPlaceholder": "Zgjidh kategorinë...",
+      "description": "Përshkrimi (opsional)",
+      "duration": "Kohëzgjatja (minuta)",
+      "price": "Çmimi ($)"
+    },
+    "errors": {
+      "nameRequired": "Emri i shërbimit është i detyrueshëm.",
+      "categoryRequired": "Zgjidhni një kategori.",
+      "durationPositive": "Kohëzgjatja duhet të jetë më e madhe se 0.",
+      "priceNonNegative": "Çmimi nuk mund të jetë negativ.",
+      "saveFailed": "Dështoi ruajtja e shërbimit.",
+      "deleteFailed": "Dështoi fshirja e shërbimit."
+    },
+    "actions": {
+      "edit": "Ndrysho shërbimin",
+      "delete": "Fshij shërbimin"
+    },
+    "minutesSuffix": "min"
+  },
   "profile": {
-"updateError": "Gabim gjatë përditësimit të profilit",
     "title": "Profili Im",
     "welcome": "Mirësevini",
     "personalInfo": "Informacioni Personal",
@@ -93,37 +555,27 @@
     "noAccount": "Nuk keni llogari? Regjistrohuni",
     "errorInvalid": "Email-i ose fjalëkalimi i pasaktë."
   },
-"register": {
-  "title": "Regjistrohu",
-  "firstName": "Emri",
-  "lastName": "Mbiemri",
-  "email": "Email-i",
-  "gender": "Gjinia",
-  "genderM": "Mashkull",
-  "genderF": "Femër",
-  "password": "Fjalëkalimi",
-  "passwordHelper": "Të paktën 6 karaktere, përfshirë shkronja të mëdha, të vogla dhe një numër.",
-  "submit": "Krijo llogari",
-  "haveAccount": "Keni një llogari? Kyçuni",
-  "errorFailed": "Regjistrimi dështoi.",
-  "errorGenderRequired": "Zgjedhja e gjinisë është e detyrueshme!",
-  "selectGenderPlaceholder": "Zgjidhni gjininë...",
-  "errors": {
-    "firstName": "Emri është i detyrueshëm",
-    "lastName": "Mbiemri është i detyrueshëm",
-    "email": "Email-i kërkohet dhe duhet të jetë i vlefshëm",
-    "gender": "Zgjedhja e gjinisë është e detyrueshme",
-    "requiredPrefix": "Fushat e mëposhtme janë të detyrueshme",
-    "firstNameLength": "Emri duhet të jetë mes 2 dhe 50 karaktereve",
-    "lastNameLength": "Mbiemri duhet të jetë mes 2 dhe 50 karaktereve",
-    "emailRequired": "Email-i është i detyrueshëm",
-    "emailInvalid": "Ju lutem shkruani një adresë email-i të vlefshme.",
-    "emailGmailInvalid": "Lejohen vetëm email-et e formatit shembull@gmail.com",
-    "passwordRequired": "Fjalëkalimi është i detyrueshëm",
-    "passwordTooShort": "Fjalëkalimi duhet të jetë të paktën 6 karaktere!",
-    "passwordStrength": "Fjalëkalimi duhet të ketë një shkronjë të madhe, një të vogël dhe një numër",
-    "userHasClientAppointments": "Ky përdorues nuk mund të fshihet sepse ka takime të rezervuara si klient.",
-    "userHasEmployeeAppointments": "Ky punëtor nuk mund të fshihet sepse ka takime të caktuara me klientë."
-  }
-}
+  "register": {
+    "title": "Regjistrohu",
+    "firstName": "Emri",
+    "lastName": "Mbiemri",
+    "email": "Email",
+    "gender": "Gjinia",
+    "genderM": "Mashkull",
+    "genderF": "Femër",
+    "password": "Fjalëkalimi",
+    "passwordHelper": "Të paktën 6 karaktere, duke përfshirë shkronja të mëdha, të vogla dhe një numër.",
+    "submit": "Krijo llogarinë",
+    "haveAccount": "Keni një llogari? Identifikohuni",
+    "errorFailed": "Regjistrimi dështoi.",
+    "errorGenderRequired": "Zgjedhja e gjinisë është e detyrueshme!",
+    "selectGenderPlaceholder": "Zgjidhni gjininë...",
+    "errors": {
+      "firstName": "Emri është i detyrueshëm",
+      "lastName": "Mbiemri është i detyrueshëm",
+      "email": "Email-i është i detyrueshëm dhe duhet të jetë i vlefshëm",
+      "gender": "Zgjedhja e gjinisë është e detyrueshme",
+      "requiredPrefix": "Fushat vijuese janë të detyrueshme",
+      "passwordTooShort": "Fjalëkalimi duhet të jetë të paktën 6 karaktere!"
+    } }
 }

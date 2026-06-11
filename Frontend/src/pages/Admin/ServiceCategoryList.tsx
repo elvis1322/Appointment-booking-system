@@ -8,6 +8,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useTranslation } from 'react-i18next';
 import type { ServiceCategory } from '../../types/staff.types';
 import {
   getServiceCategories,
@@ -24,6 +25,7 @@ const emptyForm = {
 };
 
 export default function ServiceCategoryList() {
+  const { t } = useTranslation();
   const [categories, setCategories] = useState<ServiceCategory[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -77,7 +79,7 @@ export default function ServiceCategoryList() {
   };
 
   const handleSave = async () => {
-    if (!form.name.trim()) { setFormError('Emri është i detyrueshëm!'); return; }
+    if (!form.name.trim()) { setFormError(t('serviceCategoryList.errors.nameRequired')); return; }
 
     setSaving(true);
     try {
@@ -98,7 +100,7 @@ export default function ServiceCategoryList() {
       }
       handleCloseDialog();
     } catch {
-      setFormError('Gabim gjatë ruajtjes.');
+      setFormError(t('serviceCategoryList.errors.saveFailed'));
     }
     setSaving(false);
   };
@@ -118,9 +120,9 @@ export default function ServiceCategoryList() {
       // 409 Conflict — kategoria ka shërbime të lidhura
       const axiosErr = err as { response?: { status: number; data?: string } };
       if (axiosErr?.response?.status === 409) {
-        alert(axiosErr.response.data || 'Kjo kategori ka shërbime të lidhura dhe nuk mund të fshihet!');
+        alert(axiosErr.response.data || t('serviceCategoryList.errors.deleteLinked'));
       } else {
-        alert('Gabim gjatë fshirjes.');
+        alert(t('serviceCategoryList.errors.deleteFailed'));
       }
     }
     setDeleting(false);
@@ -131,9 +133,11 @@ export default function ServiceCategoryList() {
     <Box sx={{ p: 4, width: '100%' }}>
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-        <Typography variant="h4" fontWeight="bold">Menaxhimi i Kategorive</Typography>
+        <Typography sx={{ fontWeight: 'bold' }} variant="h4">
+          {t('serviceCategoryList.title')}
+        </Typography>
         <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenCreate}>
-          Shto Kategori
+          {t('serviceCategoryList.addButton')}
         </Button>
       </Box>
 
@@ -142,13 +146,13 @@ export default function ServiceCategoryList() {
           <CircularProgress color="primary" />
         </Box>
       ) : categories.length === 0 ? (
-        <Typography variant="body1" align="center" color="text.secondary">
-          Nuk u gjet asnjë kategori.
+        <Typography sx={{ color: 'text.secondary', textAlign: 'center', p: 2 }} variant="body1">
+          {t('serviceCategoryList.noData')}
         </Typography>
       ) : (
         <Grid container spacing={3}>
           {categories.map((cat) => (
-            <Grid item xs={12} sm={6} md={4} key={cat.id}>
+            <Grid  size={{ xs: 12, sm: 6, md: 4 }} key={cat.id}>
               <Card
                 elevation={4}
                 sx={{
@@ -166,25 +170,25 @@ export default function ServiceCategoryList() {
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                     <Typography variant="h6">{cat.name}</Typography>
                     <Chip
-                      label={cat.isActive ? 'Aktiv' : 'Jo Aktiv'}
+                      label={cat.isActive ? t('serviceCategoryList.status.active') : t('serviceCategoryList.status.inactive')}
                       color={cat.isActive ? 'success' : 'error'}
                       size="small" variant="outlined"
                     />
                   </Box>
-                  <Typography variant="body2" color="text.secondary">
-                    {cat.description || 'Nuk ka përshkrim.'}
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    {cat.description || t('serviceCategoryList.noDescription')}
                   </Typography>
                   {cat.sortOrder > 0 && (
-                    <Typography variant="caption" color="text.disabled" mt={1} display="block">
-                      Renditja: {cat.sortOrder}
+           <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
+                      {t('serviceCategoryList.sortOrderLabel')} {cat.sortOrder}
                     </Typography>
                   )}
                 </CardContent>
                 <CardActions sx={{ p: 2, pt: 0, justifyContent: 'flex-end' }}>
-                  <IconButton color="info" size="small" onClick={() => handleOpenEdit(cat)} title="Ndrysho">
+                  <IconButton color="info" size="small" onClick={() => handleOpenEdit(cat)} title={t('serviceCategoryList.actions.edit')}>
                     <EditIcon fontSize="small" />
                   </IconButton>
-                  <IconButton color="error" size="small" onClick={() => handleOpenDelete(cat)} title="Fshij">
+                  <IconButton color="error" size="small" onClick={() => handleOpenDelete(cat)} title={t('serviceCategoryList.actions.delete')}>
                     <DeleteIcon fontSize="small" />
                   </IconButton>
                 </CardActions>
@@ -196,29 +200,36 @@ export default function ServiceCategoryList() {
 
       {/* ===== DIALOG - SHTO / NDRYSHO KATEGORI ===== */}
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth
-        PaperProps={{ sx: { bgcolor: '#1e1e1e', borderRadius: 3 } }}>
+         slotProps={{
+  paper: {
+    sx: {
+      bgcolor: '#1e1e1e',
+      borderRadius: 3
+    }
+  }
+}}>
         <DialogTitle sx={{ color: '#7e57c2', fontWeight: 'bold' }}>
-          {editingId ? '✏️ Ndrysho Kategorinë' : '➕ Shto Kategori të Re'}
+          {editingId ? t('serviceCategoryList.dialog.editTitle') : t('serviceCategoryList.dialog.createTitle')}
         </DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
           <TextField
-            label="Emri i Kategorisë"
+            label={t('serviceCategoryList.form.name')}
             fullWidth variant="outlined"
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
           />
           <TextField
-            label="Përshkrimi (opsional)"
+            label={t('serviceCategoryList.form.description')}
             fullWidth variant="outlined" multiline rows={2}
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
           />
           <TextField
-            label="Renditja (Sort Order)"
+            label={t('serviceCategoryList.form.sortOrder')}
             type="number" fullWidth variant="outlined"
             value={form.sortOrder}
             onChange={(e) => setForm({ ...form, sortOrder: Number(e.target.value) })}
-            helperText="0 = pa renditje specifike"
+            helperText={t('serviceCategoryList.form.sortOrderHelp')}
           />
           <FormControlLabel
             control={
@@ -228,35 +239,42 @@ export default function ServiceCategoryList() {
                 color="primary"
               />
             }
-            label={form.isActive ? 'Aktive' : 'Jo Aktive'}
+            label={form.isActive ? t('serviceCategoryList.status.active') : t('serviceCategoryList.status.inactive')}
           />
-          {formError && <Typography color="error" variant="body2">{formError}</Typography>}
+          {formError && <Typography sx={{ color: 'error' }} variant="body2">{formError}</Typography>}
         </DialogContent>
         <DialogActions sx={{ p: 3, pt: 0 }}>
-          <Button onClick={handleCloseDialog} color="inherit">Anulo</Button>
+          <Button onClick={handleCloseDialog} color="inherit">{t('serviceCategoryList.dialog.cancel')}</Button>
           <Button onClick={handleSave} variant="contained" color="primary" disabled={saving}>
-            {saving ? 'Duke ruajtur...' : editingId ? 'Ruaj Ndryshimet' : 'Shto Kategorinë'}
+            {saving ? t('serviceCategoryList.dialog.saving') : editingId ? t('serviceCategoryList.dialog.saveChanges') : t('serviceCategoryList.dialog.createButton')}
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* ===== DIALOG - KONFIRMO FSHIRJEN ===== */}
       <Dialog open={!!deleteTarget} onClose={handleCloseDelete}
-        PaperProps={{ sx: { bgcolor: '#1e1e1e', borderRadius: 3, minWidth: 380 } }}>
-        <DialogTitle sx={{ color: '#f44336', fontWeight: 'bold' }}>🗑️ Konfirmo Fshirjen</DialogTitle>
+        slotProps={{
+  paper: {
+    sx: {
+      bgcolor: '#1e1e1e',
+      borderRadius: 3,
+      minWidth: 380
+    }
+  }
+}}>
+      <DialogTitle sx={{ color: '#f44336', fontWeight: 'bold' }}>{t('serviceCategoryList.dialog.deleteTitle')}</DialogTitle>
         <DialogContent>
           <Typography>
-            A jeni i sigurt që dëshironi të fshini kategorinë{' '}
-            <strong style={{ color: '#7e57c2' }}>"{deleteTarget?.name}"</strong>?
+            {t('serviceCategoryList.dialog.deleteConfirm', { name: deleteTarget?.name })}
           </Typography>
-          <Typography variant="body2" color="text.secondary" mt={1}>
-            ⚠️ Nëse kjo kategori ka shërbime të lidhura, fshirja nuk do të lejohet.
+          <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
+            {t('serviceCategoryList.dialog.deleteWarning')}
           </Typography>
         </DialogContent>
         <DialogActions sx={{ p: 3, pt: 0 }}>
-          <Button onClick={handleCloseDelete} color="inherit" disabled={deleting}>Anulo</Button>
+          <Button onClick={handleCloseDelete} color="inherit" disabled={deleting}>{t('serviceCategoryList.dialog.cancel')}</Button>
           <Button onClick={handleConfirmDelete} variant="contained" color="error" disabled={deleting}>
-            {deleting ? 'Duke fshirë...' : 'Po, Fshij'}
+            {deleting ? t('serviceCategoryList.dialog.deleting') : t('serviceCategoryList.dialog.deleteConfirmButton')}
           </Button>
         </DialogActions>
       </Dialog>

@@ -18,8 +18,8 @@ public class ServicesController : ControllerBase
         [FromQuery] bool includeInactive = false,
         CancellationToken ct = default)
     {
-        if (!User.Claims.Any(c => c.Type == "permission" && c.Value == "Services:Read"))
-            return Forbid();
+        // if (!User.Claims.Any(c => c.Type == "permission" && c.Value == "Services:Read"))
+          //  return Forbid();
         return Ok(await svc.GetServicesAsync(categoryId, includeInactive, ct));
     }
 
@@ -30,8 +30,8 @@ public class ServicesController : ControllerBase
         Guid id,
         CancellationToken ct = default)
     {
-        if (!User.Claims.Any(c => c.Type == "permission" && c.Value == "Services:Read"))
-            return Forbid();
+        // if (!User.Claims.Any(c => c.Type == "permission" && c.Value == "Services:Read"))
+          //   return Forbid();
         var e = await svc.GetServiceByIdAsync(id, ct);
         return e == null ? NotFound() : Ok(e);
     }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box, Typography, Button, Paper, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Chip, CircularProgress,
@@ -42,6 +43,7 @@ export default function ServiceList() {
   // Dialog state — Delete
   const [deleteTarget, setDeleteTarget] = useState<Service | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     Promise.all([getServices(), getServiceCategories()])
@@ -85,10 +87,10 @@ export default function ServiceList() {
   };
 
   const handleSave = async () => {
-    if (!form.name.trim()) { setFormError('Emri është i detyrueshëm!'); return; }
-    if (!form.serviceCategoryId) { setFormError('Zgjidhni një kategori!'); return; }
-    if (form.durationMinutes <= 0) { setFormError('Kohëzgjatja duhet të jetë më e madhe se 0!'); return; }
-    if (form.price < 0) { setFormError('Çmimi nuk mund të jetë negativ!'); return; }
+    if (!form.name.trim()) { setFormError(t('serviceList.errors.nameRequired')); return; }
+    if (!form.serviceCategoryId) { setFormError(t('serviceList.errors.categoryRequired')); return; }
+    if (form.durationMinutes <= 0) { setFormError(t('serviceList.errors.durationPositive')); return; }
+    if (form.price < 0) { setFormError(t('serviceList.errors.priceNonNegative')); return; }
 
     setSaving(true);
     try {
@@ -103,7 +105,7 @@ export default function ServiceList() {
       }
       handleCloseDialog();
     } catch {
-      setFormError('Gabim gjatë ruajtjes.');
+      setFormError(t('serviceList.errors.saveFailed'));
     }
     setSaving(false);
   };
@@ -120,7 +122,7 @@ export default function ServiceList() {
       setServices((prev) => prev.filter((s) => s.id !== deleteTarget.id));
       handleCloseDelete();
     } catch {
-      alert('Gabim gjatë fshirjes.');
+      alert(t('serviceList.errors.deleteFailed'));
     }
     setDeleting(false);
   };
@@ -129,32 +131,34 @@ export default function ServiceList() {
   return (
     <Box sx={{ p: 4, width: '100%' }}>
 
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
-        <Typography variant="h4" fontWeight="bold">Lista e Shërbimeve</Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <Typography sx={{ fontWeight: 'bold' }} variant="h4">
+          {t('serviceList.title')}
+        </Typography>
         <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleOpenCreate}>
-          Shto Shërbim
+          {t('serviceList.addService')}
         </Button>
       </Box>
 
       {loading ? (
-        <Box display="flex" justifyContent="center" mt={10}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}>
           <CircularProgress color="primary" />
         </Box>
       ) : services.length === 0 ? (
-        <Typography variant="body1" align="center" color="text.secondary">
-          Nuk u gjet asnjë shërbim në databazë.
+        <Typography sx={{ color: 'text.secondary', textAlign: 'center', p: 2 }} variant="body1">
+          {t('serviceList.noData')}
         </Typography>
       ) : (
         <TableContainer component={Paper} elevation={4} sx={{ borderRadius: 2 }}>
           <Table sx={{ minWidth: 650 }}>
             <TableHead sx={{ backgroundColor: 'rgba(126, 87, 194, 0.15)' }}>
               <TableRow>
-                <TableCell><strong>Emri Shërbimit</strong></TableCell>
-                <TableCell><strong>Kategoria</strong></TableCell>
-                <TableCell><strong>Kohëzgjatja</strong></TableCell>
-                <TableCell><strong>Çmimi</strong></TableCell>
-                <TableCell><strong>Statusi</strong></TableCell>
-                <TableCell align="right"><strong>Veprime</strong></TableCell>
+                <TableCell><strong>{t('serviceList.table.name')}</strong></TableCell>
+                <TableCell><strong>{t('serviceList.table.category')}</strong></TableCell>
+                <TableCell><strong>{t('serviceList.table.duration')}</strong></TableCell>
+                <TableCell><strong>{t('serviceList.table.price')}</strong></TableCell>
+                <TableCell><strong>{t('serviceList.table.status')}</strong></TableCell>
+                <TableCell align="right"><strong>{t('serviceList.table.actions')}</strong></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -162,22 +166,22 @@ export default function ServiceList() {
                 <TableRow key={svc.id} sx={(theme) => ({ '&:hover': { backgroundColor: theme.palette.action.hover } })}>
                   <TableCell>{svc.name}</TableCell>
                   <TableCell>{svc.serviceCategoryName || '-'}</TableCell>
-                  <TableCell>{svc.durationMinutes} min</TableCell>
+                  <TableCell>{svc.durationMinutes} {t('serviceList.minutesSuffix')}</TableCell>
                   <TableCell>${svc.price.toFixed(2)}</TableCell>
                   <TableCell>
                     <Chip
-                      label={svc.isActive ? 'Aktiv' : 'Jo Aktiv'}
+                      label={svc.isActive ? t('serviceList.status.active') : t('serviceList.status.inactive')}
                       color={svc.isActive ? 'success' : 'error'}
                       size="small" variant="outlined"
                     />
                   </TableCell>
                   <TableCell align="right">
                     <IconButton color="info" size="small" sx={{ mr: 1 }}
-                      onClick={() => handleOpenEdit(svc)} title="Ndrysho shërbimin">
+                      onClick={() => handleOpenEdit(svc)} title={t('serviceList.actions.edit')}>
                       <EditIcon fontSize="small" />
                     </IconButton>
                     <IconButton color="error" size="small"
-                      onClick={() => handleOpenDelete(svc)} title="Fshij shërbimin">
+                      onClick={() => handleOpenDelete(svc)} title={t('serviceList.actions.delete')}>
                       <DeleteIcon fontSize="small" />
                     </IconButton>
                   </TableCell>
@@ -190,45 +194,52 @@ export default function ServiceList() {
 
       {/* ===== DIALOG - SHTO / NDRYSHO SHËRBIM ===== */}
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth
-        PaperProps={{ sx: { bgcolor: '#1e1e1e', borderRadius: 3 } }}>
+         slotProps={{
+  paper: {
+    sx: {
+      bgcolor: '#1e1e1e',
+      borderRadius: 3
+    }
+  }
+}}>
         <DialogTitle sx={{ color: '#7e57c2', fontWeight: 'bold' }}>
-          {editingId ? '✏️ Ndrysho Shërbimin' : '➕ Shto Shërbim të Ri'}
+          {editingId ? t('serviceList.dialog.editTitle') : t('serviceList.dialog.createTitle')}
         </DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
           <TextField
-            label="Emri i Shërbimit"
+            label={t('serviceList.form.name')}
             fullWidth variant="outlined"
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
           />
           <FormControl fullWidth variant="outlined">
-            <InputLabel>Kategoria</InputLabel>
+            <InputLabel>{t('serviceList.form.category')}</InputLabel>
             <Select
               value={form.serviceCategoryId}
-              label="Kategoria"
+              label={t('serviceList.form.category')}
               onChange={(e) => setForm({ ...form, serviceCategoryId: e.target.value })}
             >
-              <MenuItem value=""><em>Zgjidh kategorinë...</em></MenuItem>
+              <MenuItem value=""><em>{t('serviceList.form.categoryPlaceholder')}</em></MenuItem>
               {categories.map((cat) => (
                 <MenuItem key={cat.id} value={cat.id}>{cat.name}</MenuItem>
               ))}
             </Select>
           </FormControl>
           <TextField
-            label="Përshkrimi (opsional)"
+            label={t('serviceList.form.description')}
             fullWidth variant="outlined" multiline rows={2}
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
           />
-          <Box display="flex" gap={2}>
+          <Box sx={{ display: 'flex', gap: 2 }}>
             <TextField
-              label="Kohëzgjatja (minuta)"
+              label={t('serviceList.form.duration')}
               type="number" fullWidth variant="outlined"
               value={form.durationMinutes}
               onChange={(e) => setForm({ ...form, durationMinutes: Number(e.target.value) })}
             />
             <TextField
-              label="Çmimi ($)"
+              label={t('serviceList.form.price')}
               type="number" fullWidth variant="outlined"
               value={form.price}
               onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
@@ -242,35 +253,42 @@ export default function ServiceList() {
                 color="primary"
               />
             }
-            label={form.isActive ? 'Aktiv' : 'Jo Aktiv'}
+            label={form.isActive ? t('serviceList.status.active') : t('serviceList.status.inactive')}
           />
           {formError && <Typography color="error" variant="body2">{formError}</Typography>}
         </DialogContent>
         <DialogActions sx={{ p: 3, pt: 0 }}>
-          <Button onClick={handleCloseDialog} color="inherit">Anulo</Button>
+          <Button onClick={handleCloseDialog} color="inherit">{t('serviceList.dialog.cancel')}</Button>
           <Button onClick={handleSave} variant="contained" color="primary" disabled={saving}>
-            {saving ? 'Duke ruajtur...' : editingId ? 'Ruaj Ndryshimet' : 'Ruaj Shërbimin'}
+            {saving ? t('serviceList.dialog.saving') : editingId ? t('serviceList.dialog.saveChanges') : t('serviceList.dialog.createButton')}
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* ===== DIALOG - KONFIRMO FSHIRJEN ===== */}
       <Dialog open={!!deleteTarget} onClose={handleCloseDelete}
-        PaperProps={{ sx: { bgcolor: '#1e1e1e', borderRadius: 3, minWidth: 360 } }}>
-        <DialogTitle sx={{ color: '#f44336', fontWeight: 'bold' }}>🗑️ Konfirmo Fshirjen</DialogTitle>
+        slotProps={{
+  paper: {
+    sx: {
+      bgcolor: '#1e1e1e',
+      borderRadius: 3,
+      minWidth: 360
+    }
+  }
+}}>
+        <DialogTitle sx={{ color: '#f44336', fontWeight: 'bold' }}>{t('serviceList.dialog.deleteTitle')}</DialogTitle>
         <DialogContent>
           <Typography>
-            A jeni i sigurt që dëshironi të fshini shërbimin{' '}
-            <strong style={{ color: '#7e57c2' }}>"{deleteTarget?.name}"</strong>?
+            {t('serviceList.dialog.deleteConfirm', { name: deleteTarget?.name })}
           </Typography>
-          <Typography variant="body2" color="text.secondary" mt={1}>
-            Ky veprim nuk mund të zhbëhet.
+          <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
+            {t('serviceList.dialog.deleteWarning')}
           </Typography>
         </DialogContent>
         <DialogActions sx={{ p: 3, pt: 0 }}>
-          <Button onClick={handleCloseDelete} color="inherit" disabled={deleting}>Anulo</Button>
+          <Button onClick={handleCloseDelete} color="inherit" disabled={deleting}>{t('serviceList.dialog.cancel')}</Button>
           <Button onClick={handleConfirmDelete} variant="contained" color="error" disabled={deleting}>
-            {deleting ? 'Duke fshirë...' : 'Po, Fshij'}
+            {deleting ? t('serviceList.dialog.deleting') : t('serviceList.dialog.deleteConfirmButton')}
           </Button>
         </DialogActions>
       </Dialog>
