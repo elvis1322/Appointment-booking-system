@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box, Typography, Paper, Grid, CircularProgress,
   Select, MenuItem, FormControl, InputLabel, Button,
@@ -18,6 +19,7 @@ export default function EmployeeServices() {
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<string>('');
   const [selectedServiceIds, setSelectedServiceIds] = useState<string[]>([]);
 
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -56,7 +58,7 @@ export default function EmployeeServices() {
     setMessage(null);
     try {
       await updateEmployeeServices(selectedEmployeeId, selectedServiceIds);
-      setMessage({ type: 'success', text: 'Shërbimet u caktuan me sukses!' });
+      setMessage({ type: 'success', text: t('employeeServicesPage.saveSuccess') });
       // Përditëso listën lokale
       setEmployees((prev) =>
         prev.map((emp) =>
@@ -66,7 +68,7 @@ export default function EmployeeServices() {
         )
       );
     } catch {
-      setMessage({ type: 'error', text: 'Dështoi ruajtja e shërbimeve.' });
+      setMessage({ type: 'error', text: t('employeeServicesPage.saveError') });
     } finally {
       setSaving(false);
     }
@@ -83,22 +85,22 @@ export default function EmployeeServices() {
   return (
     <Box sx={{ p: 4, width: '100%' }}>
       <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 4, color: 'primary.main' }}>
-        Lidhja e Punonjësve me Shërbimet
+        {t('employeeServicesPage.title')}
       </Typography>
 
       <Grid container spacing={4}>
         {/* Zgjedhja e Punonjësit */}
-        <Grid size={{ xs: 12, md: 4 }}>
+        <Grid item xs={12} md={4}>
           <Paper sx={{ p: 3, borderRadius: 2 }} elevation={4}>
-            <Typography variant="h6" sx={{ mb: 2 }}>Zgjidh Punonjësin</Typography>
+            <Typography variant="h6" sx={{ mb: 2 }}>{t('employeeServicesPage.selectEmployee')}</Typography>
             <FormControl fullWidth variant="outlined">
-              <InputLabel>Punonjësi</InputLabel>
+              <InputLabel>{t('employeeServicesPage.selectEmployeeLabel')}</InputLabel>
               <Select
                 value={selectedEmployeeId}
-                label="Punonjësi"
+                label={t('employeeServicesPage.selectEmployeeLabel')}
                 onChange={(e) => setSelectedEmployeeId(e.target.value as string)}
               >
-                <MenuItem value=""><em>Zgjidhni një punonjës...</em></MenuItem>
+                <MenuItem value=""><em>{t('employeeServicesPage.selectEmployeePlaceholder')}</em></MenuItem>
                 {employees.map((emp) => (
                   <MenuItem key={emp.id} value={emp.id}>
                     {emp.firstName} {emp.lastName}{emp.jobTitle ? ` (${emp.jobTitle})` : ''}
@@ -108,17 +110,17 @@ export default function EmployeeServices() {
             </FormControl>
             <Box sx={{ mt: 4 }}>
               <Typography variant="body2" color="text.secondary">
-                Zgjidhni një punonjës nga lista për të parë dhe modifikuar shërbimet që ai ofron.
+                {t('employeeServicesPage.selectEmployeeHelp')}
               </Typography>
             </Box>
           </Paper>
         </Grid>
 
         {/* Lista e Shërbimeve */}
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid item xs={12} md={8}>
           <Paper sx={{ p: 3, borderRadius: 2 }} elevation={4}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-              <Typography variant="h6">Shërbimet e Disponueshme</Typography>
+              <Typography variant="h6">{t('employeeServicesPage.availableServices')}</Typography>
               <Button
                 variant="contained"
                 color="primary"
@@ -126,7 +128,7 @@ export default function EmployeeServices() {
                 onClick={handleSave}
                 disabled={!selectedEmployeeId || saving}
               >
-                {saving ? 'Duke ruajtur...' : 'Ruaj Ndryshimet'}
+                {saving ? t('employeeServicesPage.saving') : t('employeeServicesPage.saveChanges')}
               </Button>
             </Box>
 
@@ -140,13 +142,13 @@ export default function EmployeeServices() {
 
             {!selectedEmployeeId ? (
               <Typography color="text.secondary" align="center" sx={{ py: 4 }}>
-                Ju lutem zgjedhni një punonjës për të parë shërbimet.
+                {t('employeeServicesPage.chooseEmployeePrompt')}
               </Typography>
             ) : (
               <FormGroup>
                 <Grid container spacing={2}>
                   {services.map((service) => (
-                    <Grid size={{ xs: 12, sm: 6 }} key={service.id}>
+                    <Grid item xs={12} sm={6} key={service.id}>
                       <Paper
                         variant="outlined"
                         sx={{
@@ -173,7 +175,7 @@ export default function EmployeeServices() {
                             <Box>
                               <Typography variant="body1">{service.name}</Typography>
                               <Typography variant="caption" color="text.secondary">
-                                {service.serviceCategoryName || service.categoryName || 'Pa kategori'}
+                                {service.serviceCategoryName || service.categoryName || t('employeeServicesPage.noCategory')}
                               </Typography>
                             </Box>
                           }

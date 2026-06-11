@@ -57,6 +57,7 @@ function listReducer(state: ListState, action: ListAction): ListState {
 export default function UserManagement() {
     const { t } = useTranslation();
     const { user: currentUser, updateUser } = useAuth();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     const emptyForm: UserForm = {
         firstName: '',
@@ -138,10 +139,17 @@ export default function UserManagement() {
             lastName: !createForm.lastName.trim(),
             email: !createForm.email.trim(),
             gjinia: !createForm.gjinia,
+            roleId: !createForm.roleId,
         };
 
         if (Object.values(errors).some(Boolean)) {
             setFieldErrors(errors);
+            return;
+        }
+
+        if (!emailRegex.test(createForm.email)) {
+            setFieldErrors({ ...errors, email: true });
+            setSnackbar({ msg: t('users.table.emailx'), sev: 'error' });
             return;
         }
 
@@ -177,10 +185,17 @@ export default function UserManagement() {
             lastName: !editForm.lastName?.trim(),
             email: !editForm.email.trim(),
             gjinia: !editForm.gjinia,
+            roleId: !editForm.roleId,
         };
 
         if (Object.values(errors).some(Boolean)) {
             setFieldErrors(errors);
+            return;
+        }
+
+        if (!emailRegex.test(editForm.email)) {
+            setFieldErrors({ ...errors, email: true });
+            setSnackbar({ msg: t('users.table.emailx'), sev: 'error' });
             return;
         }
 

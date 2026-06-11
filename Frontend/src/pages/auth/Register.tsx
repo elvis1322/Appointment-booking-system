@@ -86,7 +86,7 @@ const Register = () => {
         }
 
         // 3. Validimi për Email
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!formData.email.trim()) {
             newErrors.email = 'emailRequired';
             isValid = false;

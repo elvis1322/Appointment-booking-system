@@ -9,6 +9,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useTranslation } from 'react-i18next';
 import type { Location, Room } from '../../types/staff.types';
 import {
   getLocations, createLocation, updateLocation, deleteLocation,
@@ -19,6 +20,7 @@ const emptyLocationForm = { name: '', addressLine: '', city: '', isActive: true 
 const emptyRoomForm = { name: '', capacity: 0, isActive: true };
 
 export default function LocationList() {
+  const { t } = useTranslation();
   // --- LOCATIONS STATE ---
   const [locations, setLocations] = useState<Location[]>([]);
   const [loadingLoc, setLoadingLoc] = useState(true);
@@ -94,7 +96,7 @@ export default function LocationList() {
   };
 
   const handleSaveLoc = async () => {
-    if (!locForm.name.trim()) { setLocError('Emri është i detyrueshëm!'); return; }
+    if (!locForm.name.trim()) { setLocError(t('locationList.errors.nameRequired')); return; }
     setLocSaving(true);
     try {
       const payload = {
@@ -114,7 +116,7 @@ export default function LocationList() {
       }
       setOpenLocDialog(false);
     } catch {
-      setLocError('Gabim gjatë ruajtjes.');
+      setLocError(t('locationList.errors.saveFailed'));
     }
     setLocSaving(false);
   };
@@ -127,7 +129,7 @@ export default function LocationList() {
       if (selectedLocation?.id === deleteLocTarget.id) setSelectedLocation(null);
       setDeleteLocTarget(null);
     } catch {
-      alert('Gabim gjatë fshirjes. Sigurohu që nuk ka dhoma të lidhura me këtë lokacion.');
+      alert(t('locationList.errors.deleteFailed'));
     }
   };
 
@@ -154,7 +156,7 @@ export default function LocationList() {
 
   const handleSaveRoom = async () => {
     if (!selectedLocation) return;
-    if (!roomForm.name.trim()) { setRoomError('Emri i dhomës është i detyrueshëm!'); return; }
+    if (!roomForm.name.trim()) { setRoomError(t('locationList.roomPane.errors.nameRequired')); return; }
     setRoomSaving(true);
     try {
       const payload = {
@@ -173,7 +175,7 @@ export default function LocationList() {
       }
       setOpenRoomDialog(false);
     } catch {
-      setRoomError('Gabim gjatë ruajtjes së dhomës.');
+      setRoomError(t('locationList.roomPane.errors.saveFailed'));
     }
     setRoomSaving(false);
   };
@@ -185,7 +187,7 @@ export default function LocationList() {
       setRooms(prev => prev.filter(r => r.id !== deleteRoomTarget.id));
       setDeleteRoomTarget(null);
     } catch {
-      alert('Gabim gjatë fshirjes së dhomës.');
+      alert(t('locationList.roomPane.errors.deleteFailed'));
     }
   };
 
@@ -194,17 +196,17 @@ export default function LocationList() {
   // ==========================================
   return (
     <Box sx={{ p: 4, width: '100%' }}>
-      <Typography variant="h4" fontWeight="bold" mb={4}>Menaxhimi i Lokacioneve dhe Dhomave</Typography>
+      <Typography  sx={{ fontWeight: 'bold', mb: 4 }} variant="h4">{t('locationList.title')}</Typography>
 
       <Grid container spacing={4}>
 
         {/* KOLONA E MAJTË - LOKACIONET */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Paper sx={{ p: 3, borderRadius: 2, height: '100%' }} elevation={4}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-              <Typography variant="h6">Lokacionet</Typography>
+              <Typography variant="h6">{t('locationList.locationsLabel')}</Typography>
               <Button variant="contained" size="small" startIcon={<AddIcon />} onClick={handleOpenLocCreate}>
-                Shto
+                {t('locationList.addLocation')}
               </Button>
             </Box>
             <Divider sx={{ mb: 2 }} />
@@ -212,15 +214,15 @@ export default function LocationList() {
             {loadingLoc ? (
               <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}><CircularProgress /></Box>
             ) : locations.length === 0 ? (
-              <Typography color="text.secondary" align="center" p={2}>Nuk ka asnjë lokacion.</Typography>
+              <Typography sx={{ color: 'text.secondary', textAlign: 'center', p: 2 }}>{t('locationList.noData')}</Typography>
             ) : (
               <TableContainer>
                 <Table size="small">
                   <TableHead sx={{ bgcolor: 'rgba(126, 87, 194, 0.1)' }}>
                     <TableRow>
-                      <TableCell><strong>Emri & Adresa</strong></TableCell>
-                      <TableCell><strong>Statusi</strong></TableCell>
-                      <TableCell align="right"><strong>Veprime</strong></TableCell>
+                      <TableCell><strong>{t('locationList.table.nameAddress')}</strong></TableCell>
+                      <TableCell><strong>{t('locationList.table.status')}</strong></TableCell>
+                      <TableCell align="right"><strong>{t('locationList.table.actions')}</strong></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -236,13 +238,15 @@ export default function LocationList() {
                         }}
                       >
                         <TableCell>
-                          <Typography variant="body2" fontWeight="bold">{loc.name}</Typography>
+                          <Typography sx={{ fontWeight: 'bold' }} variant="body2">
+                            {loc.name}
+                          </Typography>
                           <Typography variant="caption" color="text.secondary">
                             {loc.addressLine} {loc.city ? `- ${loc.city}` : ''}
                           </Typography>
                         </TableCell>
                         <TableCell>
-                          <Chip label={loc.isActive ? 'Aktiv' : 'Jo Aktiv'} color={loc.isActive ? 'success' : 'default'} size="small" />
+                          <Chip label={loc.isActive ? t('locationList.status.active') : t('locationList.status.inactive')} color={loc.isActive ? 'success' : 'default'} size="small" />
                         </TableCell>
                         <TableCell align="right">
                           <IconButton size="small" color="info" onClick={(e) => handleOpenLocEdit(loc, e)}>
@@ -262,18 +266,20 @@ export default function LocationList() {
         </Grid>
 
         {/* KOLONA E DJATHTË - DHOMAT E ZGJEDHURA */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Paper sx={{ p: 3, borderRadius: 2, height: '100%', minHeight: 300 }} elevation={4}>
             {!selectedLocation ? (
               <Box sx={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                <Typography color="text.secondary">Zgjidh një lokacion nga lista për t'i parë dhomat.</Typography>
+                <Typography sx={{ color: 'text.secondary' }}>{t('locationList.roomPane.selectLocation')}</Typography>
               </Box>
             ) : (
               <>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                  <Typography variant="h6">Dhomat e "{selectedLocation.name}"</Typography>
+                  <Typography sx={{ fontWeight: 'bold' }} variant="h6">
+                    {t('locationList.roomPane.roomsOf', { name: selectedLocation.name })}
+                  </Typography>
                   <Button variant="contained" color="secondary" size="small" startIcon={<AddIcon />} onClick={handleOpenRoomCreate}>
-                    Shto Dhomë
+                    {t('locationList.roomPane.addRoom')}
                   </Button>
                 </Box>
                 <Divider sx={{ mb: 2 }} />
@@ -281,25 +287,25 @@ export default function LocationList() {
                 {loadingRooms ? (
                   <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}><CircularProgress /></Box>
                 ) : rooms.length === 0 ? (
-                  <Typography color="text.secondary" align="center" p={2}>Nuk ka asnjë dhomë në këtë lokacion.</Typography>
+                  <Typography sx={{ color: 'text.secondary', textAlign: 'center', p: 2 }}>{t('locationList.roomPane.noRooms')}</Typography>
                 ) : (
                   <TableContainer>
                     <Table size="small">
                       <TableHead sx={{ bgcolor: 'rgba(126, 87, 194, 0.1)' }}>
                         <TableRow>
-                          <TableCell><strong>Dhoma</strong></TableCell>
-                          <TableCell><strong>Kapaciteti</strong></TableCell>
-                          <TableCell><strong>Statusi</strong></TableCell>
-                          <TableCell align="right"><strong>Veprime</strong></TableCell>
+                          <TableCell><strong>{t('locationList.roomPane.table.room')}</strong></TableCell>
+                          <TableCell><strong>{t('locationList.roomPane.table.capacity')}</strong></TableCell>
+                          <TableCell><strong>{t('locationList.roomPane.table.status')}</strong></TableCell>
+                          <TableCell align="right"><strong>{t('locationList.roomPane.table.actions')}</strong></TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
                         {rooms.map(room => (
                           <TableRow key={room.id} hover>
                             <TableCell>{room.name}</TableCell>
-                            <TableCell>{room.capacity ? `${room.capacity} persona` : '-'}</TableCell>
+                            <TableCell>{room.capacity ? `${room.capacity} ${t('locationList.roomPane.capacitySuffix')}` : '-'}</TableCell>
                             <TableCell>
-                              <Chip label={room.isActive ? 'Aktiv' : 'Jo Aktiv'} color={room.isActive ? 'success' : 'default'} size="small" />
+                              <Chip label={room.isActive ? t('locationList.status.active') : t('locationList.status.inactive')} color={room.isActive ? 'success' : 'default'} size="small" />
                             </TableCell>
                             <TableCell align="right">
                               <IconButton size="small" color="info" onClick={() => handleOpenRoomEdit(room)}>
@@ -325,66 +331,80 @@ export default function LocationList() {
       {/* ======================================================== */}
       {/* DIALOGS FOR LOCATIONS */}
       <Dialog open={openLocDialog} onClose={() => setOpenLocDialog(false)} maxWidth="xs" fullWidth
-        PaperProps={{ sx: { bgcolor: '#1e1e1e', borderRadius: 3 } }}>
-        <DialogTitle sx={{ color: '#7e57c2' }}>{locEditingId ? 'Ndrysho Lokacionin' : 'Shto Lokacion të Ri'}</DialogTitle>
+         slotProps={{
+  paper: {
+    sx: {
+      bgcolor: '#1e1e1e',
+      borderRadius: 3
+    }
+  }
+}}>
+        <DialogTitle sx={{ color: '#7e57c2' }}>{locEditingId ? t('locationList.dialog.editTitle') : t('locationList.dialog.createTitle')}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
-          <TextField label="Emri (p.sh. Klinika Qendrore)" fullWidth value={locForm.name}
+          <TextField label={t('locationList.dialog.nameLabel')} fullWidth value={locForm.name}
             onChange={(e) => setLocForm({ ...locForm, name: e.target.value })} />
-          <TextField label="Adresa" fullWidth value={locForm.addressLine}
+          <TextField label={t('locationList.dialog.addressLabel')} fullWidth value={locForm.addressLine}
             onChange={(e) => setLocForm({ ...locForm, addressLine: e.target.value })} />
-          <TextField label="Qyteti" fullWidth value={locForm.city}
+          <TextField label={t('locationList.dialog.cityLabel')} fullWidth value={locForm.city}
             onChange={(e) => setLocForm({ ...locForm, city: e.target.value })} />
           <FormControlLabel control={
             <Switch checked={locForm.isActive} onChange={(e) => setLocForm({ ...locForm, isActive: e.target.checked })} color="primary" />
-          } label={locForm.isActive ? 'Aktiv' : 'Jo Aktiv'} />
-          {locError && <Typography color="error" variant="body2">{locError}</Typography>}
+          } label={locForm.isActive ? t('locationList.status.active') : t('locationList.status.inactive')} />
+          {locError && <Typography sx={{ color: 'error' }} variant="body2">{locError}</Typography>}
         </DialogContent>
         <DialogActions sx={{ p: 3 }}>
-          <Button onClick={() => setOpenLocDialog(false)}>Anulo</Button>
+          <Button onClick={() => setOpenLocDialog(false)}>{t('locationList.dialog.cancel')}</Button>
           <Button onClick={handleSaveLoc} variant="contained" disabled={locSaving}>
-            {locSaving ? 'Duke ruajtur...' : 'Ruaj'}
+            {locSaving ? t('locationList.dialog.saving') : t('locationList.dialog.saveButton')}
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog open={!!deleteLocTarget} onClose={() => setDeleteLocTarget(null)}>
-        <DialogTitle sx={{ color: '#f44336' }}>Fshij Lokacionin?</DialogTitle>
-        <DialogContent><Typography>A jeni i sigurt që dëshironi të fshini <b>{deleteLocTarget?.name}</b>?</Typography></DialogContent>
+        <DialogTitle sx={{ color: '#f44336' }}>{t('locationList.dialog.deleteTitle')}</DialogTitle>
+        <DialogContent><Typography>{t('locationList.dialog.deleteConfirm', { name: deleteLocTarget?.name })}</Typography></DialogContent>
         <DialogActions sx={{ p: 3 }}>
-          <Button onClick={() => setDeleteLocTarget(null)}>Jo</Button>
-          <Button onClick={handleConfirmDeleteLoc} variant="contained" color="error">Po, Fshij</Button>
+          <Button onClick={() => setDeleteLocTarget(null)}>{t('locationList.dialog.deleteNo')}</Button>
+          <Button onClick={handleConfirmDeleteLoc} variant="contained" color="error">{t('locationList.dialog.deleteYes')}</Button>
         </DialogActions>
       </Dialog>
 
       {/* ======================================================== */}
       {/* DIALOGS FOR ROOMS */}
       <Dialog open={openRoomDialog} onClose={() => setOpenRoomDialog(false)} maxWidth="xs" fullWidth
-        PaperProps={{ sx: { bgcolor: '#1e1e1e', borderRadius: 3 } }}>
-        <DialogTitle sx={{ color: '#7e57c2' }}>{roomEditingId ? 'Ndrysho Dhomën' : 'Shto Dhomë të Re'}</DialogTitle>
+         slotProps={{
+  paper: {
+    sx: {
+      bgcolor: '#1e1e1e',
+      borderRadius: 3
+    }
+  }
+}}>
+        <DialogTitle sx={{ color: '#7e57c2' }}>{roomEditingId ? t('locationList.roomPane.dialog.editTitle') : t('locationList.roomPane.dialog.createTitle')}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
-          <TextField label="Emri Dhomës (p.sh. Kabina 1)" fullWidth value={roomForm.name}
+          <TextField label={t('locationList.roomPane.dialog.nameLabel')} fullWidth value={roomForm.name}
             onChange={(e) => setRoomForm({ ...roomForm, name: e.target.value })} />
-          <TextField label="Kapaciteti (opsional)" type="number" fullWidth value={roomForm.capacity}
+          <TextField label={t('locationList.roomPane.dialog.capacityLabel')} type="number" fullWidth value={roomForm.capacity}
             onChange={(e) => setRoomForm({ ...roomForm, capacity: Number(e.target.value) })} />
           <FormControlLabel control={
             <Switch checked={roomForm.isActive} onChange={(e) => setRoomForm({ ...roomForm, isActive: e.target.checked })} color="primary" />
-          } label={roomForm.isActive ? 'Aktiv' : 'Jo Aktiv'} />
-          {roomError && <Typography color="error" variant="body2">{roomError}</Typography>}
+          } label={roomForm.isActive ? t('locationList.status.active') : t('locationList.status.inactive')} />
+          {roomError && <Typography sx={{ color: 'error' }} variant="body2">{roomError}</Typography>}
         </DialogContent>
         <DialogActions sx={{ p: 3 }}>
-          <Button onClick={() => setOpenRoomDialog(false)}>Anulo</Button>
+          <Button onClick={() => setOpenRoomDialog(false)}>{t('locationList.roomPane.dialog.cancel')}</Button>
           <Button onClick={handleSaveRoom} variant="contained" color="secondary" disabled={roomSaving}>
-            {roomSaving ? 'Duke ruajtur...' : 'Ruaj'}
+            {roomSaving ? t('locationList.roomPane.dialog.saving') : t('locationList.roomPane.dialog.save')}
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog open={!!deleteRoomTarget} onClose={() => setDeleteRoomTarget(null)}>
-        <DialogTitle sx={{ color: '#f44336' }}>Fshij Dhomën?</DialogTitle>
-        <DialogContent><Typography>A jeni i sigurt që dëshironi të fshini <b>{deleteRoomTarget?.name}</b>?</Typography></DialogContent>
+        <DialogTitle sx={{ color: '#f44336' }}>{t('locationList.roomPane.dialog.deleteTitle')}</DialogTitle>
+        <DialogContent><Typography>{t('locationList.roomPane.dialog.deleteConfirm', { name: deleteRoomTarget?.name })}</Typography></DialogContent>
         <DialogActions sx={{ p: 3 }}>
-          <Button onClick={() => setDeleteRoomTarget(null)}>Jo</Button>
-          <Button onClick={handleConfirmDeleteRoom} variant="contained" color="error">Po, Fshij</Button>
+          <Button onClick={() => setDeleteRoomTarget(null)}>{t('locationList.roomPane.dialog.deleteNo')}</Button>
+          <Button onClick={handleConfirmDeleteRoom} variant="contained" color="error">{t('locationList.roomPane.dialog.deleteYes')}</Button>
         </DialogActions>
       </Dialog>
 
