@@ -10,12 +10,15 @@ namespace Application.Services;
     public class UADServices :IUADServices
     {
         private readonly IUserRepository _userRepository;
+ private readonly IAppointmentRepository _appointmentRepository;
 
-          public UADServices(IUserRepository userRepository)
+
+          public UADServices(IUserRepository userRepository, IAppointmentRepository appointmentRepository)
              {
               
                _userRepository = userRepository;
-                }
+                  _appointmentRepository = appointmentRepository;
+            }
 
 
 
@@ -63,9 +66,34 @@ public async Task<UserAdminDTO> GetUserById(Guid id)
 
   public async Task<bool> DeleteUser(Guid id)
 {
-    var user = await _userRepository.GetByIdAsync(id);
-        if (user == null) return false;
+   
 
+    var user = await _userRepository.GetByIdAsync(id);
+    if (user == null) return false;
+
+
+    var clientAppointments = await _appointmentRepository.GetByUserIdAsync(id);
+    bool hasClientAppointments = clientAppointments.Any(a => 
+        a.StatusId == AppDefaults.AppointmentStatus.Pending || 
+        a.StatusId == AppDefaults.AppointmentStatus.Confirmed);
+
+    if (hasClientAppointments)
+    {
+        throw new InvalidOperationException("register.errors.userHasClientAppointments");
+    }
+
+
+    var employeeAppointments = await _appointmentRepository.GetByEmployeeUserIdAsync(id);
+    bool hasEmployeeAppointments = employeeAppointments.Any(a => 
+        a.StatusId == AppDefaults.AppointmentStatus.Pending || 
+        a.StatusId == AppDefaults.AppointmentStatus.Confirmed);
+
+    if (hasEmployeeAppointments)
+    {
+        throw new InvalidOperationException("register.errors.userHasEmployeeAppointments");
+    }
+
+   
     return await _userRepository.DeleteAsync(id);
 }
 

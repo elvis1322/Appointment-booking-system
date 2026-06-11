@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Application.DTOs;
-using Persistence.Security;
+using API.Security;
 
 namespace API.Controllers;
 

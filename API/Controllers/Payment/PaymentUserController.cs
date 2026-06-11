@@ -3,7 +3,7 @@ using Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Persistence.Security;
+using API.Security;
 
 namespace API.Controllers;
 

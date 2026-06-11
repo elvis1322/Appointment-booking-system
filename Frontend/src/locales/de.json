@@ -90,28 +90,37 @@
     "noAccount": "Noch kein Konto? Registrieren",
     "errorInvalid": "Ungültige E-Mail oder Passwort."
   },
-  "register": {
-    "title": "Registrieren",
-    "firstName": "Vorname",
-    "lastName": "Nachname",
-    "email": "E-Mail",
-    "gender": "Geschlecht",
-    "genderM": "Männlich",
-    "genderF": "Weiblich",
-    "password": "Passwort",
-    "passwordHelper": "Mindestens 6 Zeichen, einschließlich Groß- und Kleibuchstaben und einer Zahl.",
-    "submit": "Konto erstellen",
-    "haveAccount": "Haben Sie bereits ein Konto? Anmelden",
-    "errorFailed": "Registrierung fehlgeschlagen.",
-    "errorGenderRequired": "Geschlechtsauswahl ist erforderlich!",
-    "selectGenderPlaceholder": "Geschlecht auswählen...",
-    "errors": {
-      "firstName": "Vorname ist erforderlich",
-      "lastName": "Nachname ist erforderlich",
-      "email": "E-Mail ist erforderlich und muss gültig sein",
-      "gender": "Geschlechtsauswahl ist erforderlich",
-      "requiredPrefix": "Die folgenden Felder sind erforderlich",
-      "passwordTooShort": "Das Passwort muss mindestens 6 Zeichen lang sein!"
-    }
+ "register": {
+  "title": "Registrieren",
+  "firstName": "Vorname",
+  "lastName": "Nachname",
+  "email": "E-Mail",
+  "gender": "Geschlecht",
+  "genderM": "Männlich",
+  "genderF": "Weiblich",
+  "password": "Passwort",
+  "passwordHelper": "Mindestens 6 Zeichen, einschließlich Groß- und Kleinbuchstaben sowie einer Zahl.",
+  "submit": "Konto erstellen",
+  "haveAccount": "Haben Sie bereits ein Konto? Einloggen",
+  "errorFailed": "Registrierung fehlgeschlagen.",
+  "errorGenderRequired": "Die Auswahl des Geschlechts ist erforderlich!",
+  "selectGenderPlaceholder": "Geschlecht auswählen...",
+  "errors": {
+    "firstName": "Vorname ist erforderlich",
+    "lastName": "Nachname ist erforderlich",
+    "email": "E-Mail ist erforderlich und muss gültig sein",
+    "gender": "Die Auswahl des Geschlechts ist erforderlich",
+    "requiredPrefix": "Die folgenden Felder sind Pflichtfelder",
+    "firstNameLength": "Der Vorname muss zwischen 2 und 50 Zeichen lang sein",
+    "lastNameLength": "Der Nachname muss zwischen 2 und 50 Zeichen lang sein",
+    "emailRequired": "E-Mail ist erforderlich",
+    "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "emailGmailInvalid": "Es sind nur E-Mails im Format beispiel@gmail.com erlaubt",
+    "passwordRequired": "Passwort ist erforderlich",
+    "passwordTooShort": "Das Passwort muss mindestens 6 Zeichen lang sein!",
+    "passwordStrength": "Das Passwort muss mindestens einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten",
+    "userHasClientAppointments": "Dieser Benutzer kann nicht gelöscht werden, da er aktive Termine als Kunde hat.",
+    "userHasEmployeeAppointments": "Dieser Mitarbeiter kann nicht gelöscht werden, da er zugewiesene Termine mit Kunden hat."
+  }
   }
 }

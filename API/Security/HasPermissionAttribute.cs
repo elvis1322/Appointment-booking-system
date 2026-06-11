@@ -2,8 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-
-namespace Persistence.Security;
+namespace API.Security;
 public class HasPermissionAttribute : AuthorizeAttribute, IAuthorizationFilter
 {
     private readonly string _permission;

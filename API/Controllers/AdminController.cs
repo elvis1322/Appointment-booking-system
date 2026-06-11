@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Application.Services;
 using Application.Interfaces;
-using Persistence.Security;
+using API.Security;
 
 namespace API.Controllers;
 
@@ -53,18 +53,28 @@ public async Task<ActionResult<UserAdminDTO>> GetUsersbyId(Guid id)
 
     [HttpDelete("DeleteUserById/{id}")]
         [HasPermission("Users:Delete")]
-public async Task<ActionResult<UserAdminDTO>> DeleteUserById(Guid id)
+public async Task<ActionResult<UserAdminDTO>> DeleteUserById(Guid id){
+   try
     {
-
-        var user=await _uadServices.DeleteUser(id);
-        if (!user)
+        var userDeleted = await _uadServices.DeleteUser(id);
+        if (!userDeleted)
         {
             return NotFound("User not found.");
         }
 
-      return Ok(new { message = "User deleted successfully." });
-
+        return Ok(new { message = "User deleted successfully." });
     }
+    catch (InvalidOperationException ex)
+    {
+    
+        return BadRequest(ex.Message);
+    }
+    catch (Exception ex)
+    {
+        
+        return StatusCode(500, "Ndodhi një gabim i papritur në server.");
+    }
+}
 
   
     [HttpPut("UpdateUserById/{id}")]

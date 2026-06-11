@@ -57,6 +57,7 @@ function listReducer(state: ListState, action: ListAction): ListState {
 export default function UserManagement() {
     const { t } = useTranslation();
     const { user: currentUser, updateUser } = useAuth();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     const emptyForm: UserForm = {
         firstName: '',
@@ -87,7 +88,15 @@ export default function UserManagement() {
 
     const formatApiError = (err: unknown): string => {
         if (axios.isAxiosError(err)) {
-            return err.response?.data?.message || err.response?.data?.title || t('common.errorOccurred');
+            const serverData = err.response?.data;
+            
+            if (typeof serverData === 'string' && serverData.trim().length > 0) {
+                return serverData;
+            }
+            
+            if (serverData && typeof serverData === 'object') {
+                return serverData.message || serverData.title || t('common.errorOccurred');
+            }
         }
         return t('common.errorOccurred');
     };
@@ -138,10 +147,17 @@ export default function UserManagement() {
             lastName: !createForm.lastName.trim(),
             email: !createForm.email.trim(),
             gjinia: !createForm.gjinia,
+            roleId: !createForm.roleId,
         };
 
         if (Object.values(errors).some(Boolean)) {
             setFieldErrors(errors);
+            return;
+        }
+
+        if (!emailRegex.test(createForm.email)) {
+            setFieldErrors({ ...errors, email: true });
+            setSnackbar({ msg: t('users.table.emailx'), sev: 'error' });
             return;
         }
 
@@ -177,10 +193,17 @@ export default function UserManagement() {
             lastName: !editForm.lastName?.trim(),
             email: !editForm.email.trim(),
             gjinia: !editForm.gjinia,
+            roleId: !editForm.roleId,
         };
 
         if (Object.values(errors).some(Boolean)) {
             setFieldErrors(errors);
+            return;
+        }
+
+        if (!emailRegex.test(editForm.email)) {
+            setFieldErrors({ ...errors, email: true });
+            setSnackbar({ msg: t('users.table.emailx'), sev: 'error' });
             return;
         }
 
@@ -217,10 +240,12 @@ export default function UserManagement() {
         try {
             await api.delete(`/Admin/DeleteUserById/${deleteTarget.id}`);
             setSnackbar({ msg: t('users.deleteSuccess'), sev: 'success' });
-            setDeleteTarget(null);
+            setDeleteTarget(null); 
             refetchList();
         } catch (e) {
-            setSnackbar({ msg: formatApiError(e), sev: 'error' });
+            const errorMessage = formatApiError(e);
+            setSnackbar({ msg: errorMessage, sev: 'error' });
+            setDeleteTarget(null);
         }
     };
 
@@ -308,9 +333,9 @@ export default function UserManagement() {
                 </Table>
             </TableContainer>
 
+            {/* Create Dialog */}
             <Dialog open={createOpen !== null} onClose={handleCloseCreate} fullWidth maxWidth="xs">
                 <DialogTitle>{t('users.addClient')}</DialogTitle>
-
                 <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
                     <TextField
                         label={t('users.form.firstName')}
@@ -320,7 +345,6 @@ export default function UserManagement() {
                         error={fieldErrors.firstName}
                         helperText={fieldErrors.firstName ? t('users.table.firstNamex') : undefined}
                     />
-
                     <TextField
                         label={t('users.form.lastName')}
                         fullWidth
@@ -329,7 +353,6 @@ export default function UserManagement() {
                         error={fieldErrors.lastName}
                         helperText={fieldErrors.lastName ? t('users.table.lastNamex') : undefined}
                     />
-
                     <TextField
                         label={t('users.form.email')}
                         fullWidth
@@ -338,10 +361,8 @@ export default function UserManagement() {
                         error={fieldErrors.email}
                         helperText={fieldErrors.email ? t('users.table.emailx') : undefined}
                     />
-
                     <FormControl fullWidth error={!!fieldErrors.gjinia}>
                         <InputLabel id="gender-select-label">{t('register.gender')}</InputLabel>
-
                         <Select
                             labelId="gender-select-label"
                             id="gender-select"
@@ -354,22 +375,18 @@ export default function UserManagement() {
                                     setFieldErrors({ ...fieldErrors, gjinia: false });
                                 }
                             }}
-                            displayEmpty
                         >
                             <MenuItem value="M">{t('register.genderM')}</MenuItem>
                             <MenuItem value="F">{t('register.genderF')}</MenuItem>
                         </Select>
-
                         {fieldErrors.gjinia && (
                             <FormHelperText>{t('users.table.genderx')}</FormHelperText>
                         )}
                     </FormControl>
-
                     <DialogActions sx={{ p: 0, justifyContent: 'flex-end' }}>
                         <Button variant="contained" onClick={handleCloseCreate} color="inherit">
                             {t('users.form.Cancel')}
                         </Button>
-
                         <Button variant="contained" onClick={submitCreate} color="success">
                             {t('users.form.Save')}
                         </Button>
@@ -377,9 +394,9 @@ export default function UserManagement() {
                 </DialogContent>
             </Dialog>
 
+            {/* Edit Dialog */}
             <Dialog open={editTarget !== null} onClose={handleCloseEdit} fullWidth maxWidth="xs">
                 <DialogTitle>{t('users.editUser')}</DialogTitle>
-
                 <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
                     <TextField
                         label={t('users.form.firstName')}
@@ -389,7 +406,6 @@ export default function UserManagement() {
                         error={fieldErrors.firstName}
                         helperText={fieldErrors.firstName ? t('users.table.firstNamex') : ''}
                     />
-
                     <TextField
                         label={t('users.form.lastName')}
                         fullWidth
@@ -398,7 +414,6 @@ export default function UserManagement() {
                         error={fieldErrors.lastName}
                         helperText={fieldErrors.lastName ? t('users.table.lastNamex') : ''}
                     />
-
                     <TextField
                         label={t('users.form.email')}
                         fullWidth
@@ -407,10 +422,8 @@ export default function UserManagement() {
                         error={fieldErrors.email}
                         helperText={fieldErrors.email ? t('users.table.emailx') : ''}
                     />
-
                     <FormControl fullWidth error={!!fieldErrors.gjinia} sx={{ mt: 1 }}>
                         <InputLabel id="edit-gender-label">{t('register.gender')}</InputLabel>
-
                         <Select
                             labelId="edit-gender-label"
                             label={t('register.gender')}
@@ -425,12 +438,10 @@ export default function UserManagement() {
                             <MenuItem value="M">{t('register.genderM')}</MenuItem>
                             <MenuItem value="F">{t('register.genderF')}</MenuItem>
                         </Select>
-
                         {fieldErrors.gjinia && (
                             <FormHelperText>{t('users.table.genderx')}</FormHelperText>
                         )}
                     </FormControl>
-
                     <TextField
                         select
                         label={t('users.table.role')}
@@ -445,21 +456,19 @@ export default function UserManagement() {
                         ))}
                     </TextField>
                 </DialogContent>
-
                 <DialogActions sx={{ p: 3 }}>
                     <Button onClick={handleCloseEdit} color="inherit">
                         {t('users.form.Cancel')}
                     </Button>
-
                     <Button variant="contained" onClick={submitEdit} color="success">
                         {t('users.form.Save')}
                     </Button>
                 </DialogActions>
             </Dialog>
 
+            {/* Delete Dialog */}
             <Dialog open={deleteTarget !== null} onClose={handleCloseDelete}>
                 <DialogTitle>{t('users.dialog.deleteTitle')}</DialogTitle>
-
                 <DialogContent>
                     <Typography>
                         {t('users.dialog.deleteConfirm', {
@@ -467,27 +476,27 @@ export default function UserManagement() {
                         })}
                     </Typography>
                 </DialogContent>
-
                 <DialogActions sx={{ p: 2 }}>
                     <Button onClick={handleCloseDelete}>
                         {t('users.dialog.deleteCancelButton')}
                     </Button>
-
                     <Button color="error" variant="contained" onClick={confirmDelete}>
                         {t('users.dialog.deleteConfirmButton')}
                     </Button>
                 </DialogActions>
             </Dialog>
 
+            {/* PËRDITËSIMI: Snackbar-i tani lexon mesazhet përmes funksionit t() të i18n */}
             <Snackbar
                 open={snackbar !== null}
-                autoHideDuration={5000}
+                autoHideDuration={6000}
                 onClose={() => setSnackbar(null)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
             >
                 <Box>
                     {snackbar && (
-                        <Alert severity={snackbar.sev}>
-                            {snackbar.msg}
+                        <Alert severity={snackbar.sev} onClose={() => setSnackbar(null)} sx={{ width: '100%' }}>
+                            {t(snackbar.msg)}
                         </Alert>
                     )}
                 </Box>

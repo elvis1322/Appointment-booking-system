@@ -90,28 +90,37 @@
     "noAccount": "Don't have an account? Register",
     "errorInvalid": "Invalid email or password."
   },
-  "register": {
-    "title": "Register",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "email": "Email",
-    "gender": "Gender",
-    "genderM": "Male",
-    "genderF": "Female",
-    "password": "Password",
-    "passwordHelper": "At least 6 characters, including uppercase, lowercase letters and a number.",
-    "submit": "Create account",
-    "haveAccount": "Already have an account? Login",
-    "errorFailed": "Registration failed.",
-    "errorGenderRequired": "Gender selection is required!",
-    "selectGenderPlaceholder": "Select gender...",
-    "errors": {
-      "firstName": "First Name is required",
-      "lastName": "Last Name is required",
-      "email": "Email is required and must be valid",
-      "gender": "Gender selection is required",
-      "requiredPrefix": "The following fields are required",
-      "passwordTooShort": "Password must be at least 6 characters!"
-    }
+"register": {
+  "title": "Register",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "email": "Email",
+  "gender": "Gender",
+  "genderM": "Male",
+  "genderF": "Female",
+  "password": "Password",
+  "passwordHelper": "At least 6 characters, including uppercase, lowercase letters and a number.",
+  "submit": "Create account",
+  "haveAccount": "Already have an account? Login",
+  "errorFailed": "Registration failed.",
+  "errorGenderRequired": "Gender selection is required!",
+  "selectGenderPlaceholder": "Select gender...",
+  "errors": {
+    "firstName": "First Name is required",
+    "lastName": "Last Name is required",
+    "email": "Email is required and must be valid",
+    "gender": "Gender selection is required",
+    "requiredPrefix": "The following fields are required",
+    "firstNameLength": "First name must be between 2 and 50 characters",
+    "lastNameLength": "Last name must be between 2 and 50 characters",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email address.",
+    "emailGmailInvalid": "Only emails in the format example@gmail.com are allowed",
+    "passwordRequired": "Password is required",
+    "passwordTooShort": "Password must be at least 6 characters!",
+    "passwordStrength": "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+    "userHasClientAppointments": "This user cannot be deleted because they have booked appointments as a client.",
+    "userHasEmployeeAppointments": "This employee cannot be deleted because they have assigned appointments with clients."
   }
+}
 }

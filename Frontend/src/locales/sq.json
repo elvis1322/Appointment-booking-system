@@ -93,27 +93,37 @@
     "noAccount": "Nuk keni llogari? Regjistrohuni",
     "errorInvalid": "Email-i ose fjalëkalimi i pasaktë."
   },
-  "register": {
-    "title": "Regjistrohu",
-    "firstName": "Emri",
-    "lastName": "Mbiemri",
-    "email": "Email",
-    "gender": "Gjinia",
-    "genderM": "Mashkull",
-    "genderF": "Femër",
-    "password": "Fjalëkalimi",
-    "passwordHelper": "Të paktën 6 karaktere, duke përfshirë shkronja të mëdha, të vogla dhe një numër.",
-    "submit": "Krijo llogarinë",
-    "haveAccount": "Keni një llogari? Identifikohuni",
-    "errorFailed": "Regjistrimi dështoi.",
-    "errorGenderRequired": "Zgjedhja e gjinisë është e detyrueshme!",
-    "selectGenderPlaceholder": "Zgjidhni gjininë...",
-    "errors": {
-      "firstName": "Emri është i detyrueshëm",
-      "lastName": "Mbiemri është i detyrueshëm",
-      "email": "Email-i është i detyrueshëm dhe duhet të jetë i vlefshëm",
-      "gender": "Zgjedhja e gjinisë është e detyrueshme",
-      "requiredPrefix": "Fushat vijuese janë të detyrueshme",
-      "passwordTooShort": "Fjalëkalimi duhet të jetë të paktën 6 karaktere!"
-    } }
+"register": {
+  "title": "Regjistrohu",
+  "firstName": "Emri",
+  "lastName": "Mbiemri",
+  "email": "Email-i",
+  "gender": "Gjinia",
+  "genderM": "Mashkull",
+  "genderF": "Femër",
+  "password": "Fjalëkalimi",
+  "passwordHelper": "Të paktën 6 karaktere, përfshirë shkronja të mëdha, të vogla dhe një numër.",
+  "submit": "Krijo llogari",
+  "haveAccount": "Keni një llogari? Kyçuni",
+  "errorFailed": "Regjistrimi dështoi.",
+  "errorGenderRequired": "Zgjedhja e gjinisë është e detyrueshme!",
+  "selectGenderPlaceholder": "Zgjidhni gjininë...",
+  "errors": {
+    "firstName": "Emri është i detyrueshëm",
+    "lastName": "Mbiemri është i detyrueshëm",
+    "email": "Email-i kërkohet dhe duhet të jetë i vlefshëm",
+    "gender": "Zgjedhja e gjinisë është e detyrueshme",
+    "requiredPrefix": "Fushat e mëposhtme janë të detyrueshme",
+    "firstNameLength": "Emri duhet të jetë mes 2 dhe 50 karaktereve",
+    "lastNameLength": "Mbiemri duhet të jetë mes 2 dhe 50 karaktereve",
+    "emailRequired": "Email-i është i detyrueshëm",
+    "emailInvalid": "Ju lutem shkruani një adresë email-i të vlefshme.",
+    "emailGmailInvalid": "Lejohen vetëm email-et e formatit shembull@gmail.com",
+    "passwordRequired": "Fjalëkalimi është i detyrueshëm",
+    "passwordTooShort": "Fjalëkalimi duhet të jetë të paktën 6 karaktere!",
+    "passwordStrength": "Fjalëkalimi duhet të ketë një shkronjë të madhe, një të vogël dhe një numër",
+    "userHasClientAppointments": "Ky përdorues nuk mund të fshihet sepse ka takime të rezervuara si klient.",
+    "userHasEmployeeAppointments": "Ky punëtor nuk mund të fshihet sepse ka takime të caktuara me klientë."
+  }
+}
 }
